@@ -587,7 +587,6 @@
                 <li>Photocopy of Parent’s Valid ID</li>
               </q-card-section>
             </div>
-
             <div class="flex flex-center">
               <q-btn
                 class="q-my-xl q-py-md"
