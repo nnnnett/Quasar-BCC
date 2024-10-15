@@ -56,6 +56,7 @@
                   outlined
                   placeholder="Juan"
                   class="inName"
+                  no-error-icon
                   :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
@@ -71,6 +72,7 @@
                   outlined
                   placeholder="Santos"
                   class=""
+                  no-error-icon
                   :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
@@ -86,6 +88,7 @@
                   outlined
                   placeholder="Dela Cruz"
                   class=""
+                  no-error-icon
                   :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
@@ -109,6 +112,7 @@
                   type="date"
                   rounded
                   outlined
+                  no-error-icon
                   :rules="[selectChecker]"
                 >
                 </q-input>
@@ -123,6 +127,7 @@
                   rounded
                   outlined
                   placeholder="09XXXXXXXXX"
+                  no-error-icon
                   :rules="[numberChecker]"
                 >
                 </q-input>
@@ -137,6 +142,7 @@
                   rounded
                   outlined
                   placeholder="skibidi.toilet@cvsu.edu.ph"
+                  no-error-icon
                   :rules="[emailChecker]"
                 >
                 </q-input>
@@ -155,6 +161,7 @@
                     for="myGender"
                     style="width: 100%"
                     class=""
+                    no-error-icon
                     :rules="[selectChecker]"
                   />
                 </q-card-section>
@@ -173,6 +180,7 @@
                   rounded
                   outlined
                   placeholder="Cavite State University Imus Campus"
+                  no-error-icon
                   :rules="[requiredFields]"
                 >
                 </q-input>
@@ -199,6 +207,7 @@
                   rounded
                   outlined
                   placeholder="Philippines"
+                  no-error-icon
                   :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
@@ -213,6 +222,7 @@
                   rounded
                   outlined
                   placeholder="4102"
+                  no-error-icon
                   :rules="[zipcodeChecker]"
                 >
                 </q-input>
@@ -227,6 +237,7 @@
                   rounded
                   outlined
                   placeholder="Cavite"
+                  no-error-icon
                   :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
@@ -241,6 +252,7 @@
                   rounded
                   outlined
                   placeholder="Bacoor"
+                  no-error-icon
                   :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
@@ -262,6 +274,7 @@
                   rounded
                   outlined
                   placeholder="Tabing Dagat"
+                  no-error-icon
                   :rules="[requiredFields]"
                 >
                 </q-input>
@@ -276,6 +289,7 @@
                   rounded
                   outlined
                   placeholder="Pogi Street"
+                  no-error-icon
                   :rules="[requiredFields]"
                 >
                 </q-input>
@@ -290,6 +304,7 @@
                   rounded
                   outlined
                   placeholder="blk - 2 lot - 25"
+                  no-error-icon
                   :rules="[requiredFields]"
                 >
                 </q-input>
@@ -320,6 +335,7 @@
                   rounded
                   outlined
                   placeholder="Juan"
+                  no-error-icon
                   :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
@@ -334,6 +350,7 @@
                   rounded
                   outlined
                   placeholder="Santos"
+                  no-error-icon
                   :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
@@ -348,6 +365,7 @@
                   rounded
                   outlined
                   placeholder="Dela Cruz"
+                  no-error-icon
                   :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
@@ -362,6 +380,7 @@
                   rounded
                   outlined
                   placeholder="09XXXXXXXXX"
+                  no-error-icon
                   :rules="[numberChecker]"
                 >
                 </q-input>
@@ -389,6 +408,7 @@
                   rounded
                   outlined
                   placeholder="Philippines"
+                  no-error-icon
                   :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
@@ -403,6 +423,7 @@
                   rounded
                   outlined
                   placeholder="4102"
+                  no-error-icon
                   :rules="[zipcodeChecker]"
                 >
                 </q-input>
@@ -417,6 +438,7 @@
                   rounded
                   outlined
                   placeholder="Cavite"
+                  no-error-icon
                   :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
@@ -431,6 +453,7 @@
                   rounded
                   outlined
                   placeholder="Bacoor"
+                  no-error-icon
                   :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
@@ -452,6 +475,7 @@
                   rounded
                   outlined
                   placeholder="Tabing Dagat"
+                  no-error-icon
                   :rules="[requiredFields]"
                 >
                 </q-input>
@@ -466,6 +490,7 @@
                   rounded
                   outlined
                   placeholder="Pogi Street"
+                  no-error-icon
                   :rules="[requiredFields]"
                 >
                 </q-input>
@@ -480,6 +505,7 @@
                   rounded
                   outlined
                   placeholder="blk - 2 lot - 25"
+                  no-error-icon
                   :rules="[requiredFields]"
                 >
                 </q-input>
@@ -511,6 +537,7 @@
                   outlined
                   placeholder="Juan"
                   class="inName"
+                  no-error-icon
                   :rules="[requiredFields]"
                 >
                 </q-input>
@@ -526,6 +553,7 @@
                   outlined
                   placeholder="Juan"
                   class="inName"
+                  no-error-icon
                   :rules="[myPassword]"
                 >
                 </q-input>
@@ -541,6 +569,7 @@
                   outlined
                   placeholder="Juan"
                   class="inName"
+                  no-error-icon
                   :rules="[myConfirmPassword]"
                 >
                 </q-input>
@@ -563,7 +592,6 @@
                     label="Choose File"
                     filled
                     clearable
-                    :rules="[requiredFields]"
                   >
                     <template v-slot:prepend>
                       <q-icon name="upload" />

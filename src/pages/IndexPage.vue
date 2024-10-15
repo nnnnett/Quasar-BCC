@@ -1,102 +1,58 @@
 <template class="">
-  <div
-    style="
-      background: linear-gradient(
-        154deg,
-        #b592ec 8%,
-        #a79eeb 22%,
-        #5ce1e6 100%
-      );
-    "
-  >
-    <q-page class="flex flex-center column" style="overflow: hidden">
-      <q-card class="no-border bg-transparent">
-        <div>
-          <q-card-section class="row">
-            <div class="text-h5" style="color: #ffffff">Welcome to</div>
-            <div class="text-h5 q-ml-sm" style="color: #5ce1e6">BCC</div>
-          </q-card-section>
-          <q-card-section>
-            <div class="text-h2">Sign up</div>
+  <div>
+    <q-page>
+      <q-toolbar class="text-white q-py-md q-px-xl headerSection">
+        <div class="flex">
+          <q-avatar class="logo-bcc">
+            <img src="~assets/logo_bcc.png" />
+          </q-avatar>
+          <q-card-section
+            class="text-bcc text-subtitle1"
+            style="color: #4b4b4b"
+          >
+            Bacoor Computer Clubhose Hub
           </q-card-section>
         </div>
 
-        <q-card-section>
-          REGISTRATION CODE
-          <q-form @submit.prevent="myProceed">
-            <q-input
-              rounded
-              outlined
-              v-model="form.registrationCode"
-              for="registrationCode"
-              type="number"
-              placeholder="Ex. 202110004"
-              bg-color="white"
-              color="black"
-              clearable
-              counter
-            >
-            </q-input>
-
-            <q-card-section>
-              <q-btn
-                class="q-px-xl q-py-sm"
-                label="Proceed"
-                type="submit"
-                rounded
-                style="background-color: #925fe2; width: 230px"
-                text-color="white"
-              ></q-btn>
-
-              <q-card-section>
-                <router-link
-                  to="/loginPage"
-                  style="color: #2584e9; text-decoration: none"
-                  >I already have an account</router-link
-                >
-              </q-card-section>
-            </q-card-section>
-          </q-form>
-        </q-card-section>
-
-        <q-card-section>
-          By tapping Log In or Create an Account, you agree to our Terms. Learn
-          how we process your data in our Privacy Policy and Cookies Policy.
-        </q-card-section>
-      </q-card>
+        <div class="q-ml-xl">
+          <NavBar />
+        </div>
+        <q-space />
+        <div class="q-mr-xl">
+          <q-btn
+            class="q-px-xl"
+            label="Proceed"
+            no-caps
+            color="#FFFFFF"
+            style="background-color: #925fe2; width: 130px"
+            rounded
+          >
+          </q-btn>
+        </div>
+      </q-toolbar>
     </q-page>
   </div>
-
   <q-page-container>
     <router-view />
   </q-page-container>
 </template>
 
-<style scoped>
-.no-border {
-  border: none;
-  box-shadow: none;
-}
+<style lang="sass" scoped>
+.logo-bcc
+  height: 70px
+  width: 70px
+
+.text-bcc
+  width: 50%
+
+.headerSection
+  display: flex
 </style>
 
 <script setup>
+import NavBar from "src/components/navBar.vue";
+
 defineOptions({
   name: "IndexPage",
 });
-
-import { Notify, useQuasar } from "quasar";
-import { reactive } from "vue";
-
-const form = reactive({
-  registrationCode: "",
-});
-function myProceed() {
-  if (!form.registrationCode) {
-    Notify.create({
-      message: "Enter registration code",
-      color: "alert",
-    });
-    return;
-  }
-}
 </script>
