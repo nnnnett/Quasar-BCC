@@ -13,7 +13,6 @@
   width: 40vw
   display: flex
   justify-content: space-between
-  border: 1px solid black
 
 .nav-btn
   &:hover
