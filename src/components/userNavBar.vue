@@ -119,7 +119,7 @@
 .burger-btn
   @media (min-width: 1024px) // Adjust breakpoint as necessary
     visibility: hidden
-    z-index: 2000
+    z-index: 2001
 </style>
 
 <script setup>
