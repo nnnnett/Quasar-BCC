@@ -1,102 +1,154 @@
 <template class="">
-  <div
-    style="
-      background: linear-gradient(
-        154deg,
-        #b592ec 8%,
-        #a79eeb 22%,
-        #5ce1e6 100%
-      );
-    "
-  >
-    <q-page class="flex flex-center column" style="overflow: hidden">
-      <q-card class="no-border bg-transparent">
-        <div>
-          <q-card-section class="row">
-            <div class="text-h5" style="color: #ffffff">Welcome to</div>
-            <div class="text-h5 q-ml-sm" style="color: #5ce1e6">BCC</div>
-          </q-card-section>
-          <q-card-section>
-            <div class="text-h2">Sign up</div>
-          </q-card-section>
-        </div>
-
-        <q-card-section>
-          REGISTRATION CODE
-          <q-form @submit.prevent="myProceed">
-            <q-input
-              rounded
-              outlined
-              v-model="form.registrationCode"
-              for="registrationCode"
-              type="number"
-              placeholder="Ex. 202110004"
-              bg-color="white"
-              color="black"
-              clearable
-              counter
-            >
-            </q-input>
-
-            <q-card-section>
-              <q-btn
-                class="q-px-xl q-py-sm"
-                label="Proceed"
-                type="submit"
-                rounded
-                style="background-color: #925fe2; width: 230px"
-                text-color="white"
-              ></q-btn>
-
-              <q-card-section>
-                <router-link
-                  to="/loginPage"
-                  style="color: #2584e9; text-decoration: none"
-                  >I already have an account</router-link
-                >
-              </q-card-section>
+  <div>
+    <q-page>
+      <div class=" ">
+        <!-- navbar -->
+        <q-toolbar
+          class="text-white headerSection flex q-py-xl"
+          style="justify-content: space-evenly"
+        >
+          <div class="nav-txt-logo">
+            <q-avatar class="logo-bcc">
+              <img src="~assets/logo_bcc.png" />
+            </q-avatar>
+            <q-card-section class="text-bcc text-subtitle1">
+              Bacoor Computer Clubhose Hub
             </q-card-section>
-          </q-form>
-        </q-card-section>
+          </div>
+          <div class="q-mr-xl">
+            <NavBar />
+          </div>
+          <div class=" ">
+            <q-btn
+              class="q-px-xl"
+              label="Proceed"
+              no-caps
+              color="#FFFFFF"
+              style="background-color: #925fe2; width: 130px; height: 40px"
+              rounded
+            >
+            </q-btn>
+          </div>
+        </q-toolbar>
+        <!-- Landing Page Content -->
+        <div class="flex" style="height: 80vh">
+          <!-- blue box -->
+          <q-card-section
+            class="q-pl-xl q-pr-none q-pt-none"
+            style="width: 50%"
+          >
+            <div style="" class="q-ml-xl">
+              <q-card-section
+                class="text-h3 q-ml-xl q-pt-xl"
+                style="line-height: 1.5"
+              >
+                Empowering
+                <span style="color: #5ce1e6; font-style: italic">Youth</span>,
+                One Byte at a Time
+              </q-card-section>
+              <q-card-section
+                class="text-body1 q-ml-xl"
+                style="text-align: justify; width: 90%"
+              >
+                Bacoor Computer Center is a unit of the City Government of
+                Bacoor under the Office of the Mayor. We provide free computer
+                trainings, workshops for Bacooreños.
+              </q-card-section>
+              <div class="q-ml-xl q-pl-md">
+                <q-btn
+                  label="Get Started"
+                  no-caps
+                  color="#FFFFFF"
+                  style="background-color: #925fe2; width: 130px; height: 40px"
+                  rounded
+                />
+              </div>
+              <div class="flex q-ml-xl" style="width: 33%">
+                <q-card-section class="q-px-none mentorStudent-counter">
+                  <!-- Mentors -->
+                  <q-card-section class="q-pt-none">8</q-card-section>
+                  <q-card-section class="q-pt-none">Mentors</q-card-section>
+                </q-card-section>
+                <!-- students -->
+                <q-card-section class="q-px-none mentorStudent-counter">
+                  <q-card-section class="q-pt-none">1.8k</q-card-section>
+                  <q-card-section class="q-pt-none">Mentors</q-card-section>
+                </q-card-section>
+              </div>
+            </div>
+          </q-card-section>
+          <!-- red box -->
+          <q-card-section style="width: 50%" class="q-pt-none">
+            <!-- fixxxxxxx -->
+            <q-responsive :ratio="16 / 9" class="banner-png">
+              <div>
+                <q-img src="~assets/bcc-banner.png" />
+              </div>
+            </q-responsive>
+          </q-card-section>
+          <!-- next content -->
+          <div
+            class="q-mt-xl"
+            style="
+              height: 70vh;
+              background: linear-gradient(
+                154deg,
+                #b592ec 8%,
+                #a79eeb 22%,
+                #5ce1e6 100%
+              );
+              width: 100vw;
+            "
+          >
+            <q-card-section style="text-align: center" class="q-pa-xl text-h4">
+              As
+              <span style="color: #ffffff; font-style: italic">Mentors</span>,
+              We Inspire,<br />
+              We Guide, We Empower.
+            </q-card-section>
 
-        <q-card-section>
-          By tapping Log In or Create an Account, you agree to our Terms. Learn
-          how we process your data in our Privacy Policy and Cookies Policy.
-        </q-card-section>
-      </q-card>
+            <div>
+              <ImgCarousel />
+            </div>
+          </div>
+        </div>
+      </div>
     </q-page>
   </div>
-
   <q-page-container>
     <router-view />
   </q-page-container>
 </template>
 
-<style scoped>
-.no-border {
-  border: none;
-  box-shadow: none;
-}
+<style lang="sass" scoped>
+
+
+.nav-txt-logo
+  display: flex
+  width: 25%
+  align-content: center
+  align-items: center
+.logo-bcc
+  height: 70px
+  width: 70px
+
+.text-bcc
+  color: #4b4b4b
+  width: 70%
+
+.mentorStudent-counter
+  text-align: center
+
+.banner-png
+  width: 80%
+  height: 100px
 </style>
 
 <script setup>
+import ImgCarousel from "src/components/imgCarousel.vue";
+import NavBar from "src/components/navBar.vue";
+
 defineOptions({
   name: "IndexPage",
 });
-
-import { Notify, useQuasar } from "quasar";
-import { reactive } from "vue";
-
-const form = reactive({
-  registrationCode: "",
-});
-function myProceed() {
-  if (!form.registrationCode) {
-    Notify.create({
-      message: "Enter registration code",
-      color: "alert",
-    });
-    return;
-  }
-}
 </script>
