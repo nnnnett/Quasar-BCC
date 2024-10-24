@@ -31,10 +31,11 @@
           </div>
         </q-toolbar>
         <!-- Landing Page Content -->
+        <!-- First content -->
         <div class="flex" style="height: 80vh">
-          <!-- blue box -->
+          <!-- left container-->
           <q-card-section
-            class="q-pl-xl q-pr-none q-pt-none"
+            class="q-pl-xl q-pr-none q-pt-none q-pb-xl"
             style="width: 50%"
           >
             <div style="" class="q-ml-xl">
@@ -43,7 +44,8 @@
                 style="line-height: 1.5"
               >
                 Empowering
-                <span style="color: #5ce1e6; font-style: italic">Youth</span>,
+                <span style="color: #5ce1e6; font-style: italic">Youth</span
+                >,<br />
                 One Byte at a Time
               </q-card-section>
               <q-card-section
@@ -77,16 +79,17 @@
               </div>
             </div>
           </q-card-section>
-          <!-- red box -->
+          <!-- right container -->
           <q-card-section style="width: 50%" class="q-pt-none">
             <!-- fixxxxxxx -->
             <q-responsive :ratio="16 / 9" class="banner-png">
-              <div>
+              <div class="q-pa-md">
                 <q-img src="~assets/bcc-banner.png" />
               </div>
             </q-responsive>
           </q-card-section>
-          <!-- next content -->
+
+          <!-- second content -->
           <div
             class="q-mt-xl"
             style="
@@ -139,8 +142,11 @@
 .mentorStudent-counter
   text-align: center
 
+
+.banner-img
+  width: 50px
 .banner-png
-  width: 80%
+  width: 70%
   height: 100px
 </style>
 
