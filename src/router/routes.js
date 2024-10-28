@@ -7,10 +7,22 @@ const routes = [
       { path: "loginPage", component: () => import("src/pages/loginPage.vue") },
       { path: "signupPage", component: () => import("pages/signupPage.vue") },
       { path: "userPage", component: () => import("pages/userPage.vue") },
+      {
+        path: "adminAddCourse",
+        component: () => import("pages/adminAddCourse.vue"),
+      },
 
       {
         path: "registerPage",
         component: () => import("src/pages/registerPage.vue"),
+      },
+      {
+        path: "testPage",
+        component: () => import("src/pages/testPage.vue"),
+      },
+      {
+        path: "nicePage",
+        component: () => import("src/pages/nicePage.vue"),
       },
     ],
   },

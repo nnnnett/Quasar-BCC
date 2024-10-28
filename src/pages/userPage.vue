@@ -164,6 +164,7 @@
 .diffCourseActive
   height: auto
 .digitalLiteracy
+
   width: 30%
   height: auto
   border: 1px solid black

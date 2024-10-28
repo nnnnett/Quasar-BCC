@@ -82,7 +82,7 @@
 
                 <q-card-section>
                   Don’t have an account?
-                  <router-link to="signupPage" class="policies">
+                  <router-link to="registerPage" class="policies">
                     Create Account
                   </router-link>
                 </q-card-section>

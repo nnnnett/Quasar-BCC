@@ -14,7 +14,7 @@
     <div class="container">
       <q-scroll-area style="height: 80vh; background-color: #ffffffff">
         <div v-for="n in 1" :key="n">
-          <q-form @submit.prevent="onSubmit">
+          <q-form @submit.prevent="submitSignup">
             <!-- need remove yung space sa btn then palitan yung q-card-section para maging responsive -->
 
             <div
@@ -50,7 +50,7 @@
                 <q-input
                   name="firstName"
                   for="firstName"
-                  v-model="form.firstName"
+                  v-model="firstName"
                   type="text"
                   rounded
                   outlined
@@ -66,7 +66,7 @@
                 <q-input
                   name="middleName"
                   for="middleName"
-                  v-model="form.middleName"
+                  v-model="middleName"
                   type="text"
                   rounded
                   outlined
@@ -82,7 +82,7 @@
                 <q-input
                   name="lastName"
                   for="lastName"
-                  v-model="form.lastName"
+                  v-model="lastName"
                   type="text"
                   rounded
                   outlined
@@ -106,9 +106,9 @@
               <q-card-section class="q-ml-none">
                 Birthdate
                 <q-input
-                  name="myBirthdate"
-                  for="myBirthdate"
-                  v-model="form.myBirthdate"
+                  name="birthDate"
+                  for="birthDate"
+                  v-model="birthDate"
                   type="date"
                   rounded
                   outlined
@@ -120,9 +120,9 @@
               <q-card-section class=" ">
                 Contact No.
                 <q-input
-                  name="myContact"
-                  for="myContact"
-                  v-model="form.myContact"
+                  name="contactNumber"
+                  for="contactNumber"
+                  v-model="contactNumber"
                   type="tel"
                   rounded
                   outlined
@@ -135,9 +135,9 @@
               <q-card-section>
                 Email
                 <q-input
-                  name="myEmail"
-                  for="myEmail"
-                  v-model="form.myEmail"
+                  name="email"
+                  for="email"
+                  v-model="email"
                   type="email"
                   rounded
                   outlined
@@ -154,11 +154,11 @@
                     rounded
                     outlined
                     :options="optionGender.option"
-                    v-model="form.myGender"
+                    v-model="gender"
                     label="Select Gender"
                     type="text"
-                    name="myGender"
-                    for="myGender"
+                    name="gender"
+                    for="gender"
                     style="width: 100%"
                     class=""
                     no-error-icon
@@ -173,9 +173,9 @@
               <q-card-section>
                 School
                 <q-input
-                  name="mySchool"
-                  for="mySchool"
-                  v-model="form.mySchool"
+                  name="school"
+                  for="school"
+                  v-model="school"
                   type="text"
                   rounded
                   outlined
@@ -200,9 +200,9 @@
               <q-card-section>
                 Country
                 <q-input
-                  name="myCountry"
-                  for="myCountry"
-                  v-model="form.myCountry"
+                  name="country"
+                  for="country"
+                  v-model="country"
                   type="text"
                   rounded
                   outlined
@@ -215,9 +215,9 @@
               <q-card-section>
                 Zip Code
                 <q-input
-                  name="myZipCode"
-                  for="myZipCode"
-                  v-model="form.myZipCode"
+                  name="zipCode"
+                  for="zipCode"
+                  v-model="zipCode"
                   type="tel"
                   rounded
                   outlined
@@ -230,9 +230,9 @@
               <q-card-section>
                 Province
                 <q-input
-                  name="myProvince"
-                  for="myProvince"
-                  v-model="form.myProvince"
+                  name="province"
+                  for="province"
+                  v-model="province"
                   type="text"
                   rounded
                   outlined
@@ -245,9 +245,9 @@
               <q-card-section>
                 Municipality
                 <q-input
-                  name="myMunicipality"
-                  for="myMunicipality"
-                  v-model="form.myMunicipality"
+                  name="municipality"
+                  for="municipality"
+                  v-model="municipality"
                   type="text"
                   rounded
                   outlined
@@ -267,9 +267,9 @@
               <q-card-section>
                 Baranggay
                 <q-input
-                  name="myBaranggay"
-                  for="myBaranggay"
-                  v-model="form.myBaranggay"
+                  name="barangay"
+                  for="barangay"
+                  v-model="barangay"
                   type="text"
                   rounded
                   outlined
@@ -282,9 +282,9 @@
               <q-card-section>
                 Street Name
                 <q-input
-                  name="myStreet"
-                  for="myStreet"
-                  v-model="form.myStreet"
+                  name="street"
+                  for="street"
+                  v-model="street"
                   type="text"
                   rounded
                   outlined
@@ -297,9 +297,9 @@
               <q-card-section>
                 Block & Lot
                 <q-input
-                  name="myBlockLot"
-                  for="myBlockLot"
-                  v-model="form.myBlockLot"
+                  name="blockAndLot"
+                  for="blockAndLot"
+                  v-model="blockAndLot"
                   type="text"
                   rounded
                   outlined
@@ -328,9 +328,9 @@
               <q-card-section>
                 First Name
                 <q-input
-                  name="myGuardianFname"
-                  for="myGuardianFname"
-                  v-model="form.myGuardianFname"
+                  name="guardianFirstName"
+                  for="guardianFirstName"
+                  v-model="guardianFirstName"
                   type="text"
                   rounded
                   outlined
@@ -343,9 +343,9 @@
               <q-card-section>
                 Middle Name
                 <q-input
-                  name="myGuardianMname"
-                  for="myGuardianMname"
-                  v-model="form.myGuardianMname"
+                  name="guardianMiddleName"
+                  for="guardianMiddleName"
+                  v-model="guardianMiddleName"
                   type="text"
                   rounded
                   outlined
@@ -358,9 +358,9 @@
               <q-card-section>
                 Last Name
                 <q-input
-                  name="myGuardianLname"
-                  for="myGuardianLname"
-                  v-model="form.myGuardianLname"
+                  name="guardianLastName"
+                  for="guardianLastName"
+                  v-model="guardianLastName"
                   type="text"
                   rounded
                   outlined
@@ -373,9 +373,9 @@
               <q-card-section>
                 Contact No.
                 <q-input
-                  name="myGuardianContact"
-                  for="myGuardianContact"
-                  v-model="form.myGuardianContact"
+                  name="guardianContactNumber"
+                  for="guardianContactNumber"
+                  v-model="guardianContactNumber"
                   type="tel"
                   rounded
                   outlined
@@ -401,9 +401,9 @@
               <q-card-section>
                 Country
                 <q-input
-                  name="myGuardianCountry"
-                  for="myGuardianCountry"
-                  v-model="form.myGuardianCountry"
+                  name="guardianCountry"
+                  for="guardianCountry"
+                  v-model="guardianCountry"
                   type="text"
                   rounded
                   outlined
@@ -416,9 +416,9 @@
               <q-card-section>
                 Zip Code
                 <q-input
-                  name="myGuardianZipCode"
-                  for="myGuardianZipCode"
-                  v-model="form.myGuardianZipCode"
+                  name="guardianZipCode"
+                  for="guardianZipCode"
+                  v-model="guardianZipCode"
                   type="tel"
                   rounded
                   outlined
@@ -431,9 +431,9 @@
               <q-card-section>
                 Province
                 <q-input
-                  name="myGuardianProvince"
-                  for="myGuardianProvince"
-                  v-model="form.myGuardianProvince"
+                  name="guardianProvince"
+                  for="guardianProvince"
+                  v-model="guardianProvince"
                   type="text"
                   rounded
                   outlined
@@ -446,9 +446,9 @@
               <q-card-section>
                 Municipality
                 <q-input
-                  name="myGuardianMunicipality"
-                  for="myGuardianMunicipality"
-                  v-model="form.myGuardianMunicipality"
+                  name="guardianMunicipality"
+                  for="guardianMunicipality"
+                  v-model="guardianMunicipality"
                   type="text"
                   rounded
                   outlined
@@ -468,9 +468,9 @@
               <q-card-section>
                 Baranggay
                 <q-input
-                  name="myGuardianBaranggay"
-                  for="myGuardianBaranggay"
-                  v-model="form.myGuardianBaranggay"
+                  name="guardianBarangay"
+                  for="guardianBarangay"
+                  v-model="guardianBarangay"
                   type="text"
                   rounded
                   outlined
@@ -483,9 +483,9 @@
               <q-card-section>
                 Street Name
                 <q-input
-                  name="myGuardianStreet"
-                  for="myGuardianStreet"
-                  v-model="form.myGuardianStreet"
+                  name="guardianStreet"
+                  for="guardianStreet"
+                  v-model="guardianStreet"
                   type="text"
                   rounded
                   outlined
@@ -498,9 +498,9 @@
               <q-card-section>
                 Block & Lot
                 <q-input
-                  name="myGuardianBlockLot"
-                  for="myGuardianBlockLot"
-                  v-model="form.myGuardianBlockLot"
+                  name="guardianBlockAndLot"
+                  for="guardianBlockAndLot"
+                  v-model="guardianBlockAndLot"
                   type="text"
                   rounded
                   outlined
@@ -529,9 +529,9 @@
               <q-card-section class="q-pb-none">
                 User Name
                 <q-input
-                  name="userName"
-                  for="userName"
-                  v-model="form.userName"
+                  name="username"
+                  for="username"
+                  v-model="username"
                   type="text"
                   rounded
                   outlined
@@ -545,26 +545,26 @@
               <q-card-section class="q-pb-none">
                 Password
                 <q-input
-                  name="myPassword"
-                  for="myPassword"
-                  v-model="form.myPassword"
+                  name="password"
+                  for="password"
+                  v-model="password"
                   type="password"
                   rounded
                   outlined
                   placeholder="Juan"
                   class="inName"
                   no-error-icon
-                  :rules="[myPassword]"
+                  :rules="[myPass]"
                 >
                 </q-input>
               </q-card-section>
               <q-card-section class="q-pb-none">
                 Confirm Password
                 <q-input
-                  name="myConfirmPassword"
-                  for="myConfirmPassword"
-                  v-model="form.myConfirmPassword"
+                  name="confirmPassword"
+                  for="confirmPassword"
                   type="password"
+                  v-model="confirmPassword"
                   rounded
                   outlined
                   placeholder="Juan"
@@ -586,11 +586,12 @@
               <q-card style="border: 1px dashed black">
                 <q-card-section class="flex flex-center">
                   <q-file
-                    name="myProfileImg"
-                    for="myProfileImg"
-                    v-model="form.myProfileImg"
+                    name="imageFile"
+                    for="imageFile"
+                    v-model="imageFile"
                     label="Choose File"
                     filled
+                    accept="image/*"
                     clearable
                   >
                     <template v-slot:prepend>
@@ -624,7 +625,6 @@
                 color="accent"
                 style="background-color: #925fe2; width: 230px"
                 rounded
-                :loading="loading"
               >
               </q-btn>
             </div>
@@ -686,75 +686,161 @@
 </style>
 
 <script setup>
-import { data } from "autoprefixer";
+// import { data } from "autoprefixer";
 import { ref } from "vue";
-import { registerUser } from "src/backend/function.js";
+import axios from "axios";
+import { useQuasar } from "quasar";
+// import { registerUser } from "src/backend/function.js";
 
-const form = ref({
-  firstName: "",
-  middleName: "",
-  lastName: "",
-  myGender: "",
-  myBirthdate: "",
-  myContact: "",
-  myEmail: "",
-  myCountry: "",
-  myZipCode: "",
-  myProvince: "",
-  myMunicipality: "",
-  myBaranggay: "",
-  myStreet: "",
-  myBlockLot: "",
-  myGuardianFname: "",
-  myGuardianMname: "",
-  myGuardianLname: "",
-  myGuardianContact: "",
-  myGuardianCountry: "",
-  myGuardianZipCode: "",
-  myGuardianProvince: "",
-  myGuardianMunicipality: "",
-  myGuardianBaranggay: "",
-  myGuardianStreet: "",
-  myGuardianBlockLot: "",
-  userName: "",
-  myPassword: "",
-  myConfirmPassword: "",
-  myProfileImg: "",
-  mySchool: "",
-});
-const loading = ref(false);
+// const loading = ref(false);
 const optionGender = {
   option: ["Male", "Female"],
 };
-const requiredFields = (val) =>
-  (val && val.length > 0) || "Please type something";
+// const requiredFields = (val) =>
+//   (val && val.length > 0) || "Please type something";
 
-const textChecker = (val) =>
-  (val && isNaN(val)) || "Please type a valid non-numeric input";
+// const textChecker = (val) =>
+//   (val && isNaN(val)) || "Please type a valid non-numeric input";
 
-const selectChecker = (val) =>
-  (val && val.length > 0) || "Please select something";
+// const selectChecker = (val) =>
+//   (val && val.length > 0) || "Please select something";
 
-const emailChecker = (val) =>
-  (val && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(val)) ||
-  "Please enter a valid email address";
-const numberChecker = (val) =>
-  (val && /^\d{11}$/.test(val)) || "Please type a valid number";
+// const emailChecker = (val) =>
+//   (val && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(val)) ||
+//   "Please enter a valid email address";
+// const numberChecker = (val) =>
+//   (val && /^\d{11}$/.test(val)) || "Please type a valid number";
 
-const zipcodeChecker = (val) =>
-  (val && /^\d{4}$/.test(val)) || "Please type a valid Zip Code Number";
-const myPassword = (val) => (val && val.length > 0) || "Please type something";
+// const zipcodeChecker = (val) =>
+//   (val && /^\d{4}$/.test(val)) || "Please type a valid Zip Code Number";
+// const myPass = (val) => (val && val.length > 0) || "Please type something";
 
-const myConfirmPassword = (val) =>
-  (val && val == form.value.myPassword) || "Passwords do not match";
+// const myConfirmPassword = (val) =>
+//   (val && val == form.value.myPassword) || "Passwords do not match";
 
-async function onSubmit() {
-  loading.value = true;
-  try {
-    // backend call
-    // await registerUser(user::)
-  } finally {
-    loading.value = false;
+const $q = useQuasar();
+const username = ref("");
+const password = ref("");
+const confirmPassword = ref("");
+const email = ref("");
+const firstName = ref("");
+const middleName = ref("");
+const lastName = ref("");
+const gender = ref("");
+const contactNumber = ref("");
+const birthDate = ref("");
+const school = ref("");
+const country = ref("");
+const zipCode = ref("");
+const province = ref("");
+const municipality = ref("");
+const barangay = ref("");
+const street = ref("");
+const blockAndLot = ref("");
+const guardianFirstName = ref("");
+const guardianMiddleName = ref("");
+const guardianLastName = ref("");
+const guardianContactNumber = ref("");
+const guardianCountry = ref("");
+const guardianZipCode = ref("");
+const guardianProvince = ref("");
+const guardianMunicipality = ref("");
+const guardianBarangay = ref("");
+const guardianStreet = ref("");
+const guardianBlockAndLot = ref("");
+const imageFile = ref(null);
+
+const submitSignup = async () => {
+  if (
+    !username.value ||
+    !password.value ||
+    !email.value ||
+    !imageFile.value ||
+    !confirmPassword.value ||
+    !firstName.value ||
+    !middleName.value ||
+    !lastName.value ||
+    !gender.value ||
+    !contactNumber.value ||
+    !birthDate.value ||
+    !school.value ||
+    !country.value ||
+    !zipCode.value ||
+    !province.value ||
+    !municipality.value ||
+    !barangay.value ||
+    !street.value ||
+    !blockAndLot.value ||
+    !guardianFirstName.value ||
+    !guardianMiddleName.value ||
+    !guardianLastName.value ||
+    !guardianContactNumber.value ||
+    !guardianCountry.value ||
+    !guardianZipCode.value ||
+    !guardianProvince.value ||
+    !guardianMunicipality.value ||
+    !guardianBarangay.value ||
+    !guardianStreet.value ||
+    !guardianBlockAndLot.value
+  ) {
+    $q.notify({
+      type: "warning",
+      message: "Please fill in all required fields.",
+    });
+
+    return;
+  } else if (!isNaN(zipCode.value)) {
+    $q.notify({
+      type: "warning",
+      message: "Please input valid number",
+    });
+
+    return;
   }
-}
+
+  const formData = new FormData();
+  formData.append("username", username.value);
+  formData.append("password", password.value);
+  formData.append("email", email.value);
+  formData.append("firstName", firstName.value);
+  formData.append("middleName", middleName.value);
+  formData.append("lastName", lastName.value);
+  formData.append("gender", gender.value);
+  formData.append("contactNumber", contactNumber.value);
+  formData.append("birthDate", birthDate.value);
+  formData.append("school", school.value);
+  formData.append("country", country.value);
+  formData.append("zipCode", zipCode.value);
+  formData.append("province", province.value);
+  formData.append("municipality", municipality.value);
+  formData.append("barangay", barangay.value);
+  formData.append("street", street.value);
+  formData.append("blockAndLot", blockAndLot.value);
+  formData.append("guardianFirstName", guardianFirstName.value);
+  formData.append("guardianMiddleName", guardianMiddleName.value);
+  formData.append("guardianLastName", guardianLastName.value);
+  formData.append("guardianContactNumber", guardianContactNumber.value);
+  formData.append("guardianCountry", guardianCountry.value);
+  formData.append("guardianZipCode", guardianZipCode.value);
+  formData.append("guardianProvince", guardianProvince.value);
+  formData.append("guardianMunicipality", guardianMunicipality.value);
+  formData.append("guardianBarangay", guardianBarangay.value);
+  formData.append("guardianStreet", guardianStreet.value);
+  formData.append("guardianBlockAndLot", guardianBlockAndLot.value);
+  formData.append("userImage", imageFile.value);
+
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/users/signup",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    $q.notify({ type: "positive", message: "Signup successful!" });
+  } catch (error) {
+    $q.notify({ type: "negative", message: "Error during signup." });
+    console.error(error);
+  }
+};
 </script>
