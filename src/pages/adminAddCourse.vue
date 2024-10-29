@@ -11,7 +11,6 @@
           outlined
           placeholder="Course Name"
           no-error-icon
-          :rules="[requiredFields, textChecker]"
         />
       </q-card-section>
 
@@ -25,7 +24,6 @@
           outlined
           placeholder="Course Description"
           no-error-icon
-          :rules="[requiredFields, textChecker]"
         />
       </q-card-section>
 
@@ -46,30 +44,60 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { useQuasar } from "quasar";
 
+const $q = useQuasar();
 const form = ref({
   courseName: "",
   courseDescription: "",
 });
 
 const message = ref("");
-const requiredFields = (value) => !!value || "This field is required";
-const textChecker = (value) =>
-  value.length > 5 || "Minimum 6 characters required";
+
+const getTokenFromLocalStorage = () => {
+  return localStorage.getItem("authToken"); // Adjust key if necessary
+};
 
 const submitCourse = async () => {
-  try {
-    const response = await axios.post("http://localhost:3000/courses", {
-      name: form.value.courseName,
-      description: form.value.courseDescription,
+  const token = getTokenFromLocalStorage();
+  if (!token) {
+    $q.notify({
+      type: "negative",
+      message: "Authentication token is missing.",
     });
-    message.value = `Course created successfully: ${response.data.name}`;
+    return;
+  }
+
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/courses",
+      {
+        name: form.value.courseName,
+        description: form.value.courseDescription,
+      },
+      {
+        headers: {
+          Authorization: `${token}`, // Include the token in the Authorization header
+        },
+      }
+    );
+
+    $q.notify({
+      type: "positive",
+      message: "Course Created Successfully.",
+    });
 
     // Reset the form after successful submission
     form.value.courseName = "";
     form.value.courseDescription = "";
   } catch (error) {
-    message.value = "Failed to create course. Please try again.";
+    const errorMessage =
+      error.response?.data?.message ||
+      "Failed to create course. Please try again.";
+    $q.notify({
+      type: "negative",
+      message: errorMessage,
+    });
     console.error("Error:", error);
   }
 };

@@ -38,16 +38,15 @@
             >
           </q-card-section>
           <q-card-section>
-            <q-form action="http://localhost:9001/#/loginPage#" method="GET">
+            <q-form @submit.prevent="submitLogin">
               <q-card-section>
                 Username
                 <q-input
                   name="username"
                   for="username"
-                  v-model="form.username"
+                  v-model="username"
                   type="text"
                   placeholder="Mark"
-                  :rules="[requiredFields]"
                 >
                 </q-input>
               </q-card-section>
@@ -56,9 +55,8 @@
                 <q-input
                   name="password"
                   for="password"
-                  v-model="form.password"
+                  v-model="password"
                   type="password"
-                  :rules="[requiredFields]"
                 >
                 </q-input>
               </q-card-section>
@@ -130,16 +128,52 @@
 <script setup>
 import { Notify, useQuasar } from "quasar";
 import { reactive, ref } from "vue";
+import axios from "axios";
 
 defineOptions({
   name: "loginPage",
 });
 
-const form = ref({
-  username: "",
-  password: "",
-});
+const $q = useQuasar();
 
-const requiredFields = (val) =>
-  (val && val.length > 0) || "Please type something";
+const username = ref("");
+const password = ref("");
+
+const submitLogin = async () => {
+  if (!username.value || !password.value) {
+    $q.notify({
+      type: "warning",
+      message: "Please fill in all required fields.",
+    });
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("username", username.value);
+  formData.append("password", password.value);
+
+  try {
+    const response = await axios.post("http://localhost:3000/users/login", {
+      username: username.value,
+      password: password.value,
+    });
+
+    if (response.status === 200) {
+      const token = response.data.token; // Adjust based on your response structure
+      localStorage.setItem("authToken", "Bearer " + token); // Save token to local storage
+
+      $q.notify({ type: "positive", message: "Login successful!" });
+      // Handle successful login (e.g., redirect or store user info)
+    } else {
+      $q.notify({
+        type: "negative",
+        message: "Unexpected response from server.",
+      });
+    }
+  } catch (error) {
+    const errorMessage = error.response?.data?.message || "Error during Login.";
+    $q.notify({ type: "negative", message: errorMessage });
+    console.error(error);
+  }
+};
 </script>

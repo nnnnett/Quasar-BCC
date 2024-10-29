@@ -57,7 +57,6 @@
                   placeholder="Juan"
                   class="inName"
                   no-error-icon
-                  :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
               </q-card-section>
@@ -73,7 +72,6 @@
                   placeholder="Santos"
                   class=""
                   no-error-icon
-                  :rules="[requiredFields, textChecker]"
                 >
                 </q-input>
               </q-card-section>
@@ -786,13 +784,6 @@ const submitSignup = async () => {
     $q.notify({
       type: "warning",
       message: "Please fill in all required fields.",
-    });
-
-    return;
-  } else if (!isNaN(zipCode.value)) {
-    $q.notify({
-      type: "warning",
-      message: "Please input valid number",
     });
 
     return;
