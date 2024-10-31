@@ -206,15 +206,39 @@
               <div class="courseTitle">
                 <q-card-section> Digital Literacy </q-card-section>
               </div>
-              <div class="courseProgress q-pb-none">
-                <div class="q-py-lg q-px-md">
+              <div class="courseProgress">
+                <div class="q-py-xl q-mx-none" style="border: 1px solid red">
                   <q-linear-progress
+                    class="courseProgressBar"
                     v-for="size in ['md']"
                     :key="size"
                     :size="size"
                     :value="0.5"
                     @click="randomize"
-                    style="color: #925fe2"
+                  />
+                  <q-linear-progress
+                    class="courseProgressBar"
+                    v-for="size in ['md']"
+                    :key="size"
+                    :size="size"
+                    :value="0.5"
+                    @click="randomize"
+                  />
+                  <q-linear-progress
+                    class="courseProgressBar"
+                    v-for="size in ['md']"
+                    :key="size"
+                    :size="size"
+                    :value="0.5"
+                    @click="randomize"
+                  />
+                  <q-linear-progress
+                    class="courseProgressBar"
+                    v-for="size in ['md']"
+                    :key="size"
+                    :size="size"
+                    :value="0.5"
+                    @click="randomize"
                   />
                 </div>
               </div>
@@ -240,9 +264,7 @@
             Nostrum, debitis laudantium?
           </q-card>
 
-          <q-avatar>
-            {{}}
-          </q-avatar>
+          <q-avatar> {{}} </q-avatar>
         </div>
       </div>
     </div>
@@ -323,7 +345,9 @@
 .courseProgress
   height: auto
   width: 70%
+  d
 
+  border: 1px solid blue
 .courseTitle
   width: 30%
   height: auto
@@ -333,6 +357,11 @@
 .progressIndicator
   display: flex
   justify-content: flex-end
+
+.courseProgressBar
+
+  color: #925fe2
+
 
 
 .statisticsCont
