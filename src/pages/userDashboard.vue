@@ -12,9 +12,11 @@
     </div>
     <!-- Dashboard Content -->
 
-    <div class="main-container">
+    <div class="main-container q-pb-xl">
       <div class="main-dashboard q-pl-xl">
-        <q-card-section class="text-h5 q-pl-none"> Dashboard </q-card-section>
+        <q-card-section class="text-h5 q-pl-none dashboard-txt">
+          Dashboard
+        </q-card-section>
         <div class="mindstorm-container q-pl-xl q-pb-lg">
           <q-card-section> Mindstorm </q-card-section>
           <q-btn
@@ -56,7 +58,7 @@
         </div>
         <!-- Active Courses Container -->
         <div class="activeCourse-container q-mt-md">
-          <div class="flex">
+          <div class="flex activeCourseAndLink">
             <q-card-section class="q-pl-none text-h6">
               Active Courses
             </q-card-section>
@@ -71,7 +73,9 @@
           <!-- different active courses -->
           <div class="diffCourseActive">
             <!-- first active //digitalLiteracy-->
-            <div class="digitalLiteracyContainer q-mr-none activeCourseList">
+            <div
+              class="digitalLiteracyContainer q-mr-none q-pt-md activeCourseList"
+            >
               <div
                 class="q-mx-md"
                 style="
@@ -98,8 +102,8 @@
                   />
                 </svg>
               </div>
-              <q-card-section class="q-pb-none text-subtitle1">
-                Digital Literacy
+              <q-card-section class="q-pb-none" style="font-size: 1em">
+                Digital Literacy Digital Literacy
               </q-card-section>
               <q-card-section class="q-pt-none q-pb-sm text-caption">
                 7 topics
@@ -111,7 +115,7 @@
               </div>
             </div>
             <!-- Second Active //CSS-->
-            <div class="cssContainer q-mr-none activeCourseList">
+            <div class="cssContainer q-mr-none q-pt-md activeCourseList">
               <div
                 class="q-mx-md"
                 style="
@@ -137,7 +141,10 @@
                   />
                 </svg>
               </div>
-              <q-card-section class="q-pb-none text-subtitle1">
+              <q-card-section
+                class="q-pb-none text-subtitle1"
+                style="font-size: 1em"
+              >
                 CSS
               </q-card-section>
               <q-card-section class="q-pt-none q-pb-sm text-caption">
@@ -150,7 +157,7 @@
               </div>
             </div>
             <!-- Third Active -->
-            <div class="animationsContainer q-mr-none activeCourseList">
+            <div class="animationsContainer q-mr-none q-pt-md activeCourseList">
               <div
                 class="q-mx-md"
                 style="
@@ -176,7 +183,51 @@
                   />
                 </svg>
               </div>
-              <q-card-section class="q-pb-none text-subtitle1">
+              <q-card-section
+                class="q-pb-none text-subtitle1"
+                style="font-size: 1em"
+              >
+                Animations
+              </q-card-section>
+              <q-card-section class="q-pt-none q-pb-sm text-caption">
+                3 topics
+              </q-card-section>
+              <div
+                style="height: 50px; display: flex; justify-content: flex-end"
+              >
+                <q-btn icon="chevron_right" class="q-px-sm" flat />
+              </div>
+            </div>
+            <div class="animationsContainer q-mr-none q-pt-md activeCourseList">
+              <div
+                class="q-mx-md"
+                style="
+                  background: linear-gradient(180deg, #e5f3ff 0%, #5b9ce3 100%);
+                  width: 85%;
+                  height: 100px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  border-radius: 14px;
+                "
+              >
+                <!-- icon container -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="48px"
+                  viewBox="0 -960 960 960"
+                  width="48px"
+                  fill="#FFFFFF"
+                >
+                  <path
+                    d="M354-80q-56 0-106-20.5T159-160q-38-38-58.5-87.5T80-354q0-80 41.5-146T232-598q20-42 53-75t77-55q32-71 97.5-111.5T607-880q56 0 105.5 20.5T800-800q38 39 59 88t21 105q0 84-38.5 146.5T728-362q-20 44-52.5 76.5T598-232q-32 71-97.5 111.5T354-80Zm0-60q45 0 86.5-19.5T508-211q-63 7-120.5-12.5T286-286q-44-43-63-101t-12-121q-33 26-52 67.5T140-354q0 45 16 84t46 68q30 29 68.5 45.5T354-140Zm126-127q45 0 86-19t69-52q-63 7-120-13.5T415-416q-44-45-64-102.5T339-639q-40 38-56 73.5T267-480q0 44 16 83t46 69q29 29 68 45t83 16Zm131-129q17 0 34.5-3.5T683-411q21-59 7-116.5T631-630q-42-42-105.5-57T408-683q-5 17-7.5 35t-2.5 41q0 42 16 81t46 70q30 32 69 46t82 14Zm143-54q34-29 50-67t16-90q0-43-16-81.5T758-757q-31-31-69.5-47T607-820q-49 0-89 16.5T446-752q63-7 122 13.5T673-673q46 45 67 102.5T754-450Z"
+                  />
+                </svg>
+              </div>
+              <q-card-section
+                class="q-pb-none text-subtitle1"
+                style="font-size: 1em"
+              >
                 Animations
               </q-card-section>
               <q-card-section class="q-pt-none q-pb-sm text-caption">
@@ -189,51 +240,38 @@
               </div>
             </div>
           </div>
-          <!-- My Course Expertise -->
-          <q-card class="courseExpertiseContainer">
-            <div class="header-ExpertiseContainer">
-              <q-card-section class="text-h6">
-                My Course Expertise
-              </q-card-section>
-              <q-space />
-              <q-card-section
-                ><router-link to="#" style="text-decoration: none"
-                  >View All</router-link
-                ></q-card-section
+        </div>
+        <!-- My Course Expertise -->
+        <q-card class="courseExpertiseContainer q-mt-md">
+          <div class="header-ExpertiseContainer">
+            <q-card-section class="text-h6">
+              My Course Expertise
+            </q-card-section>
+            <q-space />
+            <q-card-section>
+              <router-link to="#" style="text-decoration: none"
+                >View All</router-link
               >
+            </q-card-section>
+          </div>
+          <div class="titleProgressIndicator q-pr-md">
+            <div class="courseTitle">
+              <q-card-section
+                style="
+                  font-size: 0.8em;
+                  max-height: 50px;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+              >
+                Digital Literacy css prog
+              </q-card-section>
             </div>
-            <div class="courseTitleAndProgress">
-              <div class="courseTitle">
-                <q-card-section> Digital Literacy </q-card-section>
-              </div>
-              <div class="courseProgress">
-                <div class="q-py-xl q-mx-none" style="border: 1px solid red">
+
+            <div class="progressIndicator">
+              <div class="courseProgress q-pb-none">
+                <div class="q-py-lg q-px-md" style="min-width: 0">
                   <q-linear-progress
-                    class="courseProgressBar"
-                    v-for="size in ['md']"
-                    :key="size"
-                    :size="size"
-                    :value="0.5"
-                    @click="randomize"
-                  />
-                  <q-linear-progress
-                    class="courseProgressBar"
-                    v-for="size in ['md']"
-                    :key="size"
-                    :size="size"
-                    :value="0.5"
-                    @click="randomize"
-                  />
-                  <q-linear-progress
-                    class="courseProgressBar"
-                    v-for="size in ['md']"
-                    :key="size"
-                    :size="size"
-                    :value="0.5"
-                    @click="randomize"
-                  />
-                  <q-linear-progress
-                    class="courseProgressBar"
                     v-for="size in ['md']"
                     :key="size"
                     :size="size"
@@ -242,29 +280,60 @@
                   />
                 </div>
               </div>
+              <div class="rankIndicator" style="font-size: 1em">
+                <q-card-section>Noivice</q-card-section>
+                <q-card-section>Intermediate</q-card-section>
+                <q-card-section>Proficient</q-card-section>
+                <q-card-section>Advance</q-card-section>
+                <q-card-section>Expert</q-card-section>
+              </div>
             </div>
-            <div class="progressIndicator">
-              <q-card-section>Noivice</q-card-section>
-              <q-card-section>Intermidiate</q-card-section>
-              <q-card-section>Proficient</q-card-section>
-              <q-card-section>Advance</q-card-section>
-              <q-card-section>Expert</q-card-section>
-            </div>
-          </q-card>
-        </div>
+          </div>
+        </q-card>
       </div>
-      <!-- Statistics -->
+      <!-- statistics -->
       <div class="statisticsCont">
-        <q-card-section class="text-h5">Statistics</q-card-section>
+        <q-card-section class="text-h5" style="align-self: flex-start"
+          >Statistics</q-card-section
+        >
         <div class="statsProfileContainer">
-          <q-card class="statsProfile">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
-            officia labore eum placeat, excepturi nulla quod soluta delectus sit
-            animi corporis libero voluptatum maxime aliquam accusantium minima.
-            Nostrum, debitis laudantium?
+          <q-card
+            class="statsProfile"
+            style="
+              background: linear-gradient(150deg, #b592ec 8%, #5ce1e6 100%);
+              height: auto;
+              border-radius: 14px;
+              background-image: (url('/src/assets/profileDecor.png'));
+              background-size: cover; /* Adjust as needed */
+              background-position: center; /* Center the image */
+            "
+          >
+            <div class="statisticsDetails" style="height: auto">
+              <div class="q-mt-md badge-container">
+                <q-avatar class="sampleBadge">
+                  <q-img src="~assets/sampleBadge.png" />
+                </q-avatar>
+                <q-avatar class="mainAvatar">
+                  <q-img src="~assets/logo_bcc.png" />
+                </q-avatar>
+              </div>
+              <div class="statisticsText" style="color: #ffffff">
+                <q-card-section class="text-h6 q-pt-none">
+                  Welcome back, Mark!
+                </q-card-section>
+                <q-card-section class="text-body2 q-pt-none">
+                  This is your 72nd days with Bacoor Computer <br />Clubhouse
+                  Network.
+                </q-card-section>
+                <q-card-section class="text-body2 q-pt-none">
+                  You’ve learned
+                  <span style="color: #ffe20d">70% of your</span> goal this
+                  week!<br />
+                  Keep it up !
+                </q-card-section>
+              </div>
+            </div>
           </q-card>
-
-          <q-avatar> {{}} </q-avatar>
         </div>
       </div>
     </div>
@@ -275,13 +344,15 @@
 .main-container
   display: flex
   justify-content: space-around
+  height: 1000px
+
 .navbar-Profile
   display: flex
 
 .main-dashboard
-  border: 1px solid black
+
   width: 50%
-  height: 1000px
+  height: auto
 .mindstorm-container
   border: 4px solid #925FE2
   background-color: rgba(156, 111, 228, 0.3) /* Adjust the alpha value (0.7) to your preference */
@@ -320,20 +391,22 @@
 
 .diffCourseActive
   display: flex
-  height: 250px
+  height: 260px
   justify-content: space-between
   flex-wrap: wrap
-  row-gap: 40px
-  overflow: hidden
+  row-gap: 20px
+  overflow-y: hidden
 
 .activeCourseList
   width: 30%
-  height: 230px
+  max-height: 260px
   border: 1px solid #8F9BB3
+
 
 .courseExpertiseContainer
   border-radius: 14px
   height: auto
+  width: 90%
 
 .ExpertiseChart
   display: flex
@@ -344,25 +417,31 @@
 
 .courseProgress
   height: auto
-  width: 70%
-  d
+  width: 470px
 
-  border: 1px solid blue
 .courseTitle
-  width: 30%
-  height: auto
-.courseTitleAndProgress
+  width: 209px
+  height: 50px
+
+
+.titleProgressIndicator
   display: flex
+  display: flex
+
+  white-space: nowrap
 
 .progressIndicator
   display: flex
-  justify-content: flex-end
-
-.courseProgressBar
-
-  color: #925fe2
+  width: 100%
+  flex-direction: column
 
 
+.rankIndicator
+  display: flex
+  flex-direction: row
+  justify-content: space-around
+  height: auto
+  width: 490px
 
 .statisticsCont
   display: flex
@@ -371,22 +450,189 @@
   width: 40%
   border-radius: 14px
   background-color: #f2f7ff
-
+  max-height: 400px
 
 .statsProfileContainer
   display: flex
   justify-content: center /* Center the card inside the container */
   width: 100% /* Ensure the container takes the full width */
 
-
 .statsProfile
   width: 80%
+
+.statisticsDetails
+  display: flex
+  flex-direction: column
+  align-items: center
+  text-align: center
+
+.badge-container
+  border: 1px solid #e2d4f7
+  background-color: #e2d4f7
+  height: auto
+  width: auto
+  border-radius: 50px
+  position: relative // Set the container to relative positioning
+  display: flex
+  justify-content: center // Center the avatars horizontally
+  align-items: center // Center the avatars vertically
+
+.sampleBadge
+  width: 85px
+  height: 85px
+  z-index: 10
+  position: absolute // Keep it absolute to position it freely
+  top: -15% // Adjust positioning as needed
+  left: 45% // Adjust positioning as needed
+.mainAvatar
+  width: 100px
+  height: 100px
+
+// screen responsive
+
+@media (max-width: 1720px)
+  .main-dashboard
+    min-width: 1000px
+  .courseTitle
+    width: 30% // Make title responsive
+    height: auto // Allow height to adjust
+
+
+  .progressIndicator
+    width: 100% // Make progress indicator responsive
+    display: flex
+  .courseProgress
+    width: 95%
+
+  .rankIndicator
+    width: 100% // Make rank indicator responsive
+    display: flex
+    justify-content: space-around
+
+
+@media (max-width:1644px)
+  .statisticsCont
+    margin-left:-6%
+
+
+@media (max-width:1543px)
+  .main-container
+    display: flex
+    flex-direction: column-reverse
+    align-items: center
+    margin-top: 25%
+  .main-dashboard
+    min-width: 1000px
+
+  .statisticsCont
+    min-width: 1000px
+    margin-left:0%
+    padding-bottom: 3%
+  .dashboard-txt
+    magin-top:5%
+    margin-left: -5%
+    width: 100%
+@media (max-width:1387px)
+  .main-container
+    margin-top:30%
+  .main-dashboard
+    min-width: 850px
+
+  .statisticsCont
+    min-width: 850px
+
+@media (max-width:1166px)
+  .main-container
+    margin-top:35%
+  .main-dashboard
+    min-width: 750px
+
+  .statisticsCont
+    min-width: 750px
+  .progressIndicator
+    overflow-x: scroll
+  .courseProgress
+    width: 100%
+  .rankIndicator
+    width: 100%
+  .dashboard-txt
+    margin-left: -7%
+
+@media (max-width:1120px)
+  .main-container
+    margin-top:40%
+  .main-dashboard
+
+    min-width: 700px
+  .statisticsCont
+    min-width: 700px
+  .courseProgress
+    width: 115%
+  .rankIndicator
+    width: 100%
+
+@media (max-width:1023px)
+  .main-dashboard
+    min-width: 700px
+  .statisticsCont
+    min-width: 700px
+
+
+@media (max-width:805px)
+  .main-container
+    margin-top:45%
+  .main-dashboard
+    min-width: 600px
+  .statisticsCont
+    min-width: 600px
+  .courseProgress
+    width: 135%
+
+
+@media (max-width:630px)
+  .main-container
+    margin-top:85%
+  .statisticsCont
+    min-width: 400px
+  .main-dashboard
+    min-width: 400px
+  .dashboard-txt
+    margin-left: -9%
+  .activeCompleteCourse-container
+    display: flex
+    flex-direction: column
+    width: 100%
+  .activeCourse
+    width: 90%
+  .completedCourse
+    width: 90%
+    margin-left: -0.5%
+  .activeCourse-container
+    overflow-x: scroll
+  .activeCourseAndLink
+    display: flex
+    padding: 0
+    flex-direction: column
+    width: 100%
+  .diffCourseActive
+    width: 500px
+  .courseProgress
+    width: 220%
+@media (max-width:582px)
+  .main-container
+    margin-top:90%
+@media (max-width:544px)
+  .main-container
+    margin-top:105%
+@media (max-width:480px)
+  .main-container
+    margin-top:125%
 </style>
 
 <script setup>
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
-import registerPage from "./registerPage.vue";
+
 import { ref } from "vue";
 
 const progress = ref(0.65);
