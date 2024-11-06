@@ -569,6 +569,7 @@
   .main-container
     width: 90vw
     margin-left:5%
+
 @media (max-width:676px)
   .activeCompleteCourse-container
     display: flex
