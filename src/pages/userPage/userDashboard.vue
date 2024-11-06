@@ -18,7 +18,7 @@
           Dashboard
         </q-card-section>
         <div class="mindstorm-container q-pl-xl q-pb-lg">
-          <q-card-section> Mindstorm </q-card-section>
+          <q-card-section class="text-h6 q-pa-none"> Mindstorm </q-card-section>
           <q-btn
             class=" "
             label="view"
@@ -361,9 +361,10 @@
   height: 220px
   display: flex
   flex-direction: column
-  align-content: flex-end
-  justify-content: flex-end
-
+  justify-content: center
+  align-items: baseline
+  row-gap: 5%
+  color: #925FE2
 .activeCompleteCourse-container
   display: flex
   flex-direction: row
@@ -392,7 +393,7 @@
 .diffCourseActive
   display: flex
   height: 260px
-  justify-content: space-between
+  column-gap: 20px
   flex-wrap: wrap
   row-gap: 20px
   overflow-y: hidden
@@ -401,7 +402,7 @@
   width: 30%
   max-height: 260px
   border: 1px solid #8F9BB3
-
+  border-radius: 14px
 
 .courseExpertiseContainer
   border-radius: 14px
@@ -627,6 +628,10 @@
 @media (max-width:480px)
   .main-container
     margin-top:125%
+
+@media (max-width:396px)
+  .main-container
+    margin-top:135%
 </style>
 
 <script setup>

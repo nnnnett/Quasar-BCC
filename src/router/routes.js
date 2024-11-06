@@ -8,7 +8,15 @@ const routes = [
       { path: "signupPage", component: () => import("pages/signupPage.vue") },
       {
         path: "userDashboard",
-        component: () => import("src/pages/userDashboard.vue"),
+        component: () => import("pages/userPage/userDashboard.vue"),
+      },
+      {
+        path: "userCourse",
+        component: () => import("pages/userPage/userCourse.vue"),
+      },
+      {
+        path: "userProgress",
+        component: () => import("pages/userPage/userProgress.vue"),
       },
       {
         path: "adminAddCourse",
