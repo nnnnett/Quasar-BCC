@@ -11,8 +11,12 @@
       </div>
     </div>
     <!-- Dashboard Content -->
-    <div class="main-container q-py-md">
-      <div class="text-subtitle1 q-ml-xl">Course > Music</div>
+    <div class="main-container q-pb-md">
+      <div class="text-subtitle1 q-ml-xl flex">
+        <q-card-section class="q-px-none">Course</q-card-section>
+        <q-card-section class="q-px-sm">></q-card-section>
+        <q-card-section class="q-px-none">Music</q-card-section>
+      </div>
       <!-- main dashboard -->
       <div class="main-dashboard q-ml-xl q-mt-md">
         <q-card class="main-content q-px-xl q-py-lg">
@@ -21,7 +25,7 @@
             </q-img>
           </div>
           <!-- Course activity details -->
-          <div class="q-px-md">
+          <div class="q-px-md courseActDetails">
             <q-card-section
               class="q-mt-md q-pb-none text-h6"
               style="text-transform: capitalize"
@@ -175,7 +179,6 @@
   width: 80vw
 
 .main-dashboard
-
   display: flex
   justify-content: space-between
 .main-content
@@ -257,6 +260,8 @@
     margin-left: -5%
   .responsive-img
     min-width: 320px
+  .courseActDetails
+    padding: 0
 </style>
 <script setup>
 import { colors } from "quasar";

@@ -19,6 +19,10 @@ const routes = [
         component: () => import("pages/userPage/userProgress.vue"),
       },
       {
+        path: "userSettings",
+        component: () => import("pages/userPage/userSettings.vue"),
+      },
+      {
         path: "cssCourse",
         component: () => import("pages/userPage/cssCourse.vue"),
       },

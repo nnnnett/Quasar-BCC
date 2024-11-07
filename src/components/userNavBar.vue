@@ -56,7 +56,7 @@
               <q-item-label>Progress</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="userCourse" class="q-pl-xl q-mt-md">
+          <q-item clickable to="userSettings" class="q-pl-xl q-mt-md">
             <q-item-section avatar>
               <q-icon name="settings" />
             </q-item-section>
@@ -64,7 +64,7 @@
               <q-item-label>Settings</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="userCourse" class="q-pl-xl q-mt-md">
+          <q-item clickable to="#" class="q-pl-xl q-mt-md">
             <q-item-section avatar>
               <q-icon name="logout" />
             </q-item-section>
