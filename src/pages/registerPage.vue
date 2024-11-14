@@ -263,7 +263,7 @@
               style="justify-content: space-between"
             >
               <q-card-section>
-                Baranggay
+                Barangay
                 <q-input
                   name="barangay"
                   for="barangay"
@@ -464,7 +464,7 @@
               style="justify-content: space-between"
             >
               <q-card-section>
-                Baranggay
+                Barangay
                 <q-input
                   name="guardianBarangay"
                   for="guardianBarangay"

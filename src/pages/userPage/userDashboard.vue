@@ -14,7 +14,10 @@
 
     <div class="main-container q-pb-xl">
       <div class="main-dashboard q-pl-xl">
-        <q-card-section class="text-h5 q-pl-none dashboard-txt">
+        <q-card-section
+          class="text-h5 q-pl-none dashboard-txt"
+          style="font-weight: 600; color: #4b4b4b"
+        >
           Dashboard
         </q-card-section>
         <div class="mindstorm-container q-pl-xl q-pb-lg">
