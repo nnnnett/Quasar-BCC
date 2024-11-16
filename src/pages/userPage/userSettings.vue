@@ -162,267 +162,393 @@
             </div>
           </div>
           <!-- Personal details -->
-          <div class="personalDetails" v-if="personalDetailsLink">
-            <q-card-section class="text-h6"> Personal Details </q-card-section>
-            <div class="newFirstMiddleLastName">
-              <q-card-section class="accountInfoInput q-pt-none">
-                First name
-                <q-input
-                  name="newFirstname"
-                  for="newFirstname"
-                  v-model="newFirstname"
-                  type="text"
-                  rounded
-                  outlined
-                  placeholder="Juan"
-                  no-error-icon
-                />
+          <div class="personalDetails-container" v-if="personalDetailsLink">
+            <div class="personalDetails q-pb-md">
+              <q-card-section class="text-h6 q-pb-none">
+                Personal Details
               </q-card-section>
-              <q-card-section class="accountInfoInput q-pt-none">
-                Middle name
-                <q-input
-                  name="newMiddlename"
-                  for="newMiddlename"
-                  v-model="newMiddlename"
-                  type="text"
-                  rounded
-                  outlined
-                  no-error-icon
-                  placeholder="Skibidi"
-                />
+              <div class="newFirstMiddleLastName">
+                <q-card-section class="accountInfoInput q-pt-none">
+                  First name
+                  <q-input
+                    name="newFirstname"
+                    for="newFirstname"
+                    v-model="newFirstname"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="Juan"
+                    no-error-icon
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Middle name
+                  <q-input
+                    name="newMiddlename"
+                    for="newMiddlename"
+                    v-model="newMiddlename"
+                    type="text"
+                    rounded
+                    outlined
+                    no-error-icon
+                    placeholder="Skibidi"
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Last name
+                  <q-input
+                    name="newLastname"
+                    for="newLastname"
+                    v-model="newLastname"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="Juan"
+                    no-error-icon
+                  />
+                </q-card-section>
+              </div>
+              <div class="newGenderBirthContact">
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Gender
+                  <q-select
+                    rounded
+                    outlined
+                    :options="optionGender.option"
+                    v-model="newGender"
+                    label="Select Gender"
+                    type="text"
+                    name="newGender"
+                    for="newGender"
+                    no-error-icon
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Birthday
+                  <q-input
+                    name="newBirthDate"
+                    for="newBirthDate"
+                    v-model="newBirthDate"
+                    type="date"
+                    rounded
+                    outlined
+                    no-error-icon
+                  >
+                  </q-input>
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Contact
+                  <q-input
+                    name="newContact"
+                    for="newContact"
+                    v-model="newContact"
+                    type="tel"
+                    rounded
+                    outlined
+                    placeholder="Juan"
+                    no-error-icon
+                  />
+                </q-card-section>
+              </div>
+              <q-card-section class="text-h6 q-pb-none">
+                Address
               </q-card-section>
-              <q-card-section class="accountInfoInput q-pt-none">
-                Last name
-                <q-input
-                  name="newLastname"
-                  for="newLastname"
-                  v-model="newLastname"
-                  type="text"
-                  rounded
-                  outlined
-                  placeholder="Juan"
-                  no-error-icon
-                />
+              <div class="countryZip">
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Country
+                  <q-input
+                    name="newCountry"
+                    for="newCountry"
+                    v-model="newCountry"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="Philippines"
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Zip Code
+                  <q-input
+                    name="newZipCode"
+                    for="newZipCode"
+                    v-model="newZipCode"
+                    type="tel"
+                    rounded
+                    outlined
+                    placeholder="4017"
+                  />
+                </q-card-section>
+              </div>
+              <div class="provinceMuni">
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Province
+                  <q-input
+                    name="newProvince"
+                    for="newProvince"
+                    v-model="newProvince"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="Cavite"
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Municipality
+                  <q-input
+                    name="newMunicipality"
+                    for="newMunicipality"
+                    v-model="newMunicipality"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="General Trias"
+                  />
+                </q-card-section>
+              </div>
+              <div class="barangayStreetBlkLot">
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Barangay
+                  <q-input
+                    name="newBarangay"
+                    for="newBarangay"
+                    v-model="newBarangay"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="Pascam 2"
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Street
+                  <q-input
+                    name="newStreet"
+                    for="newStreet"
+                    v-model="newStreet"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="St. Francis"
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Block & Lot
+                  <q-input
+                    name="newBlockAndLot"
+                    for="newBlockAndLot"
+                    v-model="newBlockAndLot"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="Blck 5 lot 19"
+                  />
+                </q-card-section>
+              </div>
+              <!-- Guardian Info -->
+              <q-card-section class="text-h6 q-pb-none">
+                Guardian Details
               </q-card-section>
+              <div class="newFirstMiddleLastName">
+                <q-card-section class="accountInfoInput q-pt-none">
+                  First name
+                  <q-input
+                    name="newGuardianFirstname"
+                    for="newGuardianFirstname"
+                    v-model="newGuardianFirstname"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="Juan"
+                    no-error-icon
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Middle name
+                  <q-input
+                    name="newGuardianMiddlename"
+                    for="newGuardianMiddlename"
+                    v-model="newGuardianMiddlename"
+                    type="text"
+                    rounded
+                    outlined
+                    no-error-icon
+                    placeholder="Skibidi"
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Last name
+                  <q-input
+                    name="newGuardianLastname"
+                    for="newGuardianLastname"
+                    v-model="newGuardianLastname"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="Juan"
+                    no-error-icon
+                  />
+                </q-card-section>
+              </div>
+              <div class="newGenderBirthContact">
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Gender
+                  <q-select
+                    rounded
+                    outlined
+                    :options="optionGender.option"
+                    label="Select Gender"
+                    type="text"
+                    v-model="newGuardianGender"
+                    name="newGuardianGender"
+                    for="newGuardianGender"
+                    no-error-icon
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Birthday
+                  <q-input
+                    name="newGuardianbirthDate"
+                    for="newGuardianbirthDate"
+                    v-model="newGuardianbirthDate"
+                    type="date"
+                    rounded
+                    outlined
+                    no-error-icon
+                  >
+                  </q-input>
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Contact
+                  <q-input
+                    name="newGuardianContact"
+                    for="newGuardianContact"
+                    v-model="newGuardianContact"
+                    type="tel"
+                    rounded
+                    outlined
+                    placeholder="Juan"
+                    no-error-icon
+                  />
+                </q-card-section>
+              </div>
+              <q-card-section class="text-h6 q-pb-none">
+                Guardian Address
+              </q-card-section>
+              <div class="countryZip">
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Country
+                  <q-input
+                    name="newGuardianCountry"
+                    for="newGuardianCountry"
+                    v-model="newGuardianCountry"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="Philippines"
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Zip Code
+                  <q-input
+                    name="newGuardianZipCode"
+                    for="newGuardianZipCode"
+                    v-model="newGuardianZipCode"
+                    type="tel"
+                    rounded
+                    outlined
+                    placeholder="4017"
+                  />
+                </q-card-section>
+              </div>
+              <div class="provinceMuni">
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Province
+                  <q-input
+                    name="newGuardianProvince"
+                    for="newGuardianProvince"
+                    v-model="newGuardianProvince"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="Cavite"
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Municipality
+                  <q-input
+                    name="newGuardianMunicipality"
+                    for="newGuardianMunicipality"
+                    v-model="newGuardianMunicipality"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="General Trias"
+                  />
+                </q-card-section>
+              </div>
+              <div class="barangayStreetBlkLot">
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Barangay
+                  <q-input
+                    name="newGuardianBarangay"
+                    for="newGuardianBarangay"
+                    v-model="newGuardianBarangay"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="Pascam 2"
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Street
+                  <q-input
+                    name="newGuardianStreet"
+                    for="newGuardianStreet"
+                    v-model="newGuardianStreet"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="St. Francis"
+                  />
+                </q-card-section>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  Block & Lot
+                  <q-input
+                    name="newGuardianBlockAndLot"
+                    for="newGuardianBlockAndLot"
+                    v-model="newGuardianBlockAndLot"
+                    type="text"
+                    rounded
+                    outlined
+                    placeholder="Blck 5 lot 19"
+                  />
+                </q-card-section>
+              </div>
+              <div class="infoButtons q-mt-md q-px-md">
+                <q-btn
+                  class="q-py-md"
+                  label="Save Changes"
+                  no-caps
+                  type="submit"
+                  color="accent"
+                  style="background-color: #925fe2; width: 45%"
+                  rounded
+                />
+                <q-btn
+                  class="q-py-md"
+                  label="discard Changes"
+                  no-caps
+                  type="submit"
+                  style="width: 45%"
+                  rounded
+                />
+              </div>
             </div>
-            <div class="newGenderBirthContact">
-              <q-card-section class="accountInfoInput q-pt-none">
-                Gender
-                <q-select
-                  rounded
-                  outlined
-                  :options="optionGender.option"
-                  v-model="newGender"
-                  label="Select Gender"
-                  type="text"
-                  name="newGender"
-                  for="newGender"
-                  no-error-icon
-                />
-              </q-card-section>
-              <q-card-section class="accountInfoInput q-pt-none">
-                Birthday
-                <q-input
-                  name="newBirthDate"
-                  for="newBirthDate"
-                  v-model="newBirthDate"
-                  type="date"
-                  rounded
-                  outlined
-                  no-error-icon
-                >
-                </q-input>
-              </q-card-section>
-              <q-card-section class="accountInfoInput q-pt-none">
-                Contact
-                <q-input
-                  name="newContact"
-                  for="newContact"
-                  v-model="newContact"
-                  type="tel"
-                  rounded
-                  outlined
-                  placeholder="Juan"
-                  no-error-icon
-                />
-              </q-card-section>
-            </div>
-            <q-card-section class="text-h6"> Address </q-card-section>
-            <div class="countryZip">
-              <q-card-section class="accountInfoInput q-pt-none">
-                Country
-                <q-input
-                  name="newCountry"
-                  for="newCountry"
-                  v-model="newCountry"
-                  type="text"
-                  rounded
-                  outlined
-                  placeholder="Philippines"
-                />
-              </q-card-section>
-              <q-card-section class="accountInfoInput q-pt-none">
-                Zip Code
-                <q-input
-                  name="newZipCode"
-                  for="newZipCode"
-                  v-model="newZipCode"
-                  type="tel"
-                  rounded
-                  outlined
-                  placeholder="4017"
-                />
-              </q-card-section>
-            </div>
-            <div class="provinceMuni">
-              <q-card-section class="accountInfoInput q-pt-none">
-                Province
-                <q-input
-                  name="newProvince"
-                  for="newProvince"
-                  v-model="newProvince"
-                  type="text"
-                  rounded
-                  outlined
-                  placeholder="Cavite"
-                />
-              </q-card-section>
-              <q-card-section class="accountInfoInput q-pt-none">
-                Municipality
-                <q-input
-                  name="newMunicipality"
-                  for="newMunicipality"
-                  v-model="newMunicipality"
-                  type="text"
-                  rounded
-                  outlined
-                  placeholder="General Trias"
-                />
-              </q-card-section>
-            </div>
-            <div class="barangayStreetBlkLot">
-              <q-card-section class="accountInfoInput q-pt-none">
-                Barangay
-                <q-input
-                  name="newBarangay"
-                  for="newBarangay"
-                  v-model="newBarangay"
-                  type="text"
-                  rounded
-                  outlined
-                  placeholder="Pascam 2"
-                />
-              </q-card-section>
-              <q-card-section class="accountInfoInput q-pt-none">
-                Street
-                <q-input
-                  name="newStreet"
-                  for="newStreet"
-                  v-model="newStreet"
-                  type="text"
-                  rounded
-                  outlined
-                  placeholder="St. Francis"
-                />
-              </q-card-section>
-              <q-card-section class="accountInfoInput q-pt-none">
-                Block & Lot
-                <q-input
-                  name="newBlockAndLot"
-                  for="newBlockAndLot"
-                  v-model="newBlockAndLot"
-                  type="text"
-                  rounded
-                  outlined
-                  placeholder="Blck 5 lot 19"
-                />
-              </q-card-section>
-            </div>
-            <!-- Guardian Info -->
-            <q-card-section class="text-h6"> Guardian Details </q-card-section>
-            <div class="newGuardianFirstMiddleLastName">
-              <q-card-section class="accountInfoInput q-pt-none">
-                First name
-                <q-input
-                  name="newGuardianFirstname"
-                  for="newGuardianFirstname"
-                  v-model="newGuardianFirstname"
-                  type="text"
-                  rounded
-                  outlined
-                  placeholder="Juan"
-                  no-error-icon
-                />
-              </q-card-section>
-              <q-card-section class="accountInfoInput q-pt-none">
-                Middle name
-                <q-input
-                  name="newGuardianMiddlename"
-                  for="newGuardianMiddlename"
-                  v-model="newGuardianMiddlename"
-                  type="text"
-                  rounded
-                  outlined
-                  no-error-icon
-                  placeholder="Skibidi"
-                />
-              </q-card-section>
-              <q-card-section class="accountInfoInput q-pt-none">
-                Last name
-                <q-input
-                  name="newGuardianLastname"
-                  for="newGuardianLastname"
-                  v-model="newGuardianLastname"
-                  type="text"
-                  rounded
-                  outlined
-                  placeholder="Juan"
-                  no-error-icon
-                />
-              </q-card-section>
-            </div>
-
-            <div class="newGuardianGenderBirthContact">
-              <q-card-section class="accountInfoInput q-pt-none">
-                Gender
-                <q-select
-                  rounded
-                  outlined
-                  :options="optionGender.option"
-                  label="Select Gender"
-                  type="text"
-                  v-model="newGuardianGender"
-                  name="newGuardianGender"
-                  for="newGuardianGender"
-                  no-error-icon
-                />
-              </q-card-section>
-              <q-card-section class="accountInfoInput q-pt-none">
-                Birthday
-                <q-input
-                  name="newGuardianbirthDate"
-                  for="newGuardianbirthDate"
-                  v-model="newGuardianbirthDate"
-                  type="date"
-                  rounded
-                  outlined
-                  no-error-icon
-                >
-                </q-input>
-              </q-card-section>
-              <q-card-section class="accountInfoInput q-pt-none">
-                Contact
-                <q-input
-                  name="newGuardianContact"
-                  for="newGuardianContact"
-                  v-model="newGuardianContact"
-                  type="tel"
-                  rounded
-                  outlined
-                  placeholder="Juan"
-                  no-error-icon
-                />
-              </q-card-section>
+            <!-- Photocopy of id's -->
+            <div class="PhotoIDs q-py-lg">
+              <q-img src="/src/assets/lee.png" class="PhotoID-img" />
+              <q-card-section> Photocopy of School ID </q-card-section>
+              <q-img src="/src/assets/waw.jpg" class="PhotoID-img" />
+              <q-card-section> Photocopy of Parent’s Valid ID </q-card-section>
             </div>
           </div>
         </q-form>
@@ -485,10 +611,12 @@
   display: flex
   justify-content: space-between
   width: 100%
+.personalDetails-container
+  width: 100%
+  display: flex
 .personalDetails
   height: auto
   width: 60%
-  background-color: yellow
 .newFirstMiddleLastName
   display: flex
 .newGenderBirthContact
@@ -504,6 +632,19 @@
 .newGuardianGenderBirthContact
   display: flex
 
+.PhotoIDs
+  width: 40%
+  height: auto
+  display: flex
+  flex-direction: column
+  align-items: center
+
+.PhotoID-img
+  min-width: 280px
+  width: 15vw
+  min-height: 200px
+  max-height: 210px
+  object-fit: contain
 .showAccountDetails .clickDescAct,
 .showPersonalDetails .clickDescAct
   text-decoration: none
@@ -525,16 +666,33 @@
     width: 100%
   .accountDetailsInput
     width: 100%
+  .personalDetails-container
+    flex-direction: column
+    width: 100%
+  .personalDetails
+    width: 100%
+  .PhotoIDs
+    width: 100%
 @media (max-width:1023px)
   .main-container
     width: 95vw
-@media (max-width:530px)
+@media (max-width:600px)
   .profileImg
     width: 150px
     height: 150px
   .editImg
     width: 40px
     height: 40px
+  .newFirstMiddleLastName
+    flex-direction: column
+  .newGenderBirthContact
+    flex-direction: column
+  .countryZip
+    flex-direction: column
+  .provinceMuni
+    flex-direction: column
+  .barangayStreetBlkLot
+    flex-direction: column
 </style>
 <script setup>
 import notifProfile from "src/components/notifProfile.vue";
