@@ -5,7 +5,7 @@
         <UserNavBar />
       </div>
       <q-space />
-      <div class="q-pt-lg q-mr-lg">
+      <div class="q-pt-lg">
         <notifProfile />
       </div>
     </div>
@@ -20,15 +20,16 @@
         </q-card-section>
         <div class="header-content">
           <div class="header-content1 q-pl-xl q-pt-lg">
-            <q-img
-              src="/src/assets/Proficient.png"
-              style="width: 180px; height: 180px"
-            />
+            <span v-if="myProfile">
+              <q-img :src="imageSrc" style="width: 180px; height: 180px" />
+            </span>
           </div>
           <div class="header-content2">
             <div class="headerNameProgress q-py-lg">
               <q-card-section class="text-h6 q-pt-none">
-                Welcome back, Mark!
+                <span v-if="myProfile"
+                  >Welcome back, {{ myProfile.firstName }}!</span
+                >
               </q-card-section>
               <q-card-section class="text-h6 q-pb-none q-pt-none">
                 Proficient
@@ -135,25 +136,50 @@
           <!-- badges -->
           <div class="badgeContainer q-px-md" v-if="badgesLink">
             <div class="userBadges">
-              <div class="noviceBadge">
+              <div
+                class="noviceBadge"
+                :class="{
+                  progressRank: myProfile && myProfile.rank >= 0,
+                }"
+              >
                 <q-img src="/src/assets/novice.png" class="q-pa-none" />
                 <q-card-section class="q-py-none"> Novice </q-card-section>
               </div>
-              <div class="intermidiateBadge">
+              <div
+                class="intermidiateBadge"
+                :class="{
+                  progressRank: myProfile && myProfile.rank >= 1,
+                }"
+              >
                 <q-img src="/src/assets/intermidiate.png" class="q-pa-none" />
                 <q-card-section class="q-py-none">
                   Intermediate
                 </q-card-section>
               </div>
-              <div class="proficientBadge">
+              <div
+                class="proficientBadge"
+                :class="{
+                  progressRank: myProfile && myProfile.rank >= 2,
+                }"
+              >
                 <q-img src="/src/assets/proficient.png" class="q-pa-none" />
                 <q-card-section class="q-py-none"> Proficient </q-card-section>
               </div>
-              <div class="advanceBadge">
+              <div
+                class="advanceBadge"
+                :class="{
+                  progressRank: myProfile && myProfile.rank >= 3,
+                }"
+              >
                 <q-img src="/src/assets/advance.png" class="q-pa-none" />
                 <q-card-section class="q-py-none"> Advance </q-card-section>
               </div>
-              <div class="expertBadge">
+              <div
+                class="expertBadge"
+                :class="{
+                  progressRank: myProfile && myProfile.rank >= 4,
+                }"
+              >
                 <q-img src="/src/assets/expert.png" class="q-pa-none" />
                 <q-card-section class="q-py-none"> Expert </q-card-section>
               </div>
@@ -263,7 +289,6 @@
   display: flex
 .userBadges
   width: 70%
-
   height: auto
   display: flex
   flex-wrap: wrap
@@ -282,35 +307,37 @@
   width: 200px
   height: 200px
   text-align: center
-  border: 2px solid #925FE2
+
   border-radius: 24px
   color: #925FE2
 .noviceBadge
   width: 200px
   height: 200px
   text-align: center
-  border: 2px solid #925FE2
+
   border-radius: 24px
   color: #925FE2
 .intermidiateBadge
   width: 200px
   height: 200px
   text-align: center
-  border: 2px solid #925FE2
+
   border-radius: 24px
   color: #925FE2
 .advanceBadge
   width: 210px
   height: 200px
   text-align: center
-  border: 2px solid #925FE2
+
   border-radius: 24px
   color: #925FE2
+
+.progressRank
+  border: 2px solid #925FE2
 .expertBadge
   width: 190px
   height: 200px
   text-align: center
-  border: 2px solid #925FE2
   border-radius: 24px
   color: #925FE2
 .certificateContainer
@@ -419,10 +446,11 @@
 <script setup>
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import axios from "axios";
 const progressLink = ref(false);
-const badgesLink = ref(false);
-const certificateLink = ref(true);
+const badgesLink = ref(true);
+const certificateLink = ref(false);
 
 // Methods to toggle between the two sections
 const showProgress = () => {
@@ -441,4 +469,38 @@ const showCertificate = () => {
   badgesLink.value = false;
   certificateLink.value = true;
 };
+
+const myProfile = ref(null);
+const token = localStorage.getItem("authToken");
+// Check if token exists before making the request
+if (token) {
+  axios
+    .get("http://localhost:3000/users/myProfile", {
+      headers: {
+        authorization: `${token}`,
+      },
+    })
+    .then((response) => {
+      myProfile.value = response.data[0];
+    })
+    .catch((error) => {
+      console.error("API call failed:", error);
+    });
+} else {
+  console.log("No token found in localStorage");
+}
+
+const imageSrc = computed(() => {
+  if (myProfile.value.rank <= 0) {
+    return "/src/assets/novice.png"; // Image for rank <= 0
+  } else if (myProfile.value.rank === 1) {
+    return "/src/assets/intermidiate.png"; // Image for rank = 1
+  } else if (myProfile.value.rank === 2) {
+    return "/src/assets/proficient.png"; // Image for rank = 2
+  } else if (myProfile.value.rank === 4) {
+    return "/src/assets/expert.png"; // Image for rank = 2
+  } else {
+    return "/src/assets/Default.png"; // Default image for other ranks
+  }
+});
 </script>

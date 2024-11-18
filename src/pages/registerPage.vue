@@ -688,11 +688,14 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useQuasar } from "quasar";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 // import { registerUser } from "src/backend/function.js";
 
 // const loading = ref(false);
 const optionGender = {
-  option: ["Male", "Female"],
+  option: ["Male", "Female", "LGBTQIA+"],
 };
 // const requiredFields = (val) =>
 //   (val && val.length > 0) || "Please type something";
@@ -828,8 +831,14 @@ const submitSignup = async () => {
         headers: { "Content-Type": "multipart/form-data" },
       }
     );
+
+    // Show a positive notification
     $q.notify({ type: "positive", message: "Signup successful!" });
+
+    // Redirect user to another page (e.g., the home page or dashboard)
+    router.push("/loginPage").catch((err) => console.error(err)); // Replace '/dashboard' with your target route
   } catch (error) {
+    // Show an error notification
     $q.notify({ type: "negative", message: "Error during signup." });
     console.error(error);
   }

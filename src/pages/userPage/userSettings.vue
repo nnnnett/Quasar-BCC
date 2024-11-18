@@ -6,7 +6,7 @@
         <UserNavBar />
       </div>
       <q-space />
-      <div class="q-pt-lg q-mr-lg">
+      <div class="q-pt-lg">
         <notifProfile />
       </div>
     </div>

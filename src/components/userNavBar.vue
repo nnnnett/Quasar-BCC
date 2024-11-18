@@ -21,9 +21,11 @@
     <div class="q-pt-xl">
       <q-list>
         <div class="logo-container">
-          <q-avatar class="bcc-logo">
-            <q-img src="~assets/logo_bcc.png" />
-          </q-avatar>
+          <router-link to="/">
+            <q-avatar class="bcc-logo">
+              <q-img src="~assets/logo_bcc.png" />
+            </q-avatar>
+          </router-link>
           <q-item-label header>
             Bacoor Computer<br />
             Clubhouse Hub
@@ -64,7 +66,7 @@
               <q-item-label>Settings</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="#" class="q-pl-xl q-mt-md">
+          <q-item clickable @click="handleLogout" class="q-pl-xl q-mt-md">
             <q-item-section avatar>
               <q-icon name="logout" />
             </q-item-section>
@@ -72,17 +74,6 @@
               <q-item-label>Logout</q-item-label>
             </q-item-section>
           </q-item>
-        </div>
-        <div class="unknowbox q-mt-xl">
-          <q-btn
-            class="q-my-xl q-py-md"
-            label="eqww"
-            no-caps
-            type="submit"
-            color="accent"
-            style="background-color: #925fe2; width: 230px"
-            rounded
-          />
         </div>
       </q-list>
     </div>
@@ -117,6 +108,8 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { useRouter } from "vue-router"; // Importing the router to navigate after logout
+import { useQuasar } from "quasar"; // Importing Quasar's $q for notifications
 
 const leftDrawerOpen = ref(false);
 const isMobile = computed(() => {
@@ -126,4 +119,31 @@ const isMobile = computed(() => {
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+
+const $q = useQuasar();
+const router = useRouter();
+
+// Function to clear localStorage
+const clearLocalStorage = () => {
+  localStorage.clear();
+  console.log("LocalStorage has been cleared.");
+};
+
+// Function to handle logout
+const handleLogout = async () => {
+  try {
+    // Clear localStorage when logging out
+    clearLocalStorage();
+
+    // Show a notification
+    $q.notify({ type: "positive", message: "Logged out successfully" });
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    // Redirect to the login page
+    router.push("/");
+  } catch (error) {
+    // If an error occurs during logout
+    $q.notify({ type: "negative", message: "Error during logout" });
+    console.error(error);
+  }
+};
 </script>

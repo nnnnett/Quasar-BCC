@@ -5,8 +5,8 @@
       <div class="q-pb-xl">
         <UserNavBar />
       </div>
-      <q-space />
-      <div class="q-pt-lg q-mr-lg">
+
+      <div class="q-pt-lg">
         <notifProfile />
       </div>
     </div>
@@ -40,7 +40,11 @@
               <q-icon name="library_books" style="color: #925fe2" />
             </q-item-section>
             <div class="q-pl-none">
-              <q-card-section class="q-pb-none q-pl-none"> 6 </q-card-section>
+              <q-card-section class="q-pb-none q-pl-none">
+                <span v-if="getCourses">{{
+                  getCourses.count
+                }}</span></q-card-section
+              >
               <q-card-section class="q-pt-none q-pl-none">
                 Active Courses
               </q-card-section>
@@ -67,59 +71,75 @@
             </q-card-section>
             <q-space />
             <RouterLink
-              to="#"
+              to="userCourse"
               class="q-pt-md viewAllactiveCourse-link text-subtitle1"
             >
               View All
             </RouterLink>
           </div>
           <!-- different active courses -->
-          <div class="diffCourseActive">
+          <div v-if="getCourses" class="diffCourseActive">
             <!-- Second Active //CSS-->
-            <div class="cssContainer q-mr-none q-pt-md activeCourseList">
-              <div
-                class="q-mx-md"
-                style="
-                  background: linear-gradient(180deg, #ffe3fc 0%, #e08dd7 100%);
-                  width: 85%;
-                  height: 100px;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  border-radius: 14px;
-                "
-              >
-                <!-- icon container -->
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="54px"
-                  viewBox="0 -960 960 960"
-                  width="54px"
-                  fill="white"
+            <div
+              v-for="course in getCourses.course"
+              :key="course._id"
+              class="cssContainer q-mr-none q-pt-md activeCourseList"
+            >
+              <!-- Loop through courses based on getCourses.count -->
+              <div>
+                <div
+                  class="q-mx-md"
+                  :style="{
+                    background:
+                      'linear-gradient(180deg, #ffe3fc 0%, #e08dd7 100%)',
+                    width: '85%',
+                    height: '100px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: '14px',
+                  }"
                 >
-                  <path
-                    d="M120-80v-280h120v-160h200v-80H320v-280h320v280H520v80h200v160h120v280H520v-280h120v-80H320v80h120v280H120Zm280-600h160v-120H400v120ZM200-160h160v-120H200v120Zm400 0h160v-120H600v120ZM480-680ZM360-280Zm240 0Z"
+                  <!-- icon container -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="54px"
+                    viewBox="0 -960 960 960"
+                    width="54px"
+                    fill="white"
+                  >
+                    <path
+                      d="M120-80v-280h120v-160h200v-80H320v-280h320v280H520v80h200v160h120v280H520v-280h120v-80H320v80h120v280H120Zm280-600h160v-120H400v120ZM200-160h160v-120H200v120Zm400 0h160v-120H600v120ZM480-680ZM360-280Zm240 0Z"
+                    />
+                  </svg>
+                </div>
+
+                <!-- Course name displayed dynamically -->
+                <q-card-section
+                  class="q-pb-none text-subtitle1"
+                  style="font-size: 1em"
+                >
+                  <span v-if="getCourses">
+                    {{ course.name }}
+                  </span>
+                </q-card-section>
+
+                <!-- Topic count (replace this with dynamic topic count if needed) -->
+                <q-card-section class="q-pt-none q-pb-sm text-caption">
+                  {{ course.topicsCount || "5" }} topics
+                </q-card-section>
+
+                <!-- Button to navigate to a dynamic course page -->
+                <div
+                  style="height: 50px; display: flex; justify-content: flex-end"
+                >
+                  <q-btn
+                    icon="chevron_right"
+                    class="q-px-sm q-mr-md"
+                    :to="'/cssCourse/' + course._id"
+                    flat
                   />
-                </svg>
-              </div>
-              <q-card-section
-                class="q-pb-none text-subtitle1"
-                style="font-size: 1em"
-              >
-                CSS
-              </q-card-section>
-              <q-card-section class="q-pt-none q-pb-sm text-caption">
-                5 topics
-              </q-card-section>
-              <div
-                style="height: 50px; display: flex; justify-content: flex-end"
-              >
-                <q-btn
-                  icon="chevron_right"
-                  class="q-px-sm q-mr-md"
-                  to="cssCourse"
-                  standout
-                />
+                </div>
               </div>
             </div>
           </div>
@@ -129,12 +149,6 @@
           <div class="header-ExpertiseContainer">
             <q-card-section class="text-h6">
               My Course Expertise
-            </q-card-section>
-            <q-space />
-            <q-card-section>
-              <router-link to="#" style="text-decoration: none"
-                >View All</router-link
-              >
             </q-card-section>
           </div>
           <div class="titleProgressIndicator q-pr-md">
@@ -198,13 +212,20 @@
                 <q-avatar class="sampleBadge">
                   <q-img src="~assets/Proficient.png" />
                 </q-avatar>
-                <q-avatar class="mainAvatar">
-                  <q-img src="~assets/logo_bcc.png" />
-                </q-avatar>
+                <span v-if="myProfile">
+                  <q-avatar class="mainAvatar">
+                    <q-img
+                      :src="getProfileImg(myProfile.userImage)"
+                      style="width: 90px; height: 90px; border-radius: 100px"
+                    />
+                  </q-avatar>
+                </span>
               </div>
               <div class="statisticsText" style="color: #ffffff">
                 <q-card-section class="text-h6 q-pt-none">
-                  Welcome back, Mark!
+                  <span v-if="myProfile"
+                    >Welcome back, {{ myProfile.firstName }}!</span
+                  >
                 </q-card-section>
                 <q-card-section class="text-body2 q-pt-none">
                   This is your 72nd days with Bacoor Computer <br />Clubhouse
@@ -233,7 +254,7 @@
 
 .navbar-Profile
   display: flex
-
+  justify-content: space-between
 .main-dashboard
 
   width: 50%
@@ -520,14 +541,44 @@
 </style>
 
 <script setup>
+import axios from "axios";
+import { ref } from "vue";
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
-
-import { ref } from "vue";
 
 const progress = ref(0.65);
 
 const randomize = () => {
   progress.value = Math.random();
+};
+
+const getCourses = ref(null);
+axios.get("http://localhost:3000/courses").then((response) => {
+  getCourses.value = response.data;
+});
+
+const myProfile = ref(null);
+const token = localStorage.getItem("authToken");
+// Check if token exists before making the request
+if (token) {
+  axios
+    .get("http://localhost:3000/users/myProfile", {
+      headers: {
+        authorization: `${token}`,
+      },
+    })
+    .then((response) => {
+      myProfile.value = response.data[0];
+    })
+    .catch((error) => {
+      console.error("API call failed:", error);
+    });
+} else {
+  console.log("No token found in localStorage");
+}
+
+const getProfileImg = (filePath) => {
+  const fileName = filePath.split("\\").pop();
+  return `http://localhost:3000/uploads/${fileName}`;
 };
 </script>

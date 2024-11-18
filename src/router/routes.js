@@ -47,6 +47,10 @@ const routes = [
         path: "nicePage",
         component: () => import("src/pages/nicePage.vue"),
       },
+      {
+        path: "qrAttendancePage",
+        component: () => import("src/pages/qrAttendancePage.vue"),
+      },
     ],
   },
 

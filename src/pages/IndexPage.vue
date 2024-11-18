@@ -21,10 +21,11 @@
           <div class=" ">
             <q-btn
               class="q-px-xl"
-              label="Proceed"
+              label="Sign In"
+              to="loginPage"
               no-caps
               color="#FFFFFF"
-              style="background-color: #925fe2; width: 130px; height: 40px"
+              style="background-color: #925fe2; width: 150px; height: 40px"
               rounded
             >
             </q-btn>
@@ -60,6 +61,7 @@
                 <q-btn
                   label="Get Started"
                   no-caps
+                  to="loginPage"
                   color="#FFFFFF"
                   style="background-color: #925fe2; width: 130px; height: 40px"
                   rounded
@@ -73,8 +75,12 @@
                 </q-card-section>
                 <!-- students -->
                 <q-card-section class="q-px-none mentorStudent-counter">
-                  <q-card-section class="q-pt-none">1.8k</q-card-section>
-                  <q-card-section class="q-pt-none">Mentors</q-card-section>
+                  <q-card-section class="q-pt-none">
+                    <span v-if="getMembers">
+                      {{ getMembers.count }}
+                    </span></q-card-section
+                  >
+                  <q-card-section class="q-pt-none">Students</q-card-section>
                 </q-card-section>
               </div>
             </div>
@@ -153,8 +159,14 @@
 <script setup>
 import ImgCarousel from "src/components/imgCarousel.vue";
 import NavBar from "src/components/navBar.vue";
-
+import axios from "axios";
+import { ref } from "vue";
 defineOptions({
   name: "IndexPage",
+});
+
+const getMembers = ref(null);
+axios.get("http://localhost:3000/courses").then((response) => {
+  getMembers.value = response.data;
 });
 </script>

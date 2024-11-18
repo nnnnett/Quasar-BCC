@@ -129,7 +129,9 @@
 import { Notify, useQuasar } from "quasar";
 import { reactive, ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 defineOptions({
   name: "loginPage",
 });
@@ -163,6 +165,7 @@ const submitLogin = async () => {
       localStorage.setItem("authToken", "Bearer " + token); // Save token to local storage
 
       $q.notify({ type: "positive", message: "Login successful!" });
+      router.push("/userDashboard").catch((err) => console.error(err)); // Replace '/dashboard' with your target route
       // Handle successful login (e.g., redirect or store user info)
     } else {
       $q.notify({
