@@ -163,12 +163,7 @@
   border: 1px solid #8F9BB3
   border-radius: 14px
 
-.continueLearning-container
-  border-radius: 14px 14px 0px  0px
-  width: 100%
-  height: 500px
-  display: flex
-  flex-direction: column
+
 .continueLearning-header
   width: 100%
   height: 80px
@@ -241,7 +236,7 @@
     width: 600px
   .activeCourseList
     min-width: 28%
-  .continueLearning-container
+
 
   .continueLearning-header
     min-width: 650px

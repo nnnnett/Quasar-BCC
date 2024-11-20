@@ -136,57 +136,73 @@
           <!-- badges -->
           <div class="badgeContainer q-px-md" v-if="badgesLink">
             <div class="userBadges">
-              <div
-                class="noviceBadge"
-                :class="{
-                  progressRank: myProfile && myProfile.rank >= 0,
-                }"
-              >
-                <q-img src="/src/assets/novice.png" class="q-pa-none" />
-                <q-card-section class="q-py-none"> Novice </q-card-section>
-              </div>
-              <div
-                class="intermidiateBadge"
-                :class="{
-                  progressRank: myProfile && myProfile.rank >= 1,
-                }"
-              >
-                <q-img src="/src/assets/intermidiate.png" class="q-pa-none" />
-                <q-card-section class="q-py-none">
-                  Intermediate
-                </q-card-section>
-              </div>
-              <div
-                class="proficientBadge"
-                :class="{
-                  progressRank: myProfile && myProfile.rank >= 2,
-                }"
-              >
-                <q-img src="/src/assets/proficient.png" class="q-pa-none" />
-                <q-card-section class="q-py-none"> Proficient </q-card-section>
-              </div>
-              <div
-                class="advanceBadge"
-                :class="{
-                  progressRank: myProfile && myProfile.rank >= 3,
-                }"
-              >
-                <q-img src="/src/assets/advance.png" class="q-pa-none" />
-                <q-card-section class="q-py-none"> Advance </q-card-section>
-              </div>
-              <div
-                class="expertBadge"
-                :class="{
-                  progressRank: myProfile && myProfile.rank >= 4,
-                }"
-              >
-                <q-img src="/src/assets/expert.png" class="q-pa-none" />
-                <q-card-section class="q-py-none"> Expert </q-card-section>
-              </div>
+              <span v-if="myProfile">
+                <div
+                  :style="imageStyle"
+                  class="noviceBadge"
+                  :class="{
+                    progressRank: myProfile && myProfile.rank >= 0,
+                  }"
+                >
+                  <q-img src="/src/assets/novice.png" class="q-pa-none" />
+                  <q-card-section class="q-py-none"> Novice </q-card-section>
+                </div>
+                <div
+                  :style="imageStyle"
+                  class="intermidiateBadge"
+                  :class="{
+                    progressRank: myProfile && myProfile.rank >= 1,
+                  }"
+                >
+                  <q-img src="/src/assets/intermidiate.png" class="q-pa-none" />
+                  <q-card-section class="q-py-none">
+                    Intermediate
+                  </q-card-section>
+                </div>
+                <div
+                  :style="imageStyle"
+                  class="proficientBadge"
+                  :class="{
+                    progressRank: myProfile && myProfile.rank >= 2,
+                  }"
+                >
+                  <q-img src="/src/assets/proficient.png" class="q-pa-none" />
+                  <q-card-section class="q-py-none">
+                    Proficient
+                  </q-card-section>
+                </div>
+                <div
+                  :style="imageStyle"
+                  class="advanceBadge"
+                  :class="{
+                    progressRank: myProfile && myProfile.rank >= 3,
+                  }"
+                >
+                  <q-img src="/src/assets/advance.png" class="q-pa-none" />
+                  <q-card-section class="q-py-none"> Advance </q-card-section>
+                </div>
+                <div
+                  :style="imageStyle"
+                  class="expertBadge"
+                  :class="{
+                    progressRank: myProfile && myProfile.rank >= 4,
+                  }"
+                >
+                  <q-img src="/src/assets/expert.png" class="q-pa-none" />
+                  <q-card-section class="q-py-none"> Expert </q-card-section>
+                </div>
+              </span>
             </div>
-            <div class="userCurrentBadge">
-              <q-img src="/src/assets/proficient.png" style="width: 250px" />
-            </div>
+
+            <span
+              v-if="myProfile"
+              class="userCurrentBadge"
+              :class="backgroundColorClass"
+            >
+              <div>
+                <q-img :src="imageSrc" style="width: 250px" />
+              </div>
+            </span>
           </div>
           <!-- certificates -->
           <div class="certificateContainer" v-if="certificateLink">
@@ -307,30 +323,38 @@
   width: 200px
   height: 200px
   text-align: center
-
   border-radius: 24px
   color: #925FE2
 .noviceBadge
   width: 200px
   height: 200px
   text-align: center
-
   border-radius: 24px
   color: #925FE2
 .intermidiateBadge
   width: 200px
   height: 200px
   text-align: center
-
   border-radius: 24px
   color: #925FE2
 .advanceBadge
   width: 210px
   height: 200px
   text-align: center
-
   border-radius: 24px
   color: #925FE2
+.userCurrentBadge.novice
+  background: linear-gradient(90deg, #ACACAC 0%, #DFE3EA 100%)
+.userCurrentBadge.intermediate
+  background: linear-gradient(90deg, #C76030 0%, #FCBC8B 100%)
+.userCurrentBadge.proficient
+  background: linear-gradient(90deg, #209220 0%, #7AF17A 100%)
+.userCurrentBadge.advanced
+  background: linear-gradient(90deg, #F6CD62 0%, #FFE9B8 100%)
+.userCurrentBadge.expert
+  background: linear-gradient(90deg, #966FD6 0%, #C696F9 100%)
+.userCurrentBadge.default
+  background-color: #9E9E9E/* gray */
 
 .progressRank
   border: 2px solid #925FE2
@@ -370,6 +394,8 @@
   background-color: #D9D9D9
   border-radius: 24px
   overflow: hidden
+
+
 
 .showProgress .clickDescAct,
 .showBadges .clickDescAct,
@@ -497,10 +523,36 @@ const imageSrc = computed(() => {
     return "/src/assets/intermidiate.png"; // Image for rank = 1
   } else if (myProfile.value.rank === 2) {
     return "/src/assets/proficient.png"; // Image for rank = 2
+  } else if (myProfile.value.rank === 3) {
+    return "/src/assets/advance.png"; // Image for rank = 2
   } else if (myProfile.value.rank === 4) {
     return "/src/assets/expert.png"; // Image for rank = 2
   } else {
     return "/src/assets/Default.png"; // Default image for other ranks
+  }
+});
+
+const imageStyle = computed(() => {
+  if (myProfile.value.rank === 0 || myProfile.value.rank === 4) {
+    return { filter: "none" }; // No blur for achieved ranks (0 and 4)
+  } else {
+    return { filter: "blur(5px)" }; // Apply blur for ranks that are not achieved (1, 2, 3)
+  }
+});
+
+const backgroundColorClass = computed(() => {
+  if (myProfile.value.rank <= 0) {
+    return "novice"; // Novice: light gray
+  } else if (myProfile.value.rank === 1) {
+    return "intermediate"; // Intermediate: yellow
+  } else if (myProfile.value.rank === 2) {
+    return "proficient"; // Proficient: green
+  } else if (myProfile.value.rank === 3) {
+    return "advanced"; // Advanced: blue
+  } else if (myProfile.value.rank === 4) {
+    return "expert"; // Expert: red
+  } else {
+    return "default"; // Default: gray
   }
 });
 </script>

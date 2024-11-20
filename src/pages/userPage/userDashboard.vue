@@ -209,9 +209,11 @@
           >
             <div class="statisticsDetails" style="height: auto">
               <div class="q-mt-md badge-container">
-                <q-avatar class="sampleBadge">
-                  <q-img src="~assets/Proficient.png" />
-                </q-avatar>
+                <span v-if="myProfile">
+                  <q-avatar class="sampleBadge">
+                    <q-img :src="imageSrc" />
+                  </q-avatar>
+                </span>
                 <span v-if="myProfile">
                   <q-avatar class="mainAvatar">
                     <q-img
@@ -542,7 +544,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
 
@@ -581,4 +583,20 @@ const getProfileImg = (filePath) => {
   const fileName = filePath.split("\\").pop();
   return `http://localhost:3000/uploads/${fileName}`;
 };
+
+const imageSrc = computed(() => {
+  if (myProfile.value.rank <= 0) {
+    return "/src/assets/novice.png"; // Image for rank <= 0
+  } else if (myProfile.value.rank === 1) {
+    return "/src/assets/intermidiate.png"; // Image for rank = 1
+  } else if (myProfile.value.rank === 2) {
+    return "/src/assets/proficient.png"; // Image for rank = 2
+  } else if (myProfile.value.rank === 3) {
+    return "/src/assets/advance.png"; // Image for rank = 2
+  } else if (myProfile.value.rank === 4) {
+    return "/src/assets/expert.png"; // Image for rank = 2
+  } else {
+    return "/src/assets/Default.png"; // Default image for other ranks
+  }
+});
 </script>

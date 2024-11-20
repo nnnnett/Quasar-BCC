@@ -31,8 +31,13 @@ const routes = [
         component: () => import("pages/userPage/activitySample.vue"),
       },
       {
+        path: "instructorRegisterPage",
+        component: () =>
+          import("src/pages/adminPage/instructorRegisterPage.vue"),
+      },
+      {
         path: "adminAddCourse",
-        component: () => import("pages/adminAddCourse.vue"),
+        component: () => import("src/pages/adminPage/adminAddCourse.vue"),
       },
 
       {
