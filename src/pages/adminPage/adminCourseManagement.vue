@@ -233,39 +233,119 @@
               <hr />
             </div>
             <!-- Popup edit -->
-            <!-- <div>
+            <div>
               <q-dialog
                 full-height
                 full-width
                 v-model="inception"
                 class="courseEdit-container"
               >
-                <q-card class="courseEdit">
-                  <q-card-section>
-                    <div class="text-h6">Edti Course</div>
+                <q-card class="courseEdit q-pt-xl">
+                  <q-card-section style="display: flex">
+                    <div class="text-h6 q-pt-xl" style="width: 100%">
+                      Edit Course
+                    </div>
+                    <div
+                      class="q-mr-lg"
+                      style="display: flex; align-items: flex-end"
+                    >
+                      <q-btn v-close-popup>X </q-btn>
+                    </div>
                   </q-card-section>
 
-                  <q-card-section class="q-pt-none" style="width: 900px">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Perferendis laudantium minus earum totam modi laborum illo,
-                    corporis fuga saepe animi aliquam ea enim assumenda ut nulla
-                    natus aperiam quis. Iste. Lorem ipsum dolor sit amet,
-                    consectetur adipisicing elit. Perferendis laudantium minus
-                    earum totam modi laborum illo, corporis fuga saepe animi
-                    aliquam ea enim assumenda ut nulla natus aperiam quis. Iste.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Perferendis laudantium minus earum totam modi laborum illo,
-                    corporis fuga saepe animi aliquam ea enim assumenda ut nulla
-                    natus aperiam quis. Iste.
-                  </q-card-section>
+                  <div class="createCoures-container q-px-xl">
+                    <q-form>
+                      <div>
+                        <q-card-section class="q-pt-none q-pb-sm q-pl-none">
+                          Course Tumbnail
+                        </q-card-section>
+                      </div>
+                      <div class=" ">
+                        <q-card style="border: 1px dashed black">
+                          <q-card-section class="flex flex-center">
+                            <q-file
+                              name="imageFile"
+                              for="imageFile"
+                              v-model="imageFile"
+                              label="Choose File"
+                              filled
+                              accept="image/*"
+                              clearable
+                            >
+                              <template v-slot:prepend>
+                                <q-icon name="upload" />
+                              </template>
+                            </q-file>
+                          </q-card-section>
+                        </q-card>
+                      </div>
 
-                  <q-card-actions class="text-primary">
+                      <div>
+                        <q-card-section class="q-pl-none q-pb-sm"
+                          >Course Title</q-card-section
+                        >
+
+                        <q-input
+                          name="courseName"
+                          v-model="courseName"
+                          type="text"
+                          rounded
+                          outlined
+                          placeholder="Course Name"
+                          no-error-icon
+                        />
+                      </div>
+                      <!-- Assigning -->
+                      <div class="assignedContainer">
+                        <!-- mentors -->
+                        <div style="width: 45%">
+                          <q-card-section class="q-pl-none q-pb-sm">
+                            Mentors
+                          </q-card-section>
+                          <q-select
+                            filled
+                            v-model="mentors"
+                            :options="optionMentors.AssignedMentor"
+                            label="Select Mentors"
+                          />
+                        </div>
+                        <!-- durations -->
+                        <div style="width: 45%">
+                          <q-card-section class="q-pl-none q-pb-sm">
+                            Set Durations
+                          </q-card-section>
+                          <q-select
+                            filled
+                            v-model="durations"
+                            :options="optionDurations.setDuration"
+                            label="Set Durations"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <q-card-section class="q-pl-none q-pb-sm"
+                          >Description</q-card-section
+                        >
+
+                        <q-input
+                          name="courseDescription"
+                          v-model="courseDescription"
+                          type="textarea"
+                          rounded
+                          outlined
+                          placeholder="Course Description"
+                          no-error-icon
+                        />
+                      </div>
+                    </q-form>
+                  </div>
+                  <q-card-actions align="right" class="q-mr-xl">
                     <q-btn
                       flat
-                      label="Open another dialog"
+                      style="color: #26a69a"
+                      label="Save"
                       @click="secondDialog = true"
                     />
-                    <q-btn flat label="Close" v-close-popup />
                   </q-card-actions>
                 </q-card>
               </q-dialog>
@@ -276,21 +356,26 @@
                 transition-show="scale"
                 transition-hide="scale"
               >
-                <q-card class="bg-teal text-white" style="width: 300px">
+                <q-card class="dark" style="width: 300px">
                   <q-card-section>
-                    <div class="text-h6">Persistent</div>
+                    <div class="text-h6">Are you sure?</div>
                   </q-card-section>
 
                   <q-card-section class="q-pt-none">
-                    Click/Tap on the backdrop.
+                    Double check the details before saving
                   </q-card-section>
 
-                  <q-card-actions align="right" class="bg-white text-teal">
-                    <q-btn flat label="OK" v-close-popup />
+                  <q-card-actions align="right">
+                    <q-btn
+                      flat
+                      style="color: #26a69a"
+                      label="Save"
+                      v-close-popup
+                    />
                   </q-card-actions>
                 </q-card>
               </q-dialog>
-            </div> -->
+            </div>
           </q-card>
         </div>
       </div>
@@ -355,7 +440,11 @@
   border-radius: 14px
   color: #F36942
 .courseEdit
-  border: 1px solid red
+
+.assignedContainer
+  display: flex
+  width: 100%
+  justify-content: space-between
 </style>
 <script setup>
 import adminNavBar from "src/components/adminNavBar.vue";
@@ -368,6 +457,20 @@ const courseOption = {
   courses: ["Digital LiteracyLiteracyLiteracy", "Css", "Music"],
 };
 
-// const inception = ref(true);
-// const secondDialog = ref(false);
+const inception = ref(false);
+const secondDialog = ref(false);
+
+const courseName = ref("");
+const courseDescription = ref("");
+const mentors = ref("");
+const imageFile = ref("");
+const durations = ref("");
+
+const optionMentors = {
+  AssignedMentor: ["nnet", "jules", "khris"],
+};
+
+const optionDurations = {
+  setDuration: [1, 2, 3, 4],
+};
 </script>
