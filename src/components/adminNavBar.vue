@@ -27,7 +27,7 @@
               <q-item-label>Dashboard</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="#" class="q-pl-xl q-mt-md">
+          <q-item clickable to="adminCourseManagement" class="q-pl-xl q-mt-md">
             <q-item-section>
               <q-item-label>Courses Management</q-item-label>
             </q-item-section>
