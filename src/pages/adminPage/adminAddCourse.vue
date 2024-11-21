@@ -5,9 +5,7 @@
         <div>
           <adminNavBar />
         </div>
-        <div class="q-pt-lg">
-          <notifProfile />
-        </div>
+        <div class="q-pt-lg"></div>
       </div>
       <div class="main-container q-ml-lg q-mt-md">
         <div>

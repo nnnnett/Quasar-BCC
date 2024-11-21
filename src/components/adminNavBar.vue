@@ -22,7 +22,7 @@
         </div>
 
         <div class="sideNavBar">
-          <q-item clickable to="#" class="q-pl-xl q-mt-md">
+          <q-item clickable to="adminDashboard" class="q-pl-xl q-mt-md">
             <q-item-section>
               <q-item-label>Dashboard</q-item-label>
             </q-item-section>
