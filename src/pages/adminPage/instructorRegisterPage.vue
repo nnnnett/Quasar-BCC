@@ -1,127 +1,153 @@
 <template>
-  <q-page>
+  <q-page class="flex flex-center">
     <adminNavBar />
-    <q-card style="width: 50vw" class="flex flex-center">
-      <q-form @submit.prevent="submitSignup">
-        <div style="width: 100%">
-          <q-card-section class="q-pb-none">
-            Username
-            <q-input
-              name="username"
-              for="username"
-              v-model="username"
-              type="text"
-              rounded
-              outlined
-              placeholder="Juan"
-            />
-          </q-card-section>
-          <q-card-section class="q-pb-none">
-            password
-            <q-input
-              name="password"
-              for="password"
-              v-model="password"
-              type="password"
-              rounded
-              outlined
-            />
-          </q-card-section>
-          <q-card-section class="q-pb-none">
-            email
-            <q-input
-              name="email"
-              for="email"
-              v-model="email"
-              type="email"
-              rounded
-              outlined
-              placeholder="skibidi@cvsu.edu.ph"
-            />
-          </q-card-section>
-          <q-card-section class="q-pb-none">
-            First Name
-            <q-input
-              name="firstName"
-              for="firstName"
-              v-model="firstName"
-              type="text"
-              rounded
-              outlined
-              placeholder="Juan"
-            />
-          </q-card-section>
-          <q-card-section class="q-pb-none">
-            Middle Name
-            <q-input
-              name="middleName"
-              for="middleName"
-              v-model="middleName"
-              type="text"
-              rounded
-              outlined
-              placeholder="Juan"
-            />
-          </q-card-section>
-          <q-card-section class="q-pb-none">
-            Last Name
-            <q-input
-              name="lastName"
-              for="lastName"
-              v-model="lastName"
-              type="text"
-              rounded
-              outlined
-              placeholder="Juan"
-            />
-          </q-card-section>
-          <q-card-section style="width: auto">
-            Gender
-            <q-select
-              rounded
-              outlined
-              :options="optionGender.option"
-              v-model="gender"
-              label="Select Gender"
-              type="text"
-              name="gender"
-              for="gender"
-              style="width: 100%"
-            />
-          </q-card-section>
-          <div class="q-px-xl">
-            <q-card style="border: 1px dashed black">
-              <q-card-section class="flex flex-center">
-                <q-file
-                  name="userImage"
-                  for="userImage"
-                  v-model="userImage"
-                  label="Choose File"
-                  filled
-                  accept="image/*"
-                  clearable
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="upload" />
-                  </template>
-                </q-file>
+    <q-card style="width: 80vw" class=" ">
+      <div class="registerInstructor-container">
+        <q-form @submit.prevent="submitSignup">
+          <q-card-section> Add Instructor </q-card-section>
+          <div style="width: 100%">
+            <div style="display: flex">
+              <q-card-section class="q-pb-none" style="width: 30%">
+                First Name
+                <q-input
+                  name="firstName"
+                  for="firstName"
+                  v-model="firstName"
+                  type="text"
+                  rounded
+                  outlined
+                  placeholder="Juan"
+                />
               </q-card-section>
-            </q-card>
+              <q-card-section class="q-pb-none" style="width: 30%">
+                Middle Name
+                <q-input
+                  name="middleName"
+                  for="middleName"
+                  v-model="middleName"
+                  type="text"
+                  rounded
+                  outlined
+                  placeholder="Juan"
+                />
+              </q-card-section>
+              <q-card-section class="q-pb-none" style="width: 30%">
+                Last Name
+                <q-input
+                  name="lastName"
+                  for="lastName"
+                  v-model="lastName"
+                  type="text"
+                  rounded
+                  outlined
+                  placeholder="Juan"
+                />
+              </q-card-section>
+            </div>
+            <div style="width: 30%">
+              <q-card-section style="width: auto">
+                Gender
+                <q-select
+                  rounded
+                  outlined
+                  :options="optionGender.option"
+                  v-model="gender"
+                  label="Select Gender"
+                  type="text"
+                  name="gender"
+                  for="gender"
+                  style="width: 100%"
+                />
+              </q-card-section>
+            </div>
+            <div style="display: flex">
+              <q-card-section class="q-pb-none" style="width: 30%">
+                Username
+                <q-input
+                  name="username"
+                  for="username"
+                  v-model="username"
+                  type="text"
+                  rounded
+                  outlined
+                  placeholder="Juan"
+                />
+              </q-card-section>
+              <q-card-section class="q-pb-none" style="width: 30%">
+                password
+                <q-input
+                  name="password"
+                  for="password"
+                  v-model="password"
+                  type="password"
+                  rounded
+                  outlined
+                />
+              </q-card-section>
+              <q-card-section class="q-pb-none" style="width: 30%">
+                email
+                <q-input
+                  name="email"
+                  for="email"
+                  v-model="email"
+                  type="email"
+                  rounded
+                  outlined
+                  placeholder="skibidi@cvsu.edu.ph"
+                />
+              </q-card-section>
+            </div>
+            <q-card-section class="q-pl-md q-pb-sm"
+              >Upload Profile Picture</q-card-section
+            >
+            <div class="q-px-xl">
+              <q-card style="border: 1px dashed black">
+                <q-card-section class="flex flex-center">
+                  <q-file
+                    name="userImage"
+                    for="userImage"
+                    v-model="userImage"
+                    label="Choose File"
+                    filled
+                    accept="image/*"
+                    clearable
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="upload" />
+                    </template>
+                  </q-file>
+                </q-card-section>
+              </q-card>
+            </div>
           </div>
-        </div>
-        <q-btn
-          class="q-my-xl q-py-md"
-          label="Register"
-          no-caps
-          type="submit"
-          color="accent"
-          style="background-color: #925fe2; width: 230px"
-          rounded
-        />
-      </q-form>
+          <div style="display: flex; justify-content: center; column-gap: 24px">
+            <q-btn
+              class="q-my-xl q-py-md"
+              label="Cancel"
+              no-caps
+              to="adminUserManagement"
+              style="width: 350px"
+              rounded
+            />
+            <q-btn
+              class="q-my-xl q-py-md"
+              label="Add Instructor"
+              no-caps
+              type="submit"
+              color="accent"
+              style="background-color: #925fe2; width: 350px"
+              rounded
+            />
+          </div>
+        </q-form>
+      </div>
     </q-card>
   </q-page>
 </template>
+
+<style lang="sass" scoped>
+.registerInstructor-container
+</style>
 
 <script setup>
 import adminNavBar from "src/components/adminNavBar.vue";
