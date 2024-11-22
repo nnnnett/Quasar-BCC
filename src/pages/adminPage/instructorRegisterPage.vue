@@ -1,5 +1,6 @@
 <template>
   <q-page>
+    <adminNavBar />
     <q-card style="width: 50vw" class="flex flex-center">
       <q-form @submit.prevent="submitSignup">
         <div style="width: 100%">
@@ -123,6 +124,7 @@
 </template>
 
 <script setup>
+import adminNavBar from "src/components/adminNavBar.vue";
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useQuasar } from "quasar";

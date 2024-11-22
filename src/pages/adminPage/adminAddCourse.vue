@@ -136,7 +136,7 @@
                   class="q-my-xl q-py-md"
                   label="Cancel"
                   no-caps
-                  type="reset"
+                  to="adminCourseManagement"
                   style="width: 30%; border-radius: 14px"
                   rounded
                 />

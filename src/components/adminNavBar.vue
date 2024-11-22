@@ -33,7 +33,7 @@
             </q-item-section>
           </q-item>
 
-          <q-item clickable to="#" class="q-pl-xl q-mt-md">
+          <q-item clickable to="adminUserManagement" class="q-pl-xl q-mt-md">
             <q-item-section>
               <q-item-label>User Management</q-item-label>
             </q-item-section>

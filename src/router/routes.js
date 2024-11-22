@@ -45,6 +45,10 @@ const routes = [
           import("src/pages/adminPage/adminCourseManagement.vue"),
       },
       {
+        path: "adminUserManagement",
+        component: () => import("src/pages/adminPage/adminUserManagement.vue"),
+      },
+      {
         path: "adminDashboard",
         component: () => import("src/pages/adminPage/adminDashboard.vue"),
       },

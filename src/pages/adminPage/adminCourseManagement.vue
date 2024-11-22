@@ -235,14 +235,14 @@
             <!-- Popup edit -->
             <div>
               <q-dialog
-                full-height
+                full-height="80vh"
                 full-width
                 v-model="inception"
                 class="courseEdit-container"
               >
-                <q-card class="courseEdit q-pt-xl">
+                <q-card class="courseEdit">
                   <q-card-section style="display: flex">
-                    <div class="text-h6 q-pt-xl" style="width: 100%">
+                    <div class="text-h6 q-pt-md" style="width: 100%">
                       Edit Course
                     </div>
                     <div
