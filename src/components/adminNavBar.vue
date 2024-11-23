@@ -21,7 +21,7 @@
           </q-item-label>
         </div>
 
-        <div class="sideNavBar">
+        <div class="sideNavBar text-subtitle1 q-mt-xl">
           <q-item clickable to="adminDashboard" class="q-pl-xl q-mt-md">
             <q-item-section>
               <q-item-label>Dashboard</q-item-label>
@@ -38,21 +38,25 @@
               <q-item-label>User Management</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="#" class="q-pl-xl q-mt-md">
+          <q-item
+            clickable
+            to="adminAttendanceManagement"
+            class="q-pl-xl q-mt-md"
+          >
             <q-item-section>
               <q-item-label>Attendance Management</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="#" class="q-pl-xl q-mt-md">
+          <!-- <q-item clickable to="#" class="q-pl-xl q-mt-md">
             <q-item-section>
               <q-item-label>Badge & Rankings</q-item-label>
             </q-item-section>
-          </q-item>
-          <q-item clickable to="#" class="q-pl-xl q-mt-md">
+          </q-item> -->
+          <!-- <q-item clickable to="#" class="q-pl-xl q-mt-md">
             <q-item-section>
               <q-item-label>Reports</q-item-label>
             </q-item-section>
-          </q-item>
+          </q-item> -->
           <!-- <q-item clickable @click="handleLogout" class="q-pl-xl q-mt-md">
             <q-item-section avatar>
               <q-icon name="logout" />
@@ -81,7 +85,7 @@
 
 .sideNavBar
   width: 100%
-  color: #8F9BB3
+  color: #4B4B4B
 </style>
 
 <script setup>
