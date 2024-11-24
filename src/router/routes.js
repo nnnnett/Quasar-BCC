@@ -23,12 +23,12 @@ const routes = [
         component: () => import("pages/userPage/userSettings.vue"),
       },
       {
-        path: "cssCourse",
+        path: "cssCourse/:courseId",
         component: () => import("pages/userPage/cssCourse.vue"),
       },
       {
-        path: "activitySample",
-        component: () => import("pages/userPage/activitySample.vue"),
+        path: "activityPage/:activityId",
+        component: () => import("pages/userPage/activityPage.vue"),
       },
       {
         path: "instructorRegisterPage",
@@ -57,7 +57,22 @@ const routes = [
         path: "adminDashboard",
         component: () => import("src/pages/adminPage/adminDashboard.vue"),
       },
-
+      // instructor
+      {
+        path: "instructorCoursePage",
+        component: () =>
+          import("src/pages/instructorPage/instructorCoursePage.vue"),
+      },
+      {
+        path: "instructorDashboard",
+        component: () =>
+          import("src/pages/instructorPage/instructorDashboard.vue"),
+      },
+      {
+        path: "instructorCourse",
+        component: () =>
+          import("src/pages/instructorPage/instructorCourse.vue"),
+      },
       {
         path: "registerPage",
         component: () => import("src/pages/registerPage.vue"),

@@ -59,7 +59,7 @@ const textInfo = computed(() => {
 
 const show = async (content) => {
   try {
-    const response = await axios.get("http://localhost:3000/users/");
+    const response = await axios.get(`${process.env.api_host}/users/`);
     result.value = response;
   } catch (error) {
     console.error("error: ", error);
@@ -72,7 +72,7 @@ const onDecode = async (content) => {
   turnCameraOff();
   try {
     const response = await axios.post(
-      "http://localhost:3000/users/attendance",
+      ` ${process.env.api_host}/users/attendance`,
       {
         user_id: result.value, // Sending the scanned QR code as _id
       }

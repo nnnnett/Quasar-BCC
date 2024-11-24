@@ -15,7 +15,9 @@
       <div class="text-subtitle1 q-ml-xl flex">
         <q-card-section class="q-px-none">Course</q-card-section>
         <q-card-section class="q-px-sm">></q-card-section>
-        <q-card-section class="q-px-none">Music</q-card-section>
+        <q-card-section class="q-px-none">
+          <span v-if="course">{{ course.data.name }}</span></q-card-section
+        >
       </div>
       <!-- main dashboard -->
       <div class="main-dashboard q-ml-xl q-mt-md">
@@ -29,7 +31,8 @@
             <q-card-section
               class="q-mt-md q-pb-none text-h6"
               style="text-transform: capitalize"
-              >music</q-card-section
+            >
+              <span v-if="course">{{ course.data.name }}</span></q-card-section
             >
             <q-card-section class="q-pt-sm text-body2"
               >5 Activities</q-card-section
@@ -64,13 +67,9 @@
               <q-card-section
                 class="courseDescription q-px-lg"
                 style="text-align: justify"
-                v-if="descriptionLink"
+                v-if="course"
               >
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sunt
-                voluptate distinctio exercitationem, aspernatur, deserunt
-                repudiandae itaque nobis maxime dolore, quod doloribus earum
-                recusandae delectus veritatis perspiciatis repellat a nesciunt
-                quas!
+                {{ course.data.description }}
               </q-card-section>
 
               <!-- Activity Section: Visible when activityLink is true -->
@@ -267,11 +266,30 @@
 import { colors } from "quasar";
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
+import { useRoute } from "vue-router";
+import { onMounted, ref } from "vue";
+import axios from "axios";
 
-// Importing ref from Vue to create reactive variables
-import { ref } from "vue";
+const route = useRoute();
+const courseId = route.params.courseId;
+const course = ref(null);
 
-// Reactive variables to track visibility of Description and Activity
+async function getCourse() {
+  try {
+    await axios
+      .get(`${process.env.api_host}/courses/${courseId}`)
+      .then((response) => {
+        course.value = response;
+        console.log(course);
+      });
+  } catch {}
+}
+
+onMounted(() => {
+  getCourse();
+});
+console.log("log");
+
 const descriptionLink = ref(true);
 const activityLink = ref(false);
 

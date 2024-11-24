@@ -36,7 +36,7 @@
         </div>
 
         <div class="sideNavBar">
-          <q-item clickable to="userDashboard" class="q-pl-xl q-mt-md">
+          <q-item clickable to="instructorDashboard" class="q-pl-xl q-mt-md">
             <q-item-section avatar>
               <q-icon name="dashboard" />
             </q-item-section>
@@ -44,7 +44,7 @@
               <q-item-label>Dashboard</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="userCourse" class="q-pl-xl q-mt-md">
+          <q-item clickable to="instructorCoursePage" class="q-pl-xl q-mt-md">
             <q-item-section avatar>
               <q-icon name="library_books" />
             </q-item-section>
@@ -52,22 +52,23 @@
               <q-item-label>Courses</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="userProgress" class="q-pl-xl q-mt-md">
+          <!-- <q-item clickable to="#" class="q-pl-xl q-mt-md">
             <q-item-section avatar>
               <q-icon name="bar_chart" />
             </q-item-section>
             <q-item-section>
               <q-item-label>Progress</q-item-label>
             </q-item-section>
-          </q-item>
-          <q-item clickable to="userSettings" class="q-pl-xl q-mt-md">
+          </q-item> -->
+          <!-- user settings -->
+          <!-- <q-item clickable to="#" class="q-pl-xl q-mt-md">
             <q-item-section avatar>
               <q-icon name="settings" />
             </q-item-section>
             <q-item-section>
               <q-item-label>Settings</q-item-label>
             </q-item-section>
-          </q-item>
+          </q-item> -->
           <q-item clickable @click="handleLogout" class="q-pl-xl q-mt-md">
             <q-item-section avatar>
               <q-icon name="logout" />

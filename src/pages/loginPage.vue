@@ -155,7 +155,7 @@ const submitLogin = async () => {
   formData.append("password", password.value);
 
   try {
-    const response = await axios.post("http://localhost:3000/users/login", {
+    const response = await axios.post(`${process.env.api_host}/users/login`, {
       username: username.value,
       password: password.value,
     });

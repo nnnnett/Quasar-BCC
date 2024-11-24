@@ -27,7 +27,7 @@
           <div class="header-content2">
             <div class="headerNameProgress q-py-lg">
               <q-card-section class="text-h6 q-pt-none">
-                <span v-if="myProfile"
+                <span v-if="myProfile" style="text-transform: capitalize"
                   >Welcome back, {{ myProfile.firstName }}!</span
                 >
               </q-card-section>
@@ -104,14 +104,26 @@
               >My Course Expertise</q-card-section
             >
             <!-- Course Progress -->
-            <div class="titleProgressIndicator q-pl-none">
-              <div class="courseTitle">
-                <q-card-section>
-                  CSSCSSCSSCSSCSSCSSCSSCSSCSSCSSCSS
-                </q-card-section>
+            <div class="titleProgressIndicator q-pl-none" v-if="getCourses">
+              <div style="display: flex; flex-direction: column">
+                <div
+                  class="courseTitle"
+                  v-for="course in getCourses.course"
+                  :key="course._id"
+                >
+                  <div style="">
+                    <q-card-section>
+                      <span v-if="getCourses">{{ course.name }}</span>
+                    </q-card-section>
+                  </div>
+                </div>
               </div>
               <div class="progressIndicator">
-                <div class="courseProgress q-pb-none">
+                <div
+                  class="courseProgress q-pb-none"
+                  v-for="course in getCourses.course"
+                  :key="course._id"
+                >
                   <div class="q-py-lg q-px-md" style="min-width: 0">
                     <q-linear-progress
                       v-for="size in ['md']"
@@ -197,25 +209,25 @@
           <div class="certificateContainer" v-if="certificateLink">
             <div class="certificate1 certificateImg">
               <q-img
-                src="/src/assets/waw.jpg"
+                src="/src/assets/certificateExample.png"
                 style="width: 100%; height: 100%; object-fit: cover"
               />
             </div>
             <div class="certificate2 certificateImg">
               <q-img
-                src="/src/assets/waw.jpg"
+                src="/src/assets/certificateExample.png"
                 style="width: 100%; height: 100%; object-fit: cover"
               />
             </div>
             <div class="certificate3 certificateImg">
               <q-img
-                src="/src/assets/waw.jpg"
+                src="/src/assets/certificateExample.png"
                 style="width: 100%; height: 100%; object-fit: cover"
               />
             </div>
             <div class="certificate4 certificateImg">
               <q-img
-                src="/src/assets/waw.jpg"
+                src="/src/assets/certificateExample.png"
                 style="width: 100%; height: 100%; object-fit: cover"
               />
             </div>
@@ -261,6 +273,7 @@
   display: flex
 .sub-container2CourseExpertise
   height: auto
+
   width: 60%
 .progressIndicator
   display: flex
@@ -278,15 +291,17 @@
   width: 625px
 .courseTitle
   width: 159px
+
+
   min-width: 100px
   font-size: 0.8em
-  max-height: 50px
+
   overflow: hidden
   text-overflow: ellipsis
   text-align: center
 .titleProgressIndicator
   display: flex
-  display: flex
+  flex-direction: row
   white-space: nowrap
 .badgeContainer
   width: 100%
@@ -463,8 +478,8 @@ import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
 import { ref, computed } from "vue";
 import axios from "axios";
-const progressLink = ref(false);
-const badgesLink = ref(true);
+const progressLink = ref(true);
+const badgesLink = ref(false);
 const certificateLink = ref(false);
 
 // Methods to toggle between the two sections
@@ -490,7 +505,7 @@ const token = localStorage.getItem("authToken");
 // Check if token exists before making the request
 if (token) {
   axios
-    .get("http://localhost:3000/users/myProfile", {
+    .get(`${process.env.api_host}/users/myProfile`, {
       headers: {
         authorization: `${token}`,
       },
@@ -535,5 +550,10 @@ const backgroundColorClass = computed(() => {
   } else {
     return "default"; // Default: gray
   }
+});
+
+const getCourses = ref(null);
+axios.get(`${process.env.api_host}/courses`).then((response) => {
+  getCourses.value = response.data;
 });
 </script>

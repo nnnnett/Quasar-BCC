@@ -694,7 +694,7 @@ async function onSubmit() {
   formData.append("userImage", myProfileImg.value);
   try {
     const response = await axios.post(
-      "http://localhost:3000/users/signup",
+      ` ${process.env.api_host}/users/signup`,
       formData,
       {
         // personal details

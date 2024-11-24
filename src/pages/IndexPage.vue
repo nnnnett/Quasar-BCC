@@ -166,7 +166,7 @@ defineOptions({
 });
 
 const getMembers = ref(null);
-axios.get("http://localhost:3000/courses").then((response) => {
+axios.get(`${process.env.api_host}/courses`).then((response) => {
   getMembers.value = response.data;
 });
 </script>

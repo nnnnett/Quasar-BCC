@@ -117,7 +117,7 @@
                 <!-- Course name displayed dynamically -->
                 <q-card-section
                   class="q-pb-none text-subtitle1"
-                  style="font-size: 1em"
+                  style="font-size: 1em; text-transform: capitalize"
                 >
                   <span v-if="getCourses">
                     {{ course.name }}
@@ -160,9 +160,10 @@
                   overflow: hidden;
                   text-overflow: ellipsis;
                   text-align: center;
+                  text-transform: capitalize;
                 "
               >
-                CSS
+                <span v-if="course">{{ course.data.name }} </span>
               </q-card-section>
             </div>
 
@@ -225,8 +226,9 @@
               </div>
               <div class="statisticsText" style="color: #ffffff">
                 <q-card-section class="text-h6 q-pt-none">
-                  <span v-if="myProfile"
-                    >Welcome back, {{ myProfile.firstName }}!</span
+                  Welcome back,
+                  <span v-if="myProfile" style="text-transform: capitalize">
+                    {{ myProfile.firstName }}!</span
                   >
                 </q-card-section>
                 <q-card-section class="text-body2 q-pt-none">
@@ -287,9 +289,9 @@
   border-radius: 14px
   width: 44%
   display: flex
-.activeCourse-counter
-  display: flex
-  flex-direction: column
+// .activeCourse-counter
+//   display: flex
+//   flex-direction: column
 
 .activeCourse-container
   height: auto
@@ -544,7 +546,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
 
@@ -554,17 +556,26 @@ const randomize = () => {
   progress.value = Math.random();
 };
 
-const getCourses = ref(null);
-axios.get("http://localhost:3000/courses").then((response) => {
-  getCourses.value = response.data;
-});
+async function getCourse() {
+  try {
+    await axios
+      .get(`${process.env.api_host}/courses/${courseId}`)
+      .then((response) => {
+        course.value = response;
+        console.log(course);
+      });
+  } catch {}
+}
 
+onMounted(() => {
+  getCourse();
+});
 const myProfile = ref(null);
 const token = localStorage.getItem("authToken");
 // Check if token exists before making the request
 if (token) {
   axios
-    .get("http://localhost:3000/users/myProfile", {
+    .get(`${process.env.api_host}/users/myProfile`, {
       headers: {
         authorization: `${token}`,
       },
@@ -581,7 +592,7 @@ if (token) {
 
 const getProfileImg = (filePath) => {
   const fileName = filePath.split("\\").pop();
-  return `http://localhost:3000/uploads/${fileName}`;
+  return `${process.env.api_host}/uploads/${fileName}`;
 };
 
 const imageSrc = computed(() => {

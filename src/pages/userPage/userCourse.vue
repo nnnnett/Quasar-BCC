@@ -11,6 +11,12 @@
       </div>
     </div>
     <div class="main-container q-ml-lg q-pb-lg">
+      <q-card-section
+        class="text-h5 q-pl-none dashboard-txt"
+        style="font-weight: 600; color: #4b4b4b"
+      >
+        Courses
+      </q-card-section>
       <!-- Mindstorm Container -->
       <div class="mindstorm-container q-pl-xl">
         <q-card-section class="text-h6 q-pa-none"> Mindstorm </q-card-section>
@@ -97,7 +103,10 @@
                 />
               </svg>
             </div>
-            <q-card-section class="q-pb-none" style="font-size: 1em">
+            <q-card-section
+              class="q-pb-none"
+              style="font-size: 1em; text-transform: capitalize"
+            >
               <span v-if="getCourses"> {{ course.name }} </span>
             </q-card-section>
             <q-card-section class="q-pt-none q-pb-sm text-caption">
@@ -253,7 +262,7 @@ import axios from "axios";
 import { ref } from "vue";
 
 const getCourses = ref(null);
-axios.get("http://localhost:3000/courses").then((response) => {
+axios.get(`${process.env.api_host}/courses`).then((response) => {
   getCourses.value = response.data;
 });
 </script>

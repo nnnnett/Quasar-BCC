@@ -54,8 +54,11 @@
                       name="imageFile"
                       for="imageFile"
                       v-model="imageFile"
+                      v-if="!photoUrl && !uploadLoading"
+                      @update:model-value="uploadPhoto(imageFile)"
                       label="Choose File"
                       filled
+                      :loading="uploadLoading"
                       accept="image/*"
                       clearable
                     >
@@ -63,6 +66,21 @@
                         <q-icon name="upload" />
                       </template>
                     </q-file>
+                    <q-spinner
+                      v-else-if="uploadLoading"
+                      style="font-size: 5vw"
+                    ></q-spinner>
+                    <div v-else>
+                      <div class="text-center text-subtitle2">
+                        Tap to replace
+                      </div>
+                      <q-img
+                        :src="photoUrl"
+                        style="width: 500px; max-width: 20vh"
+                        :ratio="1"
+                        @click="removePhoto()"
+                      />
+                    </div>
                   </q-card-section>
                 </q-card>
               </div>
@@ -85,7 +103,7 @@
               <!-- Assigning -->
               <div class="assignedContainer">
                 <!-- mentors -->
-                <div style="width: 45%">
+                <!-- <div style="width: 45%">
                   <q-card-section class="q-pl-none q-pb-sm">
                     Mentors
                   </q-card-section>
@@ -95,19 +113,8 @@
                     :options="optionMentors.AssignedMentor"
                     label="Select Mentors"
                   />
-                </div>
+                </div> -->
                 <!-- durations -->
-                <div style="width: 45%">
-                  <q-card-section class="q-pl-none q-pb-sm">
-                    Set Durations
-                  </q-card-section>
-                  <q-select
-                    filled
-                    v-model="durations"
-                    :options="optionDurations.setDuration"
-                    label="Set Durations"
-                  />
-                </div>
               </div>
               <div>
                 <q-card-section class="q-pl-none q-pb-sm"
@@ -219,7 +226,7 @@ const submitCourse = async () => {
 
   try {
     const response = await axios.post(
-      "http://localhost:3000/courses",
+      ` ${process.env.api_host}/courses`,
       {
         name: form.value.courseName,
         description: form.value.courseDescription,
@@ -250,4 +257,68 @@ const submitCourse = async () => {
     console.error("Error:", error);
   }
 };
+
+const photoUrl = ref(null);
+const deletePhotoUrl = ref(null);
+const uploadLoading = ref(false);
+async function uploadToImgBB(apiKey, photoBase64) {
+  try {
+    const formData = new FormData();
+    formData.append("image", photoBase64);
+    const response = await axios.post(
+      `https://api.imgbb.com/1/upload?key=${apiKey}`,
+      formData
+    );
+    deletePhotoUrl.value = response.data.data.delete_url;
+    console.log(response.data.data);
+    console.log("text: ", deletePhotoUrl);
+    return response.data.data.url;
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    if (error.response) {
+      console.error("Response data:", error.response.data); // Log the detailed response from ImgBB
+    }
+    throw error;
+  }
+}
+async function uploadPhoto(photo) {
+  console.log(photo);
+  try {
+    uploadLoading.value = true;
+    const base64Image = await convertToBase64(photo);
+    photoUrl.value = await uploadToImgBB(process.env.IMGBB_KEY, base64Image);
+  } finally {
+    uploadLoading.value = false;
+  }
+}
+
+async function removePhoto() {
+  photoUrl.value = "";
+  imageFile.value = "";
+
+  try {
+    if (photoUrl.value) await axios.delete(deletePhotoUrl);
+  } catch (error) {
+    console.error("Error during photo deletion:", error);
+  } finally {
+    deletePhotoUrl.value = "";
+    console.log(deletePhotoUrl);
+  }
+}
+
+function convertToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      resolve(reader.result.split(",")[1]);
+    };
+
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
 </script>

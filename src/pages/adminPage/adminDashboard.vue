@@ -69,7 +69,11 @@
               <q-icon name="library_books" style="color: #2584e9" />
             </q-item-section>
             <div>
-              <q-card-section class="q-py-none"> 6 </q-card-section>
+              <q-card-section class="q-py-none">
+                <span v-if="getCourses">{{
+                  getCourses.count
+                }}</span></q-card-section
+              >
               <q-card-section class="q-py-none"> Total Courses </q-card-section>
             </div>
           </div>
@@ -79,19 +83,12 @@
               <q-icon name="library_books" style="color: #5ce1e6" />
             </q-item-section>
             <div>
-              <q-card-section class="q-py-none"> 6 </q-card-section>
+              <q-card-section class="q-py-none"
+                ><span v-if="getTotalUsers">{{
+                  getTotalUsers.number_of_users
+                }}</span></q-card-section
+              >
               <q-card-section class="q-py-none"> Total Users </q-card-section>
-            </div>
-          </div>
-          <div class="overview-content" style="border: 2px solid #ffcf32">
-            <q-item-section avatar class="q-pl-lg">
-              <q-icon name="library_books" style="color: #ffcf32" />
-            </q-item-section>
-            <div>
-              <q-card-section class="q-py-none"> 6 </q-card-section>
-              <q-card-section class="q-py-none">
-                Total Certificate
-              </q-card-section>
             </div>
           </div>
         </div>
@@ -179,11 +176,23 @@
 <script setup>
 import adminNavBar from "src/components/adminNavBar.vue";
 import { ref, onMounted } from "vue";
+import axios from "axios";
 
 const formattedDate = ref("");
 onMounted(() => {
   const today = new Date();
   const options = { year: "numeric", month: "long", day: "numeric" };
   formattedDate.value = today.toLocaleDateString("en-US", options);
+  console.log(process.env.api_host);
+});
+
+const getCourses = ref(null);
+axios.get(`${process.env.api_host}/courses`).then((response) => {
+  getCourses.value = response.data;
+});
+
+const getTotalUsers = ref(null);
+axios.get(`${process.env.api_host}/users`).then((response) => {
+  getTotalUsers.value = response.data;
 });
 </script>

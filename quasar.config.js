@@ -39,6 +39,10 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
+      env: {
+        IMGBB_KEY: "c3638a233ed64fc771557fe2ed8c0df7",
+        api_host: "https://g188k323-3500.asse.devtunnels.ms",
+      },
       target: {
         browser: ["es2019", "edge88", "firefox78", "chrome87", "safari13.1"],
         node: "node20",

@@ -16,12 +16,12 @@
         </span>
       </router-link>
     </div>
-    <div>
-      <q-card-section class="q-pa-none text-caption">
+    <div style="display: flex; flex-direction: column; align-items: flex-start">
+      <q-card-section class="q-pb-none text-caption">
         {{ formattedDate }}
       </q-card-section>
       <div class="fullName">
-        <q-card-section style="width: 300px"
+        <q-card-section class="q-pt-none" style="width: 300px"
           ><span v-if="myProfile"
             >{{ myProfile.firstName }} {{ myProfile.middleName }}
             {{ myProfile.lastName }}</span
@@ -41,7 +41,7 @@
   justify-content: space-between
 .fullName
   width: 300px
-  text-align: left
+  text-transform: capitalize
 @media (max-width:430px)
   .fullName
     width: 100%
@@ -67,7 +67,7 @@ const token = localStorage.getItem("authToken");
 // Check if token exists before making the request
 if (token) {
   axios
-    .get("http://localhost:3000/users/myProfile", {
+    .get(`${process.env.api_host}/users/myProfile`, {
       headers: {
         authorization: `${token}`,
       },
@@ -83,6 +83,6 @@ if (token) {
 }
 const getProfileImg = (filePath) => {
   const fileName = filePath.split("\\").pop();
-  return `http://localhost:3000/uploads/${fileName}`;
+  return `${process.env.api_host}/uploads/${fileName}`;
 };
 </script>

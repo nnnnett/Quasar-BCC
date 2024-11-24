@@ -178,7 +178,7 @@ const optionGender = {
 // Fetch courses from the API when the component mounts
 onMounted(() => {
   axios
-    .get("http://localhost:3000/courses")
+    .get(`${process.env.api_host}/courses`)
     .then((response) => {
       // Map the courses from the response to a structure suitable for the q-select
       selectCourses.value.coursesOption = response.data.map((course) => ({
@@ -221,7 +221,7 @@ const submitSignup = async () => {
 
   try {
     const response = await axios.post(
-      "http://localhost:3000/instructors/signup",
+      ` ${process.env.api_host}/instructors/signup`,
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },

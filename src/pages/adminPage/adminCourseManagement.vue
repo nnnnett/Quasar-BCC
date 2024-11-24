@@ -58,6 +58,7 @@
               </q-card-section>
             </div>
             <!-- List of course -->
+
             <div>
               <div class="courseList q-mt-md q-px-xl">
                 <!-- icon and course name -->
@@ -69,9 +70,7 @@
                     />
                   </div>
                   <div>
-                    <q-card-section class="q-py-none">
-                      Digital Literacy
-                    </q-card-section>
+                    <q-card-section class="q-py-none"> wew</q-card-section>
                     <q-card-section class="q-py-none">
                       10 Items
                     </q-card-section>
@@ -134,8 +133,8 @@
                   </div>
                 </div>
               </div>
-              <hr />
             </div>
+
             <!-- second course -->
             <div>
               <div class="courseList q-mt-md q-px-xl">
@@ -450,7 +449,7 @@
 import adminNavBar from "src/components/adminNavBar.vue";
 import statusCourseNavBar from "src/components/statusCourseNavBar.vue";
 import { ref } from "vue";
-
+import axios from "axios";
 const courseFilter = ref("");
 
 const courseOption = {
@@ -473,4 +472,9 @@ const optionMentors = {
 const optionDurations = {
   setDuration: [1, 2, 3, 4],
 };
+
+const getCourses = ref(null);
+axios.get(`${process.env.api_host}/courses`).then((response) => {
+  getCourses.value = response.data;
+});
 </script>

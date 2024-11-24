@@ -825,20 +825,15 @@ const submitSignup = async () => {
 
   try {
     const response = await axios.post(
-      "http://localhost:3000/users/signup",
+      `${process.env.api_host}/users/signup`,
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
       }
     );
-
-    // Show a positive notification
     $q.notify({ type: "positive", message: "Signup successful!" });
-
-    // Redirect user to another page (e.g., the home page or dashboard)
-    router.push("/loginPage").catch((err) => console.error(err)); // Replace '/dashboard' with your target route
+    router.push("/loginPage").catch((err) => console.error(err));
   } catch (error) {
-    // Show an error notification
     $q.notify({ type: "negative", message: "Error during signup." });
     console.error(error);
   }
