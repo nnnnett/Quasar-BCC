@@ -74,6 +74,15 @@ const routes = [
           import("src/pages/instructorPage/instructorCourse.vue"),
       },
       {
+        path: "instructorAddActivity",
+        component: () =>
+          import("src/pages/instructorPage/instructorAddActivity.vue"),
+      },
+      {
+        path: "editActivity",
+        component: () => import("src/pages/instructorPage/editActivity.vue"),
+      },
+      {
         path: "registerPage",
         component: () => import("src/pages/registerPage.vue"),
       },

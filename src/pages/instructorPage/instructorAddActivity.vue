@@ -3,26 +3,45 @@
     <instructorNavBar />
     <div class="main-container">
       <q-card-section>
-        <div class="q-pl-lg text-subtitle1">Course > Music</div>
+        <div class="q-pl-lg text-subtitle1">Course > Music > [Activity #]</div>
       </q-card-section>
       <!--  -->
       <div class="main-dashboard q-pl-xl">
         <q-card class="main-content q-px-xl q-py-lg">
           <div class="imgCourse q-px-md">
-            <q-img cover src="/src/assets/lee.png" class="responsive-img">
-            </q-img>
+            <q-card-section class="q-pl-none">
+              Add Activity Thumbnail
+            </q-card-section>
+            <q-card-section
+              class="flex flex-center"
+              style="border: 1px dashed black; width: 100%"
+            >
+              <q-file
+                name="imageFile"
+                for="imageFile"
+                v-model="imageFile"
+                v-if="!photoUrl && !uploadLoading"
+                @update:model-value="uploadPhoto(imageFile)"
+                label="Choose File"
+                filled
+                :loading="uploadLoading"
+                accept="image/*"
+                clearable
+              >
+                <template v-slot:prepend>
+                  <q-icon name="upload" />
+                </template>
+              </q-file>
+            </q-card-section>
           </div>
           <!-- Course activity details -->
           <div class="q-px-md courseActDetails">
             <q-card-section
-              class="q-mt-md q-pb-none q-pl-none text-h6"
-              style="text-transform: capitalize"
+              class="q-mt-md q-p-none q-pl-md text-h6"
+              style="text-transform: capitalize; width: 240px"
             >
-              Sample Name</q-card-section
-            >
-            <q-card-section class="q-pt-sm text-body2"
-              >5 Activities</q-card-section
-            >
+              <q-input type="text" label="Add Activity #"></q-input
+            ></q-card-section>
             <div class="courseActivityAndDescript">
               <div
                 style="
@@ -33,29 +52,26 @@
                 class="q-ml-sm"
               >
                 <div class="showDescription">
-                  <q-card-section>Description</q-card-section>
+                  <q-card-section>Instruction</q-card-section>
                 </div>
               </div>
               <!-- Description Section: Visible when descriptionLink is true -->
               <q-card-section
-                class="courseDescription q-px-lg"
+                class="courseDescription q-px-lg q-pb-md q-pt-none"
                 style="text-align: justify"
               >
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Consectetur ratione excepturi amet, iste odit, quasi velit vel
-                ullam eaque suscipit obcaecati repellendus blanditiis facilis,
-                modi optio eum vero odio aperiam!
+                <q-input type="textarea" outlined> </q-input>
               </q-card-section>
             </div>
             <div
-              style="border: 1px solid #925fe2; border-radius: 14px"
+              style="background-color: #925fe2; border-radius: 14px"
               class="q-mt-lg"
             >
               <q-btn
                 flat
-                to="instructorAddActivity"
-                label="Add  Activity"
-                style="width: 100%; text-transform: capitalize; color: #925fe2"
+                to="#"
+                label="Published  Activity"
+                style="width: 100%; text-transform: capitalize; color: #ffffff"
               />
             </div>
           </div>
@@ -71,11 +87,13 @@
           <q-card-section
             style="row-gap: 14px; display: flex; flex-direction: column"
           >
-            <div
-              class="acivityList q-py-md q-pl-md text-subtitle1 text-weight-medium"
-            >
-              Activity 1
-            </div>
+            <router-link style="text-decoration: none" to="editActivity">
+              <div
+                class="acivityList q-py-md q-pl-md text-subtitle1 text-weight-medium"
+              >
+                Activity 1
+              </div>
+            </router-link>
           </q-card-section>
         </q-card>
       </div>
@@ -86,6 +104,7 @@
 <style lang="sass" scoped>
 .main-container
   width: 80vw
+
 .main-dashboard
   display: flex
   justify-content: space-between
@@ -93,13 +112,9 @@
   height: auto
   width: 65%
   border-radius: 24px
-  max-height: 800px
+  max-height: 600px
 .imgCourse
-  display: flex
-  justify-content: center
-  align-items: center
-  width: 100%
-  height: auto
+
 
 .responsive-img
   min-width: 450px
@@ -114,17 +129,6 @@
   width: 33%
   border-radius: 24px
   height: auto
-.imgExpertise
-  border: 1px solid #EBE9FB
-  width: 80%
-  height: 250px
-  border-radius: 14px
-.publishedAct
-  border: 1px solid #EBE9FB
-  width: 80%
-  height: 100px
-  border-radius: 14px
-  overflow: hidden
 
 .acivityList
   border: 1px solid #979797
