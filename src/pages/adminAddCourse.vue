@@ -53,9 +53,9 @@
                     <q-file
                       name="imageFile"
                       for="imageFile"
-                      v-model="imageFile"
+                      v-model="form.imageFile"
                       v-if="!photoUrl && !uploadLoading"
-                      @update:model-value="uploadPhoto(imageFile)"
+                      @update:model-value="uploadPhoto(form.imageFile)"
                       label="Choose File"
                       filled
                       :loading="uploadLoading"
@@ -92,7 +92,7 @@
 
                 <q-input
                   name="courseName"
-                  v-model="courseName"
+                  v-model="form.courseName"
                   type="text"
                   rounded
                   outlined
@@ -123,7 +123,7 @@
 
                 <q-input
                   name="courseDescription"
-                  v-model="courseDescription"
+                  v-model="form.courseDescription"
                   type="textarea"
                   rounded
                   outlined
@@ -189,11 +189,18 @@
 </style>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import axios from "axios";
 import { useQuasar } from "quasar";
 import adminNavBar from "src/components/adminNavBar.vue";
 import notifProfile from "src/components/notifProfile.vue";
+
+const form = reactive({
+  courseName: "",
+  courseDescription: "",
+  photoUrl: "",
+});
+
 const $q = useQuasar();
 
 const courseName = ref("");
@@ -201,7 +208,9 @@ const courseDescription = ref("");
 const mentors = ref("");
 const imageFile = ref("");
 const durations = ref("");
-
+const photoUrl = ref(null);
+const deletePhotoUrl = ref(null);
+const uploadLoading = ref(false);
 const optionMentors = {
   AssignedMentor: ["nnet", "jules", "khris"],
 };
@@ -214,29 +223,22 @@ const getTokenFromLocalStorage = () => {
   return localStorage.getItem("authToken"); // Adjust key if necessary
 };
 
-const submitCourse = async () => {
-  const token = getTokenFromLocalStorage();
-  if (!token) {
-    $q.notify({
-      type: "negative",
-      message: "Authentication token is missing.",
-    });
-    return;
-  }
+async function submitCourse() {
+  // const token = getTokenFromLocalStorage();
+  // if (!token) {
+  //   $q.notify({
+  //     type: "negative",
+  //     message: "Authentication token is missing.",
+  //   });
+  //   return;
+  // }
 
   try {
-    const response = await axios.post(
-      ` ${process.env.api_host}/courses`,
-      {
-        name: form.value.courseName,
-        description: form.value.courseDescription,
-      },
-      {
-        headers: {
-          Authorization: `${token}`, // Include the token in the Authorization header
-        },
-      }
-    );
+    await axios.post(` ${process.env.api_host}/courses`, {
+      name: form.courseName,
+      description: form.courseDescription,
+      courseFile: photoUrl.value,
+    });
 
     $q.notify({
       type: "positive",
@@ -244,8 +246,9 @@ const submitCourse = async () => {
     });
 
     // Reset the form after successful submission
-    form.value.courseName = "";
-    form.value.courseDescription = "";
+    form.courseName = "";
+    form.courseDescription = "";
+    photoUrl.value = "";
   } catch (error) {
     const errorMessage =
       error.response?.data?.message ||
@@ -256,11 +259,8 @@ const submitCourse = async () => {
     });
     console.error("Error:", error);
   }
-};
+}
 
-const photoUrl = ref(null);
-const deletePhotoUrl = ref(null);
-const uploadLoading = ref(false);
 async function uploadToImgBB(apiKey, photoBase64) {
   try {
     const formData = new FormData();

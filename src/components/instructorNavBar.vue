@@ -36,7 +36,11 @@
         </div>
 
         <div class="sideNavBar">
-          <q-item clickable to="instructorDashboard" class="q-pl-xl q-mt-md">
+          <q-item
+            clickable
+            @click="router.replace(`/instructorDashboard`)"
+            class="q-pl-xl q-mt-md"
+          >
             <q-item-section avatar>
               <q-icon name="dashboard" />
             </q-item-section>
@@ -44,7 +48,11 @@
               <q-item-label>Dashboard</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="instructorCoursePage" class="q-pl-xl q-mt-md">
+          <q-item
+            clickable
+            @click="router.replace(`/instructorCoursePage`)"
+            class="q-pl-xl q-mt-md"
+          >
             <q-item-section avatar>
               <q-icon name="library_books" />
             </q-item-section>

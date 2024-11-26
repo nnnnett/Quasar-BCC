@@ -8,79 +8,72 @@ const routes = [
       { path: "signupPage", component: () => import("pages/signupPage.vue") },
       {
         path: "userDashboard",
-        component: () => import("pages/userPage/userDashboard.vue"),
+        component: () => import("src/pages/userDashboard.vue"),
       },
       {
         path: "userCourse",
-        component: () => import("pages/userPage/userCourse.vue"),
+        component: () => import("src/pages/userCourse.vue"),
       },
       {
         path: "userProgress",
-        component: () => import("pages/userPage/userProgress.vue"),
+        component: () => import("src/pages/userProgress.vue"),
       },
       {
         path: "userSettings",
-        component: () => import("pages/userPage/userSettings.vue"),
+        component: () => import("src/pages/userSettings.vue"),
       },
       {
         path: "cssCourse/:courseId",
-        component: () => import("pages/userPage/cssCourse.vue"),
+        component: () => import("src/pages/cssCourse.vue"),
       },
       {
-        path: "activityPage/:activityId",
-        component: () => import("pages/userPage/activityPage.vue"),
+        path: "activityPage/:courseId/:activityId",
+        component: () => import("src/pages/activityPage.vue"),
       },
       {
         path: "instructorRegisterPage",
-        component: () =>
-          import("src/pages/adminPage/instructorRegisterPage.vue"),
+        component: () => import("src/pages/instructorRegisterPage.vue"),
       },
       {
         path: "adminAddCourse",
-        component: () => import("src/pages/adminPage/adminAddCourse.vue"),
+        component: () => import("src/pages/adminAddCourse.vue"),
       },
       {
         path: "adminCourseManagement",
-        component: () =>
-          import("src/pages/adminPage/adminCourseManagement.vue"),
+        component: () => import("src/pages/adminCourseManagement.vue"),
       },
       {
         path: "adminUserManagement",
-        component: () => import("src/pages/adminPage/adminUserManagement.vue"),
+        component: () => import("src/pages/adminUserManagement.vue"),
       },
       {
         path: "adminAttendanceManagement",
-        component: () =>
-          import("src/pages/adminPage/adminAttendanceManagement.vue"),
+        component: () => import("src/pages/adminAttendanceManagement.vue"),
       },
       {
         path: "adminDashboard",
-        component: () => import("src/pages/adminPage/adminDashboard.vue"),
+        component: () => import("src/pages/adminDashboard.vue"),
       },
       // instructor
       {
         path: "instructorCoursePage",
-        component: () =>
-          import("src/pages/instructorPage/instructorCoursePage.vue"),
+        component: () => import("src/pages/instructorCoursePage.vue"),
       },
       {
         path: "instructorDashboard",
-        component: () =>
-          import("src/pages/instructorPage/instructorDashboard.vue"),
+        component: () => import("src/pages/instructorDashboard.vue"),
       },
       {
         path: "instructorCourse",
-        component: () =>
-          import("src/pages/instructorPage/instructorCourse.vue"),
+        component: () => import("src/pages/instructorCourse.vue"),
       },
       {
         path: "instructorAddActivity",
-        component: () =>
-          import("src/pages/instructorPage/instructorAddActivity.vue"),
+        component: () => import("src/pages/instructorAddActivity.vue"),
       },
       {
         path: "editActivity",
-        component: () => import("src/pages/instructorPage/editActivity.vue"),
+        component: () => import("src/pages/editActivity.vue"),
       },
       {
         path: "registerPage",
@@ -93,6 +86,10 @@ const routes = [
       {
         path: "nicePage",
         component: () => import("src/pages/nicePage.vue"),
+      },
+      {
+        path: "3dSample",
+        component: () => import("src/pages/3dSample.vue"),
       },
       {
         path: "qrAttendancePage",

@@ -60,11 +60,6 @@
                 >
                 </q-input>
               </q-card-section>
-              <q-card-section
-                style="display: flex; justify-content: flex-end; color: #9e95a2"
-              >
-                Forgot Password
-              </q-card-section>
 
               <div class="column flex flex-center">
                 <q-btn
@@ -80,13 +75,9 @@
 
                 <q-card-section>
                   Don’t have an account?
-                  <router-link to="registerPage" class="policies">
+                  <router-link to="signupPage" class="policies">
                     Create Account
                   </router-link>
-                </q-card-section>
-                <q-card-section>
-                  Are you a mentor?
-                  <router-link to="#" class="policies">Click here </router-link>
                 </q-card-section>
               </div>
             </q-form>

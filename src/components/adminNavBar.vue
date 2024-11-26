@@ -22,25 +22,37 @@
         </div>
 
         <div class="sideNavBar text-subtitle1 q-mt-xl">
-          <q-item clickable to="adminDashboard" class="q-pl-xl q-mt-md">
+          <q-item
+            clickable
+            @click="router.replace(`/adminDashboard`)"
+            class="q-pl-xl q-mt-md"
+          >
             <q-item-section>
               <q-item-label>Dashboard</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="adminCourseManagement" class="q-pl-xl q-mt-md">
+          <q-item
+            clickable
+            @click="router.replace(`/adminCourseManagement`)"
+            class="q-pl-xl q-mt-md"
+          >
             <q-item-section>
               <q-item-label>Courses Management</q-item-label>
             </q-item-section>
           </q-item>
 
-          <q-item clickable to="adminUserManagement" class="q-pl-xl q-mt-md">
+          <q-item
+            clickable
+            @click="router.replace(`/adminUserManagement`)"
+            class="q-pl-xl q-mt-md"
+          >
             <q-item-section>
               <q-item-label>User Management</q-item-label>
             </q-item-section>
           </q-item>
           <q-item
             clickable
-            to="adminAttendanceManagement"
+            @click="router.replace(`/adminAttendanceManagement`)"
             class="q-pl-xl q-mt-md"
           >
             <q-item-section>
@@ -92,4 +104,6 @@
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router"; // Importing the router to navigate after logout
 import { useQuasar } from "quasar"; // Importing Quasar's $q for notifications
+
+const router = useRouter();
 </script>

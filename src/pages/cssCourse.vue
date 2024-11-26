@@ -16,14 +16,27 @@
         <q-card-section class="q-px-none">Course</q-card-section>
         <q-card-section class="q-px-sm">></q-card-section>
         <q-card-section class="q-px-none">
-          <span v-if="course">{{ course.data.name }}</span></q-card-section
+          <span v-if="course">{{ course.name }}</span></q-card-section
         >
       </div>
       <!-- main dashboard -->
       <div class="main-dashboard q-ml-xl q-mt-md">
         <q-card class="main-content q-px-xl q-py-lg">
+          <div class=" ">
+            <q-btn
+              class="q-mb-md"
+              no-caps
+              @click="router.replace(`/userCourse`)"
+              >Back
+            </q-btn>
+          </div>
           <div class="imgCourse q-px-md">
-            <q-img cover src="/src/assets/lee.png" class="responsive-img">
+            <q-img
+              cover
+              :src="course.courseFile"
+              class="responsive-img"
+              v-if="course"
+            >
             </q-img>
           </div>
           <!-- Course activity details -->
@@ -32,7 +45,7 @@
               class="q-mt-md q-pb-none text-h6"
               style="text-transform: capitalize"
             >
-              <span v-if="course">{{ course.data.name }}</span></q-card-section
+              <span v-if="course">{{ course.name }}</span></q-card-section
             >
             <q-card-section class="q-pt-sm text-body2"
               >5 Activities</q-card-section
@@ -64,13 +77,15 @@
               </div>
 
               <!-- Description Section: Visible when descriptionLink is true -->
-              <q-card-section
-                class="courseDescription q-px-lg"
-                style="text-align: justify"
-                v-if="course"
-              >
-                {{ course.data.description }}
-              </q-card-section>
+              <div v-if="descriptionLink">
+                <q-card-section
+                  class="courseDescription q-px-lg"
+                  style="text-align: justify"
+                  v-if="course"
+                >
+                  {{ course.description }}
+                </q-card-section>
+              </div>
 
               <!-- Activity Section: Visible when activityLink is true -->
               <q-card-section
@@ -78,11 +93,19 @@
                 style="text-align: justify"
                 v-if="activityLink"
               >
-                <router-link to="activitySample" style="text-decoration: none">
-                  <div style="border: 1px solid #ebe9fb">
-                    <q-card-section>Activity Name</q-card-section>
-                  </div>
-                </router-link>
+                <div
+                  class="cursor-pointer"
+                  style="border: 1px solid #ebe9fb"
+                  v-for="activities in course.activities"
+                  :key="activities._id"
+                  @click="
+                    router.replace(
+                      `/activityPage/${course._id}/${activities._id}`
+                    )
+                  "
+                >
+                  <q-card-section>{{ activities.name }}</q-card-section>
+                </div>
               </q-card-section>
             </div>
           </div>
@@ -266,28 +289,31 @@
 import { colors } from "quasar";
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 import axios from "axios";
 
 const route = useRoute();
+const router = useRouter();
 const courseId = route.params.courseId;
 const course = ref(null);
 
-async function getCourse() {
+async function getCourses() {
   try {
-    await axios
-      .get(`${process.env.api_host}/courses/${courseId}`)
+    axios
+      .get(`${process.env.api_host}/courses?query=${courseId}`)
       .then((response) => {
-        course.value = response;
-        console.log(course);
+        course.value = response.data[0];
       });
-  } catch {}
+  } catch {
+    console.log("failed to get courses");
+  }
 }
 
 onMounted(() => {
-  getCourse();
+  getCourses();
 });
+
 console.log("log");
 
 const descriptionLink = ref(true);
@@ -296,7 +322,6 @@ const activityLink = ref(false);
 // Methods to toggle between the two sections
 const showDescription = () => {
   descriptionLink.value = true;
-
   activityLink.value = false; // Hide activity when showing description
 };
 

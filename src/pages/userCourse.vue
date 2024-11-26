@@ -39,8 +39,8 @@
           </q-item-section>
           <div class="q-pl-none">
             <q-card-section class="q-pb-none q-pl-none"
-              ><span v-if="getCourses">
-                {{ getCourses.count }}
+              ><span v-if="courses">
+                {{ courses.length }}
               </span>
             </q-card-section>
             <q-card-section class="q-pt-none q-pl-none">
@@ -70,10 +70,10 @@
           <q-space />
         </div>
         <!-- different active courses -->
-        <div v-if="getCourses" class="diffCourseActive">
+        <div v-if="courses" class="diffCourseActive">
           <!-- first active //digitalLiteracy-->
           <div
-            v-for="course in getCourses.course"
+            v-for="course in courses"
             :key="course._id"
             class="digitalLiteracyContainer q-mr-none q-pt-md activeCourseList"
           >
@@ -107,13 +107,18 @@
               class="q-pb-none"
               style="font-size: 1em; text-transform: capitalize"
             >
-              <span v-if="getCourses"> {{ course.name }} </span>
+              <span v-if="courses"> {{ course.name }} </span>
             </q-card-section>
             <q-card-section class="q-pt-none q-pb-sm text-caption">
               7 topics
             </q-card-section>
             <div style="height: 50px; display: flex; justify-content: flex-end">
-              <q-btn icon="chevron_right" class="q-px-sm" flat />
+              <q-btn
+                icon="chevron_right"
+                class="q-px-sm"
+                flat
+                :to="'/cssCourse/' + course._id"
+              />
             </div>
           </div>
           <!-- Second Active //CSS-->
@@ -259,10 +264,21 @@
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
 import axios from "axios";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
-const getCourses = ref(null);
-axios.get(`${process.env.api_host}/courses`).then((response) => {
-  getCourses.value = response.data;
+const courses = ref(null);
+async function getCourses() {
+  try {
+    await axios.get(`${process.env.api_host}/courses`).then((response) => {
+      courses.value = response.data;
+      console.log(courses.value);
+    });
+  } catch {
+    console.log("failed to get courses");
+  }
+}
+
+onMounted(() => {
+  getCourses();
 });
 </script>

@@ -59,8 +59,12 @@
             </div>
             <!-- List of course -->
 
-            <div>
-              <div class="courseList q-mt-md q-px-xl">
+            <div v-if="courses">
+              <div
+                v-for="course in courses"
+                :key="course._id"
+                class="courseList q-mt-md q-px-xl"
+              >
                 <!-- icon and course name -->
                 <div style="display: flex; align-items: center">
                   <div class="courseList-icon">
@@ -70,7 +74,11 @@
                     />
                   </div>
                   <div>
-                    <q-card-section class="q-py-none"> wew</q-card-section>
+                    <q-card-section class="q-py-none">
+                      <span v-if="courses">
+                        {{ course.name }}
+                      </span></q-card-section
+                    >
                     <q-card-section class="q-py-none">
                       10 Items
                     </q-card-section>
@@ -135,27 +143,12 @@
               </div>
             </div>
 
-            <!-- second course -->
-            <div>
+            <!-- second course/ published -->
+            <!-- <div>
               <div class="courseList q-mt-md q-px-xl">
-                <!-- icon and course name -->
-                <div style="display: flex; align-items: center">
-                  <div class="courseList-icon">
-                    <q-img
-                      src="/src/assets/courseIcon.svg"
-                      style="width: 30px; height: 30px"
-                    />
-                  </div>
-                  <div>
-                    <q-card-section class="q-py-none">
-                      Digital Literacy
-                    </q-card-section>
-                    <q-card-section class="q-py-none">
-                      10 Items
-                    </q-card-section>
-                  </div>
-                </div>
-                <!-- course status -->
+                icon and course name
+
+                course status / pubslied
                 <div
                   style="
                     display: flex;
@@ -181,7 +174,7 @@
                 </div>
               </div>
               <hr />
-            </div>
+            </div> -->
             <!-- third -->
             <div>
               <div class="courseList q-mt-md q-px-xl">
@@ -448,17 +441,15 @@
 <script setup>
 import adminNavBar from "src/components/adminNavBar.vue";
 import statusCourseNavBar from "src/components/statusCourseNavBar.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
-const courseFilter = ref("");
 
+const courseFilter = ref("");
 const courseOption = {
   courses: ["Digital LiteracyLiteracyLiteracy", "Css", "Music"],
 };
-
 const inception = ref(false);
 const secondDialog = ref(false);
-
 const courseName = ref("");
 const courseDescription = ref("");
 const mentors = ref("");
@@ -473,8 +464,19 @@ const optionDurations = {
   setDuration: [1, 2, 3, 4],
 };
 
-const getCourses = ref(null);
-axios.get(`${process.env.api_host}/courses`).then((response) => {
-  getCourses.value = response.data;
+const courses = ref(null);
+async function getCourses() {
+  try {
+    await axios.get(`${process.env.api_host}/courses`).then((response) => {
+      courses.value = response.data;
+      console.log(courses.value);
+    });
+  } catch {
+    console.log("failed to get courses");
+  }
+}
+
+onMounted(() => {
+  getCourses();
 });
 </script>

@@ -36,7 +36,11 @@
         </div>
 
         <div class="sideNavBar">
-          <q-item clickable to="userDashboard" class="q-pl-xl q-mt-md">
+          <q-item
+            clickable
+            @click="router.replace(`/userDashboard`)"
+            class="q-pl-xl q-mt-md"
+          >
             <q-item-section avatar>
               <q-icon name="dashboard" />
             </q-item-section>
@@ -44,7 +48,11 @@
               <q-item-label>Dashboard</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="userCourse" class="q-pl-xl q-mt-md">
+          <q-item
+            clickable
+            @click="router.replace(`/userCourse`)"
+            class="q-pl-xl q-mt-md"
+          >
             <q-item-section avatar>
               <q-icon name="library_books" />
             </q-item-section>
@@ -52,7 +60,11 @@
               <q-item-label>Courses</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="userProgress" class="q-pl-xl q-mt-md">
+          <q-item
+            clickable
+            @click="router.replace(`/userProgress`)"
+            class="q-pl-xl q-mt-md"
+          >
             <q-item-section avatar>
               <q-icon name="bar_chart" />
             </q-item-section>
@@ -60,7 +72,11 @@
               <q-item-label>Progress</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable to="userSettings" class="q-pl-xl q-mt-md">
+          <q-item
+            clickable
+            @click="router.replace(`/userSettings`)"
+            class="q-pl-xl q-mt-md"
+          >
             <q-item-section avatar>
               <q-icon name="settings" />
             </q-item-section>

@@ -17,20 +17,30 @@
         <q-card-section class="q-px-sm">></q-card-section>
         <q-card-section class="q-px-none">Music</q-card-section>
         <q-card-section class="q-px-sm">></q-card-section>
-        <q-card-section class="q-px-none">[Activity Name]</q-card-section>
+        <q-card-section class="q-px-none" v-if="activity">{{
+          activity.name
+        }}</q-card-section>
       </div>
       <div class="main-dashboard q-ml-xl q-mt-md">
         <q-card class="main-content q-px-xl q-py-lg">
-          <div class="imgCourse q-px-md">
-            <q-img cover src="/src/assets/lee.png" class="responsive-img" />
+          <div class=" ">
+            <q-btn
+              class="q-mb-md"
+              no-caps
+              @click="router.replace(`/cssCourse/${courseId}`)"
+              >Back
+            </q-btn>
           </div>
+          <div class="imgCourse q-px-md"></div>
           <!-- Course activity details -->
           <div class="q-px-md courseActDetails">
             <q-card-section
               class="q-mt-md q-pb-none text-h6"
               style="text-transform: capitalize"
-              >Activity 1</q-card-section
+              v-if="activity"
             >
+              {{ activity.name }}
+            </q-card-section>
 
             <div class="courseActivityAndDescript">
               <div
@@ -50,14 +60,12 @@
               <q-card-section
                 class="courseDescription q-px-lg"
                 style="text-align: justify"
+                v-if="activity"
               >
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sunt
-                voluptate distinctio exercitationem, aspernatur, deserunt
-                repudiandae itaque nobis maxime dolore, quod doloribus earum
-                recusandae delectus veritatis perspiciatis repellat a nesciunt
-                quas!
+                {{ activity.description }}
               </q-card-section>
             </div>
+            <!-- add activity -->
             <div class="submittedFile q-mt-md">
               <q-file
                 v-model="activityFile"
@@ -205,7 +213,31 @@
 <script setup>
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useRoute, useRouter } from "vue-router";
 
+const route = useRoute();
+const router = useRouter();
 const activityFile = ref("");
+const courseId = route.params.courseId;
+const activityId = route.params.activityId;
+const activity = ref(null);
+
+async function getCourses() {
+  try {
+    axios
+      .get(`${process.env.api_host}/courses/activity/${courseId}/${activityId}`)
+      .then((response) => {
+        activity.value = response.data;
+        console.log(activity.value);
+      });
+  } catch {
+    console.log("failed to get courses");
+  }
+}
+
+onMounted(() => {
+  getCourses();
+});
 </script>

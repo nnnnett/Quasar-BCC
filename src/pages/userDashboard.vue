@@ -41,9 +41,9 @@
             </q-item-section>
             <div class="q-pl-none">
               <q-card-section class="q-pb-none q-pl-none">
-                <span v-if="getCourses">{{
-                  getCourses.count
-                }}</span></q-card-section
+                <span v-if="courses">
+                  {{ courses.length }}
+                </span></q-card-section
               >
               <q-card-section class="q-pt-none q-pl-none">
                 Active Courses
@@ -78,11 +78,11 @@
             </RouterLink>
           </div>
           <!-- different active courses -->
-          <div v-if="getCourses" class="diffCourseActive">
+          <div v-if="courses" class="diffCourseActive">
             <!-- Second Active //CSS-->
             <div
-              v-for="course in getCourses.course"
-              :key="course._id"
+              v-for="courses in courses"
+              :key="courses._id"
               class="cssContainer q-mr-none q-pt-md activeCourseList"
             >
               <!-- Loop through courses based on getCourses.count -->
@@ -119,14 +119,14 @@
                   class="q-pb-none text-subtitle1"
                   style="font-size: 1em; text-transform: capitalize"
                 >
-                  <span v-if="getCourses">
-                    {{ course.name }}
+                  <span v-if="courses">
+                    {{ courses.name }}
                   </span>
                 </q-card-section>
 
                 <!-- Topic count (replace this with dynamic topic count if needed) -->
                 <q-card-section class="q-pt-none q-pb-sm text-caption">
-                  {{ course.topicsCount || "5" }} topics
+                  {{ courses.activities.length }} Activities
                 </q-card-section>
 
                 <!-- Button to navigate to a dynamic course page -->
@@ -136,7 +136,7 @@
                   <q-btn
                     icon="chevron_right"
                     class="q-px-sm q-mr-md"
-                    :to="'/cssCourse/' + course._id"
+                    :to="'/cssCourse/' + courses._id"
                     flat
                   />
                 </div>
@@ -163,7 +163,7 @@
                   text-transform: capitalize;
                 "
               >
-                <span v-if="course">{{ course.data.name }} </span>
+                <span v-if="courses">{{ courses.name }} </span>
               </q-card-section>
             </div>
 
@@ -551,26 +551,28 @@ import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
 
 const progress = ref(0.65);
+const courses = ref(null);
+const myProfile = ref(null);
 
 const randomize = () => {
   progress.value = Math.random();
 };
 
-async function getCourse() {
+async function getCourses() {
   try {
-    await axios
-      .get(`${process.env.api_host}/courses/${courseId}`)
-      .then((response) => {
-        course.value = response;
-        console.log(course);
-      });
-  } catch {}
+    axios.get(`${process.env.api_host}/courses`).then((response) => {
+      courses.value = response.data;
+      console.log(courses.value);
+    });
+  } catch {
+    console.log("failed to get courses");
+  }
 }
 
 onMounted(() => {
-  getCourse();
+  getCourses();
 });
-const myProfile = ref(null);
+
 const token = localStorage.getItem("authToken");
 // Check if token exists before making the request
 if (token) {
