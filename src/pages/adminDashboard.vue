@@ -177,15 +177,10 @@
 import adminNavBar from "src/components/adminNavBar.vue";
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const formattedDate = ref("");
-onMounted(() => {
-  const today = new Date();
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  formattedDate.value = today.toLocaleDateString("en-US", options);
-  console.log(process.env.api_host);
-});
-
 const getCourses = ref(null);
 axios.get(`${process.env.api_host}/courses`).then((response) => {
   getCourses.value = response.data;
@@ -194,5 +189,45 @@ axios.get(`${process.env.api_host}/courses`).then((response) => {
 const getTotalUsers = ref(null);
 axios.get(`${process.env.api_host}/users`).then((response) => {
   getTotalUsers.value = response.data;
+});
+
+async function isLogin() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/tokenValidation`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log("here", response);
+    if (!response.data.isValid) {
+      router.replace(`/loginPage`);
+    } else {
+      const myProfile = await axios.get(
+        `${process.env.api_host}/users/myProfile`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      if (myProfile.data[0].title !== "admin") {
+        router.replace(`/loginPage`);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+onMounted(() => {
+  isLogin();
+  const today = new Date();
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  formattedDate.value = today.toLocaleDateString("en-US", options);
+  console.log(process.env.api_host);
 });
 </script>

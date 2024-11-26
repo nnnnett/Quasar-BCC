@@ -476,8 +476,11 @@
 <script setup>
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 const progressLink = ref(true);
 const badgesLink = ref(false);
 const certificateLink = ref(false);
@@ -555,5 +558,40 @@ const backgroundColorClass = computed(() => {
 const getCourses = ref(null);
 axios.get(`${process.env.api_host}/courses`).then((response) => {
   getCourses.value = response.data;
+});
+
+async function isLogin() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/tokenValidation`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log("here", response);
+    if (!response.data.isValid) {
+      router.replace(`/loginPage`);
+    } else {
+      const myProfile = await axios.get(
+        `${process.env.api_host}/users/myProfile`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      if (myProfile.data[0].title !== "member") {
+        router.replace(`/loginPage`);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+onMounted(() => {
+  isLogin();
 });
 </script>

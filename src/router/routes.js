@@ -76,7 +76,7 @@ const routes = [
         component: () => import("src/pages/editActivity.vue"),
       },
       {
-        path: "registerPage",
+        path: "registerPage/:code",
         component: () => import("src/pages/registerPage.vue"),
       },
       {

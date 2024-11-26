@@ -251,9 +251,48 @@
 <script setup>
 import adminNavBar from "src/components/adminNavBar.vue";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import { useQuasar } from "quasar";
 
+const router = useRouter();
 const totalPresent = ref(true);
 const totalAbsent = ref(true);
 const fromDate = ref("");
 const toDate = ref("");
+
+async function isLogin() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/tokenValidation`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log("here", response);
+    if (!response.data.isValid) {
+      router.replace(`/loginPage`);
+    } else {
+      const myProfile = await axios.get(
+        `${process.env.api_host}/users/myProfile`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      if (myProfile.data[0].title !== "admin") {
+        router.replace(`/loginPage`);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+onMounted(() => {
+  isLogin();
+});
 </script>

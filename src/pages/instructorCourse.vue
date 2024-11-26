@@ -135,4 +135,45 @@
 
 <script setup>
 import instructorNavBar from "src/components/instructorNavBar.vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+async function isLogin() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/tokenValidation`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log("here", response);
+    if (!response.data.isValid) {
+      router.replace(`/loginPage`);
+    } else {
+      const myProfile = await axios.get(
+        `${process.env.api_host}/users/myProfile`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      if (myProfile.data[0].title !== "instructor") {
+        router.replace(`/loginPage`);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+onMounted(() => {
+  isLogin();
+});
 </script>

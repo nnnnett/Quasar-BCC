@@ -69,15 +69,15 @@
               <q-item-label>Reports</q-item-label>
             </q-item-section>
           </q-item> -->
-          <!-- <q-item clickable @click="handleLogout" class="q-pl-xl q-mt-md">
+
+          <q-item clickable @click="handleLogout" class="q-pl-xl q-mt-md">
             <q-item-section avatar>
               <q-icon name="logout" />
             </q-item-section>
-
             <q-item-section>
               <q-item-label>Logout</q-item-label>
             </q-item-section>
-          </q-item> -->
+          </q-item>
         </div>
       </q-list>
     </div>
@@ -105,5 +105,28 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router"; // Importing the router to navigate after logout
 import { useQuasar } from "quasar"; // Importing Quasar's $q for notifications
 
+const $q = useQuasar();
 const router = useRouter();
+
+const clearLocalStorage = () => {
+  localStorage.clear();
+  console.log("LocalStorage has been cleared.");
+};
+
+const handleLogout = async () => {
+  try {
+    // Clear localStorage when logging out
+    clearLocalStorage();
+
+    // Show a notification
+    $q.notify({ type: "positive", message: "Logged out successfully" });
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    // Redirect to the login page
+    router.push("/");
+  } catch (error) {
+    // If an error occurs during logout
+    $q.notify({ type: "negative", message: "Error during logout" });
+    console.error(error);
+  }
+};
 </script>

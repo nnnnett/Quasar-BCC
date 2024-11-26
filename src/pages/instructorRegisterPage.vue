@@ -176,20 +176,7 @@ const optionGender = {
 // Reactive variables
 
 // Fetch courses from the API when the component mounts
-onMounted(() => {
-  axios
-    .get(`${process.env.api_host}/courses`)
-    .then((response) => {
-      // Map the courses from the response to a structure suitable for the q-select
-      selectCourses.value.coursesOption = response.data.map((course) => ({
-        value: course.id, // The value assigned when the course is selected
-        label: course.name, // The label displayed in the dropdown
-      }));
-    })
-    .catch((error) => {
-      console.error("Error fetching courses:", error);
-    });
-});
+
 const submitSignup = async () => {
   if (
     !username.value ||
@@ -236,4 +223,52 @@ const submitSignup = async () => {
     console.error(error);
   }
 };
+
+async function isLogin() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/tokenValidation`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log("here", response);
+    if (!response.data.isValid) {
+      router.replace(`/loginPage`);
+    } else {
+      const myProfile = await axios.get(
+        `${process.env.api_host}/users/myProfile`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      if (myProfile.data[0].title !== "instructor") {
+        router.replace(`/loginPage`);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+onMounted(() => {
+  isLogin();
+  axios
+    .get(`${process.env.api_host}/courses`)
+    .then((response) => {
+      // Map the courses from the response to a structure suitable for the q-select
+      selectCourses.value.coursesOption = response.data.map((course) => ({
+        value: course.id, // The value assigned when the course is selected
+        label: course.name, // The label displayed in the dropdown
+      }));
+    })
+    .catch((error) => {
+      console.error("Error fetching courses:", error);
+    });
+});
 </script>

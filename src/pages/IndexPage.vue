@@ -71,14 +71,18 @@
               <div class="flex q-ml-xl" style="width: 33%">
                 <q-card-section class="q-px-none mentorStudent-counter">
                   <!-- Mentors -->
-                  <q-card-section class="q-pt-none">8</q-card-section>
+                  <q-card-section class="q-pt-none"
+                    ><span v-if="instructor">
+                      {{ instructor }}
+                    </span></q-card-section
+                  >
                   <q-card-section class="q-pt-none">Mentors</q-card-section>
                 </q-card-section>
                 <!-- students -->
                 <q-card-section class="q-px-none mentorStudent-counter">
                   <q-card-section class="q-pt-none">
-                    <span v-if="users">
-                      {{ users.length }}
+                    <span v-if="member">
+                      {{ member }}
                     </span></q-card-section
                   >
                   <q-card-section class="q-pt-none">Students</q-card-section>
@@ -539,6 +543,8 @@ import NavBar from "src/components/navBar.vue";
 import axios from "axios";
 import { ref, onMounted } from "vue";
 
+const member = ref(null);
+const instructor = ref(null);
 const users = ref(null);
 const sendEmail = () => {
   window.location.href = "mailto:bacoorcomputercenter@gmail.com";
@@ -549,18 +555,28 @@ const facebookLink = () => {
 const youtubeLink = () => {
   window.open("https://www.youtube.com/@bacoorcomputercenter", "_blank");
 };
-async function getUsers() {
+async function getStudents() {
   try {
-    const getMembers = ref(null);
-    axios.get(`${process.env.api_host}/courses`).then((response) => {
-      users.value = response.data;
-    });
+    const response = await axios.get(
+      `${process.env.api_host}/users?filter=member`
+    );
+    member.value = response.data.length;
   } catch {
     console.log("failed to get users");
   }
 }
-
+async function getInstructor() {
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users?filter=instructor`
+    );
+    instructor.value = response.data.length;
+  } catch {
+    console.log("failed to get users");
+  }
+}
 onMounted(() => {
-  getUsers();
+  getStudents();
+  getInstructor();
 });
 </script>

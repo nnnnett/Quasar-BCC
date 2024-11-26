@@ -211,15 +211,16 @@
         </div>
         <div>
           <q-dialog
-            full-height
             full-width
             v-model="viewDetails"
             class="courseEdit-container"
           >
-            <q-card style="display: flex">
-              <div style="border: 1px solid red; width: 60%; color: #4b4b4b">
+            <q-card style="display: flex" class="q-pa-xl">
+              <div style="width: 60%; color: #4b4b4b">
                 <q-card-section>
-                  <div class="text-h6 text-weight-medium">Personal Details</div>
+                  <div class="text-h6 text-weight-medium q">
+                    Personal Details
+                  </div>
                 </q-card-section>
                 <!-- first middle last name -->
                 <q-card-section
@@ -413,10 +414,10 @@
                 </q-card-section>
               </div>
 
-              <div style="border: 1px solid black; width: 40%">
+              <div style="width: 40%">
                 <!-- user Profile -->
                 <q-card-section
-                  class="flex flex-center q-mt-xl"
+                  class="flex flex-center"
                   style="display: flex; flex-direction: column"
                 >
                   <q-img src="/src/assets/lee.png" style="max-width: 450px" />
@@ -569,6 +570,8 @@ import adminNavBar from "src/components/adminNavBar.vue";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
+import { onMounted } from "vue";
+import axios from "axios";
 
 const $q = useQuasar();
 const router = useRouter();
@@ -643,4 +646,39 @@ function closepopup() {
 // function onSearchInput() {
 //   // Additional logic can go here if needed
 // }
+
+async function isLogin() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/tokenValidation`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log("here", response);
+    if (!response.data.isValid) {
+      router.replace(`/loginPage`);
+    } else {
+      const myProfile = await axios.get(
+        `${process.env.api_host}/users/myProfile`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      if (myProfile.data[0].title !== "admin") {
+        router.replace(`/loginPage`);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+onMounted(() => {
+  isLogin();
+});
 </script>

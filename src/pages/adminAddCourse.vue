@@ -190,6 +190,7 @@
 
 <script setup>
 import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
 import { useQuasar } from "quasar";
 import adminNavBar from "src/components/adminNavBar.vue";
@@ -202,7 +203,7 @@ const form = reactive({
 });
 
 const $q = useQuasar();
-
+const router = useRouter();
 const courseName = ref("");
 const courseDescription = ref("");
 const mentors = ref("");
@@ -321,4 +322,40 @@ function convertToBase64(file) {
     reader.readAsDataURL(file);
   });
 }
+
+async function isLogin() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/tokenValidation`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log("here", response);
+    if (!response.data.isValid) {
+      router.replace(`/loginPage`);
+    } else {
+      const myProfile = await axios.get(
+        `${process.env.api_host}/users/myProfile`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      if (myProfile.data[0].title !== "admin") {
+        router.replace(`/loginPage`);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+onMounted(() => {
+  isLogin();
+});
 </script>

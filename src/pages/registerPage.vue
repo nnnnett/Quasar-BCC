@@ -21,7 +21,7 @@
               style="height: 150px; display: block; width: 17%; float: right"
             >
               <q-btn
-                to="signupPage"
+                @click="router.replace(`/signupPage`)"
                 icon="close"
                 round
                 class="float-right q-ma-md"
@@ -29,7 +29,7 @@
               >
               </q-btn>
             </div>
-            dsds
+
             <q-card-section class="q-pt-xl q-pl-xl text-justify text-h6">
               Please, complete all essential information in this Registration
               Form, ensuring no fields are left blank.
@@ -126,7 +126,11 @@
                   outlined
                   placeholder="09XXXXXXXXX"
                   no-error-icon
-                  :rules="[numberChecker]"
+                  :rules="[
+                    (val) =>
+                      /^09\d{9}$/.test(val) ||
+                      'Please enter a valid Philippine phone number',
+                  ]"
                 >
                 </q-input>
               </q-card-section>
@@ -141,7 +145,12 @@
                   outlined
                   placeholder="skibidi.toilet@cvsu.edu.ph"
                   no-error-icon
-                  :rules="[emailChecker]"
+                  :rules="[
+                    (val) =>
+                      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+                        val
+                      ) || 'Please enter a valid email address',
+                  ]"
                 >
                 </q-input>
               </q-card-section>
@@ -379,7 +388,11 @@
                   outlined
                   placeholder="09XXXXXXXXX"
                   no-error-icon
-                  :rules="[numberChecker]"
+                  :rules="[
+                    (val) =>
+                      /^09\d{9}$/.test(val) ||
+                      'Please enter a valid Philippine phone number',
+                  ]"
                 >
                 </q-input>
               </q-card-section>
@@ -552,7 +565,14 @@
                   placeholder="Juan"
                   class="inName"
                   no-error-icon
-                  :rules="[myPass]"
+                  :rules="[
+                    (val) =>
+                      (val &&
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+                          val
+                        )) ||
+                      'Use strong pass',
+                  ]"
                 >
                 </q-input>
               </q-card-section>
@@ -561,16 +581,18 @@
                 <q-input
                   name="confirmPassword"
                   for="confirmPassword"
-                  type="password"
                   v-model="confirmPassword"
+                  type="password"
                   rounded
                   outlined
-                  placeholder="Juan"
+                  placeholder="Confirm Password"
                   class="inName"
                   no-error-icon
-                  :rules="[myConfirmPassword]"
-                >
-                </q-input>
+                  :rules="[
+                    (val) =>
+                      (val && val === password) || 'Passwords do not match',
+                  ]"
+                />
               </q-card-section>
             </div>
             <q-card-section
@@ -685,7 +707,7 @@
 
 <script setup>
 // import { data } from "autoprefixer";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import axios from "axios";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";

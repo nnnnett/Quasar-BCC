@@ -549,10 +549,12 @@ import axios from "axios";
 import { ref, computed, onMounted } from "vue";
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
+import { useRouter } from "vue-router";
 
 const progress = ref(0.65);
 const courses = ref(null);
 const myProfile = ref(null);
+const router = useRouter();
 
 const randomize = () => {
   progress.value = Math.random();
@@ -568,10 +570,6 @@ async function getCourses() {
     console.log("failed to get courses");
   }
 }
-
-onMounted(() => {
-  getCourses();
-});
 
 const token = localStorage.getItem("authToken");
 // Check if token exists before making the request
@@ -611,5 +609,42 @@ const imageSrc = computed(() => {
   } else {
     return "/src/assets/Default.png"; // Default image for other ranks
   }
+});
+
+async function isLogin() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/tokenValidation`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log("here", response);
+    if (!response.data.isValid) {
+      router.replace(`/loginPage`);
+    } else {
+      const myProfile = await axios.get(
+        `${process.env.api_host}/users/myProfile`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      if (myProfile.data[0].title !== "member") {
+        router.replace(`/loginPage`);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+onMounted(() => {
+  getCourses();
+  isLogin();
 });
 </script>

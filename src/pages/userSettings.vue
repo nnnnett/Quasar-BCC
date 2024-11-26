@@ -697,11 +697,12 @@
 <script setup>
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 
 // Reactive data
 const profileImage = ref("/src/assets/waw.jpg"); // Default profile image
-
+const router = useRouter();
 // File input reference
 const fileInput = ref(null);
 
@@ -740,4 +741,39 @@ const showPersonalDetails = () => {
 const optionGender = {
   option: ["Male", "Female", "Non-Binary"],
 };
+
+async function isLogin() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/tokenValidation`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log("here", response);
+    if (!response.data.isValid) {
+      router.replace(`/loginPage`);
+    } else {
+      const myProfile = await axios.get(
+        `${process.env.api_host}/users/myProfile`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      if (myProfile.data[0].title !== "member") {
+        router.replace(`/loginPage`);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+onMounted(() => {
+  isLogin();
+});
 </script>

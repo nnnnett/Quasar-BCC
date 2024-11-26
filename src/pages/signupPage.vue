@@ -13,6 +13,14 @@
     >
       <div class="container text-center">
         <q-card class="no-border bg-transparent">
+          <q-btn
+            @click="router.replace(`/`)"
+            icon="close"
+            round
+            class="float-right q-ma-md"
+            style="height: 20px; width: 20px; z-index: 10"
+          >
+          </q-btn>
           <q-card-section class="text-h5" style="color: #ffffff">
             Welcome to <span style="color: #5ce1e6">BCC!</span>
           </q-card-section>
@@ -24,11 +32,7 @@
             Sign Up
           </q-card-section>
           <q-card-section>
-            <q-form
-              class="q-col-gutter-md"
-              action="http://localhost:9000/#/signupPage"
-              method="GET"
-            >
+            <q-form @submit.prevent="submitCode" class="q-col-gutter-md">
               <q-input
                 semi-rounded
                 outlined
@@ -40,7 +44,6 @@
                 bg-color="white"
                 color="black"
                 clearable
-                :rules="[numberChecker]"
               >
               </q-input>
 
@@ -50,6 +53,7 @@
                   label="Proceed"
                   no-caps
                   type="submit"
+                  :loading="loading"
                   color="accent"
                   style="background-color: #925fe2; width: 230px"
                   rounded
@@ -97,13 +101,14 @@
 </style>
 
 <script setup>
+import axios from "axios";
 import { Notify, useQuasar } from "quasar";
 import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 
-defineOptions({
-  name: "signupPage",
-});
-
+const $q = useQuasar();
+const router = useRouter();
+const loading = ref(false);
 const form = ref({
   registrationCode: "",
   // acceptedPolicy: false,
@@ -120,4 +125,33 @@ const numberChecker = (val) =>
 
 //   event.target.submit();
 // }
+
+async function submitCode() {
+  try {
+    loading.value = true;
+    const response = await axios.post(
+      `${process.env.api_host}/users/checkCode`,
+      {
+        code: registrationCode.value,
+      }
+    );
+
+    if (response.data.isValid) {
+      $q.notify({
+        type: "positive",
+        message: "Valid Code",
+      });
+      router.replace(`/registerPage/${registrationCode.value}`);
+    } else {
+      $q.notify({
+        type: "negative",
+        message: response.data.message,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
+}
 </script>

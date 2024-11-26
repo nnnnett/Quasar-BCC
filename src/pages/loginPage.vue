@@ -66,6 +66,7 @@
                   class="q-my-xl q-py-md"
                   label="Proceed"
                   no-caps
+                  :loading="loading"
                   type="submit"
                   color="accent"
                   style="background-color: #925fe2; width: 230px"
@@ -118,7 +119,7 @@
 
 <script setup>
 import { Notify, useQuasar } from "quasar";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 
@@ -128,24 +129,23 @@ defineOptions({
 });
 
 const $q = useQuasar();
-
+const loading = ref(false);
 const username = ref("");
 const password = ref("");
+const formData = new FormData();
+formData.append("username", username.value);
+formData.append("password", password.value);
 
-const submitLogin = async () => {
-  if (!username.value || !password.value) {
-    $q.notify({
-      type: "warning",
-      message: "Please fill in all required fields.",
-    });
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("username", username.value);
-  formData.append("password", password.value);
-
+async function submitLogin() {
   try {
+    loading.value = true;
+    if (!username.value || !password.value) {
+      $q.notify({
+        type: "warning",
+        message: "Please fill in all required fields.",
+      });
+      return;
+    }
     const response = await axios.post(`${process.env.api_host}/users/login`, {
       username: username.value,
       password: password.value,
@@ -157,7 +157,7 @@ const submitLogin = async () => {
 
       $q.notify({ type: "positive", message: "Login successful!" });
       await new Promise((resolve) => setTimeout(resolve, 500));
-      router.push("/userDashboard").catch((err) => console.error(err)); // Replace '/dashboard' with your target route
+
       // Handle successful login (e.g., redirect or store user info)
     } else {
       $q.notify({
@@ -169,6 +169,52 @@ const submitLogin = async () => {
     const errorMessage = error.response?.data?.message || "Error during Login.";
     $q.notify({ type: "negative", message: errorMessage });
     console.error(error);
+  } finally {
+    await isLogin();
+    loading.value = false;
   }
-};
+}
+
+async function isLogin() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/tokenValidation`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    const isLogin = response.data.isValid === true;
+    if (isLogin) {
+      const userData = await axios.get(
+        `${process.env.api_host}/users/myProfile`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+
+      if (userData.data[0].title === "member") {
+        router.replace(`/userDashboard`);
+      }
+      if (userData.data[0].title === "instructor") {
+        router.replace(`/instructorDashboard`);
+      }
+      if (userData.data[0].title === "admin") {
+        router.replace(`/adminDashboard`);
+      }
+    }
+
+    return isLogin;
+  } catch {
+    console.log("failed to authenticate");
+  }
+}
+
+onMounted(() => {
+  isLogin();
+});
 </script>
