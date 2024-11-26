@@ -440,13 +440,18 @@
                   <div style="width: 30px">
                     <q-img
                       clickable
-                      class="courser-pointer"
+                      class="cursor-pointer"
                       @click="facebookLink"
                       src="/src/assets/facebook.png"
-                    />ewew
+                    />
                   </div>
-                  <div class=" " style="width: 30px">
-                    <q-img src="/src/assets/youtube.png" />
+                  <div style="width: 30px">
+                    <q-img
+                      class="cursor-pointer"
+                      @click="youtubeLink"
+                      clickable
+                      src="/src/assets/youtube.png"
+                    />
                   </div>
                 </div>
               </q-card-section>
@@ -542,7 +547,7 @@ const facebookLink = () => {
   window.open("https://www.facebook.com/bacoorcomputercenter", "_blank");
 };
 const youtubeLink = () => {
-  window.location.href = "mailto:bacoorcomputercenter@gmail.com";
+  window.open("https://www.youtube.com/@bacoorcomputercenter", "_blank");
 };
 async function getUsers() {
   try {

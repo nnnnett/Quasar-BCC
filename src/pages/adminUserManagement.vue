@@ -63,7 +63,7 @@
               </q-select>
             </div>
           </div>
-          <!-- user Management Content -->
+          <!-- student Management Content -->
           <div class="q-px-md">
             <!-- Header -->
             <q-card-section class="userManagement-header">
@@ -85,9 +85,9 @@
                     class="q-px-none"
                   >
                     <q-list>
-                      <q-item clickable @click="inception = true">
+                      <q-item clickable @click="viewDetails = true">
                         <q-item-section>
-                          <q-item-label>Edit</q-item-label>
+                          <q-item-label>View Details</q-item-label>
                         </q-item-section>
                       </q-item>
                       <q-item
@@ -97,7 +97,7 @@
                         @click="onItemClick"
                       >
                         <q-item-section>
-                          <q-item-label>Publish</q-item-label>
+                          <q-item-label>Active</q-item-label>
                         </q-item-section>
                       </q-item>
                       <q-item
@@ -107,7 +107,7 @@
                         @click="onItemClick"
                       >
                         <q-item-section>
-                          <q-item-label>Archieve</q-item-label>
+                          <q-item-label>Inactive</q-item-label>
                         </q-item-section>
                       </q-item>
                     </q-list>
@@ -155,7 +155,7 @@
               />
             </div>
           </div>
-          <!-- user Management Content -->
+          <!-- Instructor Management Content -->
           <div class="q-px-md">
             <!-- Header -->
             <q-card-section class="userManagement-header">
@@ -177,9 +177,9 @@
                     class="q-px-none"
                   >
                     <q-list>
-                      <q-item clickable @click="inception = true">
+                      <q-item clickable @click="viewDetails = true">
                         <q-item-section>
-                          <q-item-label>Edit</q-item-label>
+                          <q-item-label>View Details</q-item-label>
                         </q-item-section>
                       </q-item>
                       <q-item
@@ -189,7 +189,7 @@
                         @click="onItemClick"
                       >
                         <q-item-section>
-                          <q-item-label>Publish</q-item-label>
+                          <q-item-label>Active</q-item-label>
                         </q-item-section>
                       </q-item>
                       <q-item
@@ -199,7 +199,7 @@
                         @click="onItemClick"
                       >
                         <q-item-section>
-                          <q-item-label>Archieve</q-item-label>
+                          <q-item-label>Inactive</q-item-label>
                         </q-item-section>
                       </q-item>
                     </q-list>
@@ -208,6 +208,316 @@
               </q-card-section>
             </div>
           </div>
+        </div>
+        <div>
+          <q-dialog
+            full-height
+            full-width
+            v-model="viewDetails"
+            class="courseEdit-container"
+          >
+            <q-card style="display: flex">
+              <div style="border: 1px solid red; width: 60%; color: #4b4b4b">
+                <q-card-section>
+                  <div class="text-h6 text-weight-medium">Personal Details</div>
+                </q-card-section>
+                <!-- first middle last name -->
+                <q-card-section
+                  class="q-py-none"
+                  style="display: flex; justify-content: space-between"
+                >
+                  <div style="width: 30%">
+                    <div>First Name</div>
+                    <q-input
+                      outlined
+                      rounded
+                      v-model="firstName"
+                      clearable
+                      type="text"
+                    />
+                  </div>
+                  <div style="width: 30%">
+                    <div>Middle Name</div>
+                    <q-input
+                      outlined
+                      rounded
+                      clearable
+                      v-model="middleName"
+                      type="text"
+                    />
+                  </div>
+                  <div style="width: 30%">
+                    <div>Last Name</div>
+                    <q-input
+                      outlined
+                      rounded
+                      clearable
+                      v-model="lastName"
+                      type="text"
+                    />
+                  </div>
+                </q-card-section>
+                <!-- gender contact birthdate -->
+                <q-card-section
+                  class=" "
+                  style="display: flex; justify-content: space-between"
+                >
+                  <div style="width: 30%">
+                    <div>Gender</div>
+                    <q-select
+                      outlined
+                      rounded
+                      clearable
+                      v-model="gender"
+                      :options="genderOptions.option"
+                      type="text"
+                    />
+                  </div>
+                  <div style="width: 30%">
+                    <div>Birthdate</div>
+                    <q-input type="date" rounded v-model="date" outlined />
+                  </div>
+                  <div style="width: 30%">
+                    <div>Contact</div>
+                    <q-input
+                      outlined
+                      clearable
+                      rounded
+                      v-model="contact"
+                      type="number"
+                    />
+                  </div>
+                </q-card-section>
+                <!-- address -->
+                <q-card-section>
+                  <div class="text-h6">Address</div>
+                </q-card-section>
+                <q-card-section
+                  class="q-py-none"
+                  style="display: flex; justify-content: space-between"
+                >
+                  <div style="width: 25%">
+                    <div>Country</div>
+                    <q-input
+                      outlined
+                      rounded
+                      clearable
+                      v-model="country"
+                      type="text"
+                    />
+                  </div>
+                  <div style="width: 20%">
+                    <div>Zip Code</div>
+                    <q-input
+                      outlined
+                      rounded
+                      clearable
+                      v-model="zipCode"
+                      type="number"
+                    />
+                  </div>
+                  <div style="width: 25%">
+                    <div>Province</div>
+                    <q-input
+                      outlined
+                      rounded
+                      clearable
+                      v-model="province"
+                      type="text"
+                    />
+                  </div>
+                  <div style="width: 25%">
+                    <div>Municipality</div>
+                    <q-input
+                      outlined
+                      rounded
+                      clearable
+                      v-model="municipality"
+                      type="text"
+                    />
+                  </div>
+                </q-card-section>
+                <q-card-section
+                  class=" "
+                  style="display: flex; justify-content: space-between"
+                >
+                  <div style="width: 30%">
+                    <div>Barangay</div>
+                    <q-input
+                      clearable
+                      outlined
+                      rounded
+                      v-model="barangay"
+                      type="text"
+                    />
+                  </div>
+                  <div style="width: 30%">
+                    <div>Street Name</div>
+                    <q-input
+                      outlined
+                      clearable
+                      rounded
+                      v-model="streetName"
+                      type="text"
+                    />
+                  </div>
+                  <div style="width: 30%">
+                    <div>Block & Lot</div>
+                    <q-input
+                      outlined
+                      rounded
+                      clearable
+                      v-model="blockAndLot"
+                      type="text"
+                    />
+                  </div>
+                </q-card-section>
+                <!-- guardian details -->
+                <q-card-section>
+                  <div class="text-h6">Guardian</div>
+                </q-card-section>
+                <q-card-section
+                  class="q-py-none"
+                  style="display: flex; justify-content: space-between"
+                >
+                  <div style="width: 30%">
+                    <div>First Name</div>
+                    <q-input
+                      outlined
+                      rounded
+                      clearable
+                      v-model="guardianFirstName"
+                      type="text"
+                    />
+                  </div>
+                  <div style="width: 30%">
+                    <div>Middle Name</div>
+                    <q-input
+                      outlined
+                      rounded
+                      clearable
+                      v-model="guardianMiddleName"
+                      type="text"
+                    />
+                  </div>
+                  <div style="width: 30%">
+                    <div>Last Name</div>
+                    <q-input
+                      outlined
+                      rounded
+                      clearable
+                      v-model="guardianLastName"
+                      type="text"
+                    />
+                  </div>
+                </q-card-section>
+              </div>
+
+              <div style="border: 1px solid black; width: 40%">
+                <!-- user Profile -->
+                <q-card-section
+                  class="flex flex-center q-mt-xl"
+                  style="display: flex; flex-direction: column"
+                >
+                  <q-img src="/src/assets/lee.png" style="max-width: 450px" />
+                  <div style="width: auto" class="q-mt-md">
+                    <q-file
+                      v-model="file"
+                      label="Upload Photo"
+                      label-style="text-align:center"
+                      accept="image/*"
+                      filled
+                      outlined
+                      clearable
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="attach_file" />
+                      </template>
+                    </q-file>
+                  </div>
+                </q-card-section>
+                <!-- Account Details -->
+                <q-card-section
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <div style="width: 45%; margin-bottom: 1rem">
+                    <div>Username</div>
+                    <q-input
+                      outlined
+                      clearable
+                      rounded
+                      v-model="userName"
+                      type="text"
+                    />
+                  </div>
+                  <div style="width: 45%; margin-bottom: 1rem">
+                    <div>email</div>
+                    <q-input
+                      outlined
+                      clearable
+                      rounded
+                      v-model="email"
+                      type="email"
+                    />
+                  </div>
+                  <div style="width: 45%; margin-bottom: 1rem">
+                    <div>Password</div>
+                    <q-input
+                      v-model="password"
+                      filled
+                      :type="isPwd ? 'password' : 'text'"
+                      hint="Password with toggle"
+                    >
+                      <template v-slot:append>
+                        <q-icon
+                          :name="isPwd ? 'visibility_off' : 'visibility'"
+                          class="cursor-pointer"
+                          @click="isPwd = !isPwd"
+                        />
+                      </template>
+                    </q-input>
+                  </div>
+                </q-card-section>
+                <q-card-actions align="right" class="text-primary">
+                  <q-btn flat label="Save" @click="secondDialog = true" />
+                  <q-btn flat label="Close" v-close-popup />
+                </q-card-actions>
+              </div>
+            </q-card>
+          </q-dialog>
+          <q-dialog
+            v-model="secondDialog"
+            persistent
+            transition-show="scale"
+            transition-hide="scale"
+          >
+            <q-card class="bg-teal text-white" style="width: 300px">
+              <q-card-section>
+                <div class="text-h6">Persistent</div>
+              </q-card-section>
+              <q-card-section class="q-pt-none">
+                Click/Tap on the backdrop.
+              </q-card-section>
+              <q-card-actions align="right" class="bg-white text-teal">
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="closepopup"
+                  class="q-pl-xl q-mt-md"
+                >
+                  <q-item-section>
+                    <q-item-label>Save</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-btn flat label="CANCEL" v-close-popup />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
         </div>
       </q-card>
     </div>
@@ -257,22 +567,57 @@
 <script setup>
 import adminNavBar from "src/components/adminNavBar.vue";
 import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 
+const $q = useQuasar();
+const router = useRouter();
 const studentLink = ref(true);
 const instructorLink = ref(false);
+const searchQuery = ref("");
+const viewDetails = ref(true);
+const secondDialog = ref(false);
+const firstName = ref("");
+const middleName = ref("");
+const lastName = ref("");
+const gender = ref("");
+const genderOptions = {
+  option: ["Male", "Female", "LGBTQIA+"],
+};
+const date = ref("");
+const contact = ref("");
+const country = ref("");
+const zipCode = ref("");
+const province = ref("");
+const municipality = ref("");
+const barangay = ref("");
+const streetName = ref("");
+const blockAndLot = ref("");
+const guardianFirstName = ref("");
+const guardianMiddleName = ref("");
+const guardianLastName = ref("");
+const file = ref("");
+const userName = ref("");
+const email = ref("");
+const password = ref("");
+const isPwd = ref(true);
 
 const showStudent = () => {
   studentLink.value = true;
   instructorLink.value = false;
 };
-
 const showInstructor = () => {
   studentLink.value = false;
   instructorLink.value = true;
 };
 
+function closepopup() {
+  viewDetails.value = false; // Close the dialog
+  router.replace("/adminUserManagement"); // Navigate back
+}
+
 // Define reactive variables
-const searchQuery = ref("");
+
 // const dataList = ref([
 //   "Apple",
 //   "Banana",

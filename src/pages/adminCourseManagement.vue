@@ -227,7 +227,6 @@
             <!-- Popup edit -->
             <div>
               <q-dialog
-                full-height="80vh"
                 full-width
                 v-model="inception"
                 class="courseEdit-container"
@@ -287,9 +286,9 @@
                           no-error-icon
                         />
                       </div>
-                      <!-- Assigning -->
+                      <!-- Assigning
                       <div class="assignedContainer">
-                        <!-- mentors -->
+                        mentors
                         <div style="width: 45%">
                           <q-card-section class="q-pl-none q-pb-sm">
                             Mentors
@@ -301,7 +300,7 @@
                             label="Select Mentors"
                           />
                         </div>
-                        <!-- durations -->
+                        durations
                         <div style="width: 45%">
                           <q-card-section class="q-pl-none q-pb-sm">
                             Set Durations
@@ -313,7 +312,7 @@
                             label="Set Durations"
                           />
                         </div>
-                      </div>
+                      </div> -->
                       <div>
                         <q-card-section class="q-pl-none q-pb-sm"
                           >Description</q-card-section

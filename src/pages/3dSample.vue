@@ -20,7 +20,13 @@ const activityId = "YOUR_ACTIVITY_ID"; // Replace with the actual activity ID
 const loadActivity = async () => {
   try {
     const { data: activity } = await axios.get(
-      `${process.env.api_host}/courses/activity/6744ba0e847e9856dbe3aac1/6744c4c0847e9856dbe3abcb`
+      `${process.env.api_host}/courses/activity/6744ba0e847e9856dbe3aac1/6744c4c0847e9856dbe3abcb`,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*", // This is typically a server-side setting, but can be added to the request
+          "Allow-Access-Control": "true", // Custom header you might want to use
+        },
+      }
     );
     console.log("Activity Data:", activity);
     fileUrl.value = `${process.env.api_host}/${activity.activityFile}`;
