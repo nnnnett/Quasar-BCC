@@ -59,11 +59,15 @@
               <q-item-label>Attendance Management</q-item-label>
             </q-item-section>
           </q-item>
-          <!-- <q-item clickable to="#" class="q-pl-xl q-mt-md">
+          <q-item
+            clickable
+            @click="router.replace(`/adminConfigure`)"
+            class="q-pl-xl q-mt-md"
+          >
             <q-item-section>
-              <q-item-label>Badge & Rankings</q-item-label>
+              <q-item-label>Configuration</q-item-label>
             </q-item-section>
-          </q-item> -->
+          </q-item>
           <!-- <q-item clickable to="#" class="q-pl-xl q-mt-md">
             <q-item-section>
               <q-item-label>Reports</q-item-label>
@@ -71,9 +75,6 @@
           </q-item> -->
 
           <q-item clickable @click="handleLogout" class="q-pl-xl q-mt-md">
-            <q-item-section avatar>
-              <q-icon name="logout" />
-            </q-item-section>
             <q-item-section>
               <q-item-label>Logout</q-item-label>
             </q-item-section>
