@@ -58,6 +58,10 @@ const routes = [
         path: "adminConfigure",
         component: () => import("src/pages/adminConfigure.vue"),
       },
+      {
+        path: "adminReports",
+        component: () => import("src/pages/adminReports.vue"),
+      },
       // instructor
       {
         path: "instructorCoursePage",

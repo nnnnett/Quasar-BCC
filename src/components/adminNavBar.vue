@@ -68,11 +68,15 @@
               <q-item-label>Configuration</q-item-label>
             </q-item-section>
           </q-item>
-          <!-- <q-item clickable to="#" class="q-pl-xl q-mt-md">
+          <q-item
+            clickable
+            @click="router.replace(`/adminReports`)"
+            class="q-pl-xl q-mt-md"
+          >
             <q-item-section>
               <q-item-label>Reports</q-item-label>
             </q-item-section>
-          </q-item> -->
+          </q-item>
 
           <q-item clickable @click="handleLogout" class="q-pl-xl q-mt-md">
             <q-item-section>

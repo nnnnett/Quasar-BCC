@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page style="overflow: hidden">
     <adminNavBar />
     <div class="main-contaier q-mt-xl q-py-md q-px-md">
       <div class="q-mt-xl">
@@ -62,7 +62,7 @@
       <!-- resource content -->
       <q-card
         class="q-px-xl q-py-lg"
-        style="border-radius: 24px; height: auto; min-height: 550px"
+        style="border-radius: 24px; height: 550px; overflow-y: scroll"
       >
         <!-- header -->
         <q-card-section
@@ -85,7 +85,6 @@
         </q-card-section>
         <!-- content -->
         <q-card-section
-          class="q-mt-md"
           style="
             display: flex;
             justify-content: space-between;
