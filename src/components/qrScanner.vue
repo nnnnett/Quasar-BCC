@@ -2,7 +2,7 @@
   <div v-if="!showCamera" class="col-12 text-center q-pt-md">
     <img
       alt="Quasar logo"
-      src="../assets/quasar-logo-vertical.svg"
+      src="/src/assets/qrPlaceholder.png"
       style="width: 340px"
     /><!-- replace quasar logo with BCC logo -->
   </div>
@@ -21,6 +21,7 @@
         @click="turnCameraOn()"
         v-show="!showCamera"
       />
+
       <p class="text-subtitle1" v-if="result">
         Last Attendance ID: <b>{{ result }}</b>
       </p>
@@ -37,6 +38,13 @@
       size="lg"
       @click="turnCameraOff()"
       v-show="showCamera"
+    />
+    <q-btn
+      label="Logout"
+      color="blue-grey-10"
+      rounded
+      class="full-width q-mt-md"
+      size="lg"
     />
   </div>
 </template>

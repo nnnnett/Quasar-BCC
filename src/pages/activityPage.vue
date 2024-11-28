@@ -15,7 +15,9 @@
       <div class="text-subtitle1 q-ml-xl flex">
         <q-card-section class="q-px-none">Course</q-card-section>
         <q-card-section class="q-px-sm">></q-card-section>
-        <q-card-section class="q-px-none">Music</q-card-section>
+        <q-card-section
+          ><span v-if="course"> {{ course.name }} </span> ></q-card-section
+        >
         <q-card-section class="q-px-sm">></q-card-section>
         <q-card-section class="q-px-none" v-if="activity">{{
           activity.name
@@ -34,6 +36,29 @@
           <div class="imgCourse q-px-md"></div>
           <!-- Course activity details -->
           <div class="q-px-md courseActDetails">
+            <q-card-section>
+              <template v-if="activity && isImage(activity.file)">
+                <!-- Show image if the source is an image -->
+                <q-img
+                  cover
+                  style="border-radius: 14px"
+                  :src="activity.file"
+                  class="responsive-img"
+                ></q-img>
+              </template>
+
+              <template v-else-if="activity">
+                <!-- Show download link for non-image files -->
+                <q-btn
+                  @click="downloadFile(activity.file)"
+                  target="_blank"
+                  style="text-decoration: none; color: var(--q-primary)"
+                >
+                  Download File
+                </q-btn>
+              </template>
+            </q-card-section>
+
             <q-card-section
               class="q-mt-md q-pb-none text-h6"
               style="text-transform: capitalize"
@@ -66,28 +91,31 @@
               </q-card-section>
             </div>
             <!-- add activity -->
-            <div class="submittedFile q-mt-md">
-              <q-file
-                v-model="activityFile"
-                label="Attach Activity File/s"
-                clearable
-                style="width: 35%"
-              />
-            </div>
-            <div>
-              <div class="flex flex-center">
-                <q-btn
-                  class="q-mt-md q-py-md"
-                  label="submit"
-                  no-caps
-                  type="submit"
-                  color="accent"
-                  style="background-color: #925fe2; width: 100%"
-                  rounded
-                >
-                </q-btn>
+            <q-form @submit.prevent="submitActivity">
+              <div class="submittedFile q-mt-md" v-if="isMember">
+                <q-file
+                  v-model="file"
+                  label="Attach Activity File/s"
+                  clearable
+                  style="width: 50%"
+                />
               </div>
-            </div>
+              <div>
+                <div class="flex flex-center" v-if="isMember">
+                  <q-btn
+                    class="q-mt-md q-py-md"
+                    label="submit"
+                    no-caps
+                    type="submit"
+                    :loading="loading"
+                    color="accent"
+                    style="background-color: #925fe2; width: 100%"
+                    rounded
+                  >
+                  </q-btn>
+                </div>
+              </div>
+            </q-form>
           </div>
         </q-card>
         <q-card class="submittedAct-container q-py-md q-px-md">
@@ -99,22 +127,79 @@
             Submitted Activity
           </q-card-section>
           <div
+            v-if="activity"
             style="
               display: flex;
-
               justify-content: center;
+              align-items: center;
+              flex-direction: column;
             "
           >
             <div
-              class="submittedAct"
+              class="submittedAct q-py-none"
+              v-for="(submissions, i) in activity.submissions"
+              :key="submissions._id"
               style="
                 display: flex;
-                justify-content: center;
                 align-items: center;
+                justify-content: center;
                 flex-direction: column;
               "
             >
-              <q-card-section>No data to show.</q-card-section>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  gap: 10px;
+                "
+              >
+                <!-- File Name Section -->
+                <q-card-section
+                  @click="downloadFile(submissions.file)"
+                  style="
+                    flex: 1;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    cursor: pointer;
+                  "
+                >
+                  <span style="color: var(--q-primary)">
+                    {{ submissions.file.split("/").pop() }}
+                  </span>
+                </q-card-section>
+
+                <!-- Button Section -->
+                <div style="flex-shrink: 0">
+                  <q-btn-dropdown
+                    flat
+                    dropdown-icon="more_vert"
+                    class="q-px-none"
+                  >
+                    <q-list>
+                      <q-item
+                        clickable
+                        v-close-popup
+                        @click="pass(activity.submissions[i])"
+                      >
+                        <q-item-section>
+                          <q-item-label style="color: #218334"
+                            >Pass</q-item-label
+                          >
+                        </q-item-section>
+                      </q-item>
+                      <q-item clickable v-close-popup @click="onItemClick">
+                        <q-item-section>
+                          <q-item-label style="color: #fa4032"
+                            >Redo</q-item-label
+                          >
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-btn-dropdown>
+                </div>
+              </div>
             </div>
           </div>
         </q-card>
@@ -216,28 +301,138 @@ import UserNavBar from "src/components/userNavBar.vue";
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 
+const loading = ref(false);
+const $q = useQuasar();
 const route = useRoute();
 const router = useRouter();
-const activityFile = ref("");
+const file = ref("");
 const courseId = route.params.courseId;
 const activityId = route.params.activityId;
+const getSubmission = ref("");
 const activity = ref(null);
+const myProfile = ref();
+const isMember = ref(false);
+const course = ref(null);
 
 async function getCourses() {
   try {
-    axios
-      .get(`${process.env.api_host}/courses/activity/${courseId}/${activityId}`)
+    await axios
+      .get(`${process.env.api_host}/courses?query=${courseId}`)
       .then((response) => {
-        activity.value = response.data;
-        console.log(activity.value);
+        course.value = response.data[0];
       });
   } catch {
     console.log("failed to get courses");
   }
 }
 
-onMounted(() => {
-  getCourses();
+async function getActivity() {
+  try {
+    const response = await axios
+      .get(`${process.env.api_host}/courses/activity/${courseId}/${activityId}`)
+      .then((response) => {
+        activity.value = response.data;
+      });
+  } catch (error) {
+    console.error("Failed to get activity:", error);
+  }
+}
+
+async function submitActivity() {
+  const token = localStorage.getItem("authToken");
+  try {
+    loading.value = true;
+    const response = await axios.post(
+      `${process.env.api_host}/courses/activity/submit/${courseId}/${activityId}`,
+      {
+        file: file.value,
+      },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: token,
+        },
+      }
+    );
+    file.value = "";
+    $q.notify({
+      type: "positive",
+      message: "Submitted Succesfull",
+    });
+  } catch (err) {
+    console.error(err);
+  } finally {
+    loading.value = false;
+    getActivity();
+  }
+}
+
+function isImage(file) {
+  // Check the file extension for common image types
+  const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp"];
+  const extension = file.split(".").pop().toLowerCase();
+  return imageExtensions.includes(extension);
+}
+
+function downloadFile(fileUrl) {
+  const link = document.createElement("a");
+  link.href = fileUrl;
+  link.target = "_blank";
+  link.click();
+}
+async function getUserInfo() {
+  const token = localStorage.getItem("authToken");
+  // Check if token exists before making the request
+  if (token) {
+    await axios
+      .get(`${process.env.api_host}/users/myProfile`, {
+        headers: {
+          authorization: `${token}`,
+        },
+      })
+      .then((response) => {
+        myProfile.value = response.data[0];
+      })
+      .catch((error) => {
+        console.error("API call failed:", error);
+      });
+  } else {
+    console.log("No token found in localStorage");
+  }
+}
+async function memberValidation() {
+  if (myProfile.value.title === "member") {
+    return (isMember.value = true);
+  }
+}
+
+async function pass(submission) {
+  console.log(submission._id);
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.put(
+      `${process.env.api_host}/course/submission/update/${courseId}/${activityId}/${submission._id}`,
+      {
+        isCompleted: true,
+      },
+      {
+        headers: {
+          authorization: `${token}`,
+        },
+      }
+    );
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+onMounted(async () => {
+  await getUserInfo();
+  await memberValidation();
+  await getCourses();
+  await getActivity();
+  // await getSubmission();
 });
 </script>

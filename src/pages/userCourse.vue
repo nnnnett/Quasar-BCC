@@ -66,8 +66,10 @@
         <div class="flex activeCourseAndLink">
           <q-card-section class="q-pl-none text-h6">
             Active Courses
+            <q-card-section v-if="!isMember">
+              <q-btn @click="addCourse = true"> Add Course </q-btn>
+            </q-card-section>
           </q-card-section>
-          <q-space />
         </div>
         <!-- different active courses -->
         <div v-if="courses" class="diffCourseActive">
@@ -78,9 +80,8 @@
             class="digitalLiteracyContainer q-mr-none q-pt-md activeCourseList"
           >
             <div
-              class="q-mx-md"
+              class="q-mx-md q-pt-sm"
               style="
-                background: linear-gradient(180deg, #fff0e1 0%, #ff9a35 100%);
                 width: 85%;
                 height: 100px;
                 display: flex;
@@ -90,18 +91,14 @@
               "
             >
               <!-- icon container -->
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="54px"
-                viewBox="0 -960 960 960"
-                width="54px"
-                fill="white"
-                class="computerIcon"
+              <q-img
+                cover
+                :src="course.file"
+                class="responsive-img"
+                v-if="course"
+                style="border-radius: 14px; max-width: 200px; max-height: 130px"
               >
-                <path
-                  d="M40-120v-80h880v80H40Zm120-120q-33 0-56.5-23.5T80-320v-440q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v440q0 33-23.5 56.5T800-240H160Zm0-80h640v-440H160v440Zm0 0v-440 440Z"
-                />
-              </svg>
+              </q-img>
             </div>
             <q-card-section
               class="q-pb-none"
@@ -110,7 +107,7 @@
               <span v-if="courses"> {{ course.name }} </span>
             </q-card-section>
             <q-card-section class="q-pt-none q-pb-sm text-caption">
-              7 topics
+              {{ course.activities.length }} Activities
             </q-card-section>
             <div style="height: 50px; display: flex; justify-content: flex-end">
               <q-btn
@@ -121,9 +118,107 @@
               />
             </div>
           </div>
-          <!-- Second Active //CSS-->
+          <!-- Add course -->
+          <q-dialog v-model="addCourse" persistent>
+            <q-card style="width: 700px; max-width: 80vw" class="q-pa-md">
+              <div>
+                <q-card-section
+                  class="text-h6 text-weight-medium q-py-sm"
+                  style="color: #4b4b4b"
+                >
+                  Create New Course
+                </q-card-section>
+              </div>
+              <div>
+                <q-card-section class="q-pt-none">
+                  Fill in the details below to create a new course.
+                </q-card-section>
+              </div>
+              <q-card class="q-px-md">
+                <div>
+                  <q-form @submit.prevent="submitCourse">
+                    <!-- details info -->
+                    <div>
+                      <q-card-section
+                        style="color: #4b4b4b"
+                        class="text-h6 q-pb-md q-pl-none"
+                      >
+                        Details Information
+                      </q-card-section>
+                    </div>
+                    <!-- thumbnail -->
+                    <div>
+                      <q-card-section class="q-pt-none q-pb-sm q-pl-none">
+                        Course Tumbnail
+                      </q-card-section>
+                    </div>
+                    <!-- course image -->
+                    <div class=" ">
+                      <q-card style="border: 1px dashed black">
+                        <q-card-section class="flex flex-center">
+                          <q-file
+                            name="file"
+                            for="file"
+                            v-model="file"
+                            label="Choose File"
+                            filled
+                            accept="image/*"
+                            clearable
+                            hint="landscape photo Only"
+                          >
+                            <template v-slot:prepend>
+                              <q-icon name="upload" />
+                            </template>
+                          </q-file>
+                        </q-card-section>
+                      </q-card>
+                    </div>
+                    <!-- course Title -->
+                    <div>
+                      <q-card-section class="q-pl-none q-pb-sm"
+                        >Course Title</q-card-section
+                      >
+                      <q-input
+                        name="courseName"
+                        v-model="courseName"
+                        type="text"
+                        rounded
+                        outlined
+                        placeholder="Course Name"
+                        no-error-icon
+                      />
+                    </div>
+                    <!-- description -->
+                    <div>
+                      <q-card-section class="q-pl-none q-pb-sm"
+                        >Description</q-card-section
+                      >
 
-          <!-- Third Active -->
+                      <q-input
+                        name="description"
+                        v-model="description"
+                        type="textarea"
+                        rounded
+                        outlined
+                        placeholder="Course Description"
+                        no-error-icon
+                      />
+                    </div>
+
+                    <q-card-actions align="right" class="bg-white text-teal">
+                      <q-btn
+                        flat
+                        type="submit"
+                        label="Submit"
+                        @click="addCourse"
+                      />
+                      <q-btn flat label="Cancel" v-close-popup />
+                    </q-card-actions>
+                  </q-form>
+                </div>
+              </q-card>
+            </q-card>
+          </q-dialog>
         </div>
       </div>
       <!-- Continue lerning -->
@@ -246,6 +341,7 @@
     padding: 0
     flex-direction: column
     width: 100%
+
   .diffCourseActive
     width: 600px
   .activeCourseList
@@ -266,9 +362,19 @@ import UserNavBar from "src/components/userNavBar.vue";
 import axios from "axios";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 
+const isMember = ref();
+const $q = useQuasar();
+const file = ref("");
 const router = useRouter();
 const courses = ref(null);
+const addCourse = ref(false);
+const courseName = ref("");
+const description = ref("");
+const photoUrl = ref(null);
+const deletePhotoUrl = ref(null);
+
 async function getCourses() {
   try {
     await axios.get(`${process.env.api_host}/courses`).then((response) => {
@@ -279,7 +385,6 @@ async function getCourses() {
     console.log("failed to get courses");
   }
 }
-
 async function isLogin() {
   const token = localStorage.getItem("authToken");
   try {
@@ -291,7 +396,7 @@ async function isLogin() {
         },
       }
     );
-    console.log("here", response);
+
     if (!response.data.isValid) {
       router.replace(`/loginPage`);
     } else {
@@ -303,9 +408,55 @@ async function isLogin() {
           },
         }
       );
-      if (myProfile.data[0].title !== "member") {
-        router.replace(`/loginPage`);
+
+      roleValidation(myProfile.data[0].title);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function submitCourse() {
+  try {
+    await axios.post(
+      ` ${process.env.api_host}/courses`,
+      {
+        name: courseName.value,
+        description: description.value,
+        file: file.value,
+      },
+      {
+        headers: { "Content-Type": "multipart/form-data" },
       }
+    );
+    addCourse.value = false;
+    getCourses();
+    $q.notify({
+      type: "positive",
+      message: "Course Created Successfully.",
+    });
+
+    // Reset the form after successful submission
+    courseName.value = "";
+    description.value = "";
+    file.value = "";
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message ||
+      "Failed to create course. Please try again.";
+    $q.notify({
+      type: "negative",
+      message: errorMessage,
+    });
+    console.error("Error:", error);
+  }
+}
+
+async function roleValidation(title) {
+  try {
+    console.log(title);
+    if (title === "member") {
+      return (isMember.value = true);
     }
   } catch (err) {
     console.error(err);
@@ -314,6 +465,7 @@ async function isLogin() {
 
 onMounted(() => {
   isLogin();
+
   getCourses();
 });
 </script>

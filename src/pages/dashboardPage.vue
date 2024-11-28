@@ -71,7 +71,7 @@
             </q-card-section>
             <q-space />
             <RouterLink
-              to="userCourse"
+              to="course"
               class="q-pt-md viewAllactiveCourse-link text-subtitle1"
             >
               View All
@@ -90,8 +90,6 @@
                 <div
                   class="q-mx-md"
                   :style="{
-                    background:
-                      'linear-gradient(180deg, #ffe3fc 0%, #e08dd7 100%)',
                     width: '85%',
                     height: '100px',
                     display: 'flex',
@@ -101,17 +99,14 @@
                   }"
                 >
                   <!-- icon container -->
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="54px"
-                    viewBox="0 -960 960 960"
-                    width="54px"
-                    fill="white"
+                  <q-img
+                    cover
+                    style="border-radius: 14px"
+                    :src="courses.file"
+                    class="responsive-img"
+                    v-if="courses"
                   >
-                    <path
-                      d="M120-80v-280h120v-160h200v-80H320v-280h320v280H520v80h200v160h120v280H520v-280h120v-80H320v80h120v280H120Zm280-600h160v-120H400v120ZM200-160h160v-120H200v120Zm400 0h160v-120H600v120ZM480-680ZM360-280Zm240 0Z"
-                    />
-                  </svg>
+                  </q-img>
                 </div>
 
                 <!-- Course name displayed dynamically -->
@@ -145,7 +140,7 @@
           </div>
         </div>
         <!-- My Course Expertise -->
-        <q-card class="courseExpertiseContainer q-mt-md">
+        <!-- <q-card class="courseExpertiseContainer q-mt-md">
           <div class="header-ExpertiseContainer">
             <q-card-section class="text-h6">
               My Course Expertise
@@ -189,16 +184,18 @@
               </div>
             </div>
           </div>
-        </q-card>
+        </q-card> -->
       </div>
       <!-- statistics -->
-      <div class="statisticsCont">
-        <q-card-section class="text-h5" style="align-self: flex-start"
-          >Statistics</q-card-section
-        >
-        <div class="statsProfileContainer">
+      <div class="statisticsCont qp">
+        <!-- <q-card-section
+          v-if="isMember"
+          class="text-h5"
+          style="align-self: flex-start"
+          >Statistics</q-card-section> -->
+        <div class="statsProfileContainer" v-if="isMember">
           <q-card
-            class="statsProfile"
+            class="statsProfile q-py-md"
             style="
               background: linear-gradient(150deg, #b592ec 8%, #5ce1e6 100%);
               height: auto;
@@ -231,17 +228,56 @@
                     {{ myProfile.firstName }}!</span
                   >
                 </q-card-section>
-                <q-card-section class="text-body2 q-pt-none">
-                  This is your 72nd days with Bacoor Computer <br />Clubhouse
-                  Network.
-                </q-card-section>
-                <q-card-section class="text-body2 q-pt-none">
-                  You’ve learned
-                  <span style="color: #ffe20d">70% of your</span> goal this
-                  week!<br />
-                  Keep it up !
-                </q-card-section>
               </div>
+            </div>
+            <div class="logAndNotif-container q-px-md">
+              <q-card
+                class="logAndNotif-content text-h6"
+                style="
+                  color: #4b4b4b;
+                  background-color: transparent;
+                  border: 1px solid #f2f7ff;
+                  border-radius: 14px;
+                "
+              >
+                <q-card-section>Logs and Notifications</q-card-section>
+
+                <q-scroll-area style="height: 400px; width: 550px">
+                  <div
+                    v-for="n in 100"
+                    :key="n"
+                    class="q-px-md"
+                    style="
+                      display: flex;
+                      flex-direction: row;
+                      align-items: flex-start;
+                    "
+                  >
+                    <q-img
+                      src="/src/assets/yanami.png"
+                      style="
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50px;
+                        flex-shrink: 0;
+                      "
+                    />
+                    <div class="q-px-md">
+                      <q-card-section
+                        class="text-subtitle2 q-pa-none"
+                        style="max-width: 550px; text-align: justify"
+                        >Lorem ipsum dolor sit amet consectetur adipisicing
+                        elit. Minima Lorem ipsum dolor sit amet consectetur
+                        adipisicing elit. Minima Lorem ipsum dolor sit amet
+                        consectetur adipisicing elit. Minima
+                      </q-card-section>
+                      <q-card-section class="text-overline q-pa-none">
+                        {{ formattedDate }}
+                      </q-card-section>
+                    </div>
+                  </div>
+                </q-scroll-area>
+              </q-card>
             </div>
           </q-card>
         </div>
@@ -254,7 +290,7 @@
 .main-container
   display: flex
   justify-content: space-around
-  height: 1000px
+
 
 .navbar-Profile
   display: flex
@@ -304,13 +340,11 @@
   display: flex
   width: auto
   height: 260px
-  column-gap: 20px
-  flex-wrap: wrap
-  row-gap: 20px
-  overflow-y: hidden
+  column-gap: 30px
+  overflow: hidden
 
 .activeCourseList
-  width: 30%
+  min-width: 30%
   max-height: 260px
   border: 1px solid #8F9BB3
   border-radius: 14px
@@ -356,20 +390,23 @@
 
 .statisticsCont
   display: flex
-  flex-direction: column
+
   align-items: center /* Center horizontally */
   width: 40%
   border-radius: 14px
   background-color: #f2f7ff
-  max-height: 400px
+  height: auto
+  min-height: 700px
 
+  // border: 1px solid red
 .statsProfileContainer
   display: flex
   justify-content: center /* Center the card inside the container */
   width: 100% /* Ensure the container takes the full width */
 
 .statsProfile
-  width: 80%
+  width: auto
+  height: auto
 
 .statisticsDetails
   display: flex
@@ -399,6 +436,10 @@
   width: 100px
   height: 100px
 
+.logAndNotif-container
+  height: auto
+  width: 90%
+  display: flex
 // screen responsive
 
 @media (max-width: 1720px)
@@ -555,6 +596,9 @@ const progress = ref(0.65);
 const courses = ref(null);
 const myProfile = ref(null);
 const router = useRouter();
+const isMember = ref(true);
+const formattedDate = ref("");
+const logs = ref(null);
 
 const randomize = () => {
   progress.value = Math.random();
@@ -564,7 +608,6 @@ async function getCourses() {
   try {
     axios.get(`${process.env.api_host}/courses`).then((response) => {
       courses.value = response.data;
-      console.log(courses.value);
     });
   } catch {
     console.log("failed to get courses");
@@ -590,9 +633,8 @@ if (token) {
   console.log("No token found in localStorage");
 }
 
-const getProfileImg = (filePath) => {
-  const fileName = filePath.split("\\").pop();
-  return `${process.env.api_host}/uploads/${fileName}`;
+const getProfileImg = () => {
+  return myProfile.value.userImage;
 };
 
 const imageSrc = computed(() => {
@@ -622,7 +664,6 @@ async function isLogin() {
         },
       }
     );
-    console.log("here", response);
     if (!response.data.isValid) {
       router.replace(`/loginPage`);
     } else {
@@ -634,17 +675,29 @@ async function isLogin() {
           },
         }
       );
-      if (myProfile.data[0].title !== "member") {
-        router.replace(`/loginPage`);
-      }
     }
   } catch (err) {
     console.error(err);
   }
 }
 
+async function getLogs() {
+  try {
+    const response = await axios.get(`${process.env.api_host}/users/logs`);
+    logs.value = response.data;
+    console.log(logs.value);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 onMounted(() => {
-  getCourses();
   isLogin();
+  getCourses();
+  getLogs();
+  const today = new Date();
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  formattedDate.value = today.toLocaleDateString("en-US", options);
+  console.log(process.env.api_host);
 });
 </script>

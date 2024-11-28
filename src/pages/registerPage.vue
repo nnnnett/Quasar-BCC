@@ -121,7 +121,7 @@
                   name="contactNumber"
                   for="contactNumber"
                   v-model="contactNumber"
-                  type="tel"
+                  type="number"
                   rounded
                   outlined
                   placeholder="09XXXXXXXXX"
@@ -143,7 +143,7 @@
                   type="email"
                   rounded
                   outlined
-                  placeholder="skibidi.toilet@cvsu.edu.ph"
+                  placeholder="emailSample@cvsu.edu.ph"
                   no-error-icon
                   :rules="[
                     (val) =>
@@ -166,7 +166,6 @@
                     type="text"
                     name="gender"
                     for="gender"
-                    style="width: 100%"
                     class=""
                     no-error-icon
                     :rules="[selectChecker]"
@@ -225,7 +224,7 @@
                   name="zipCode"
                   for="zipCode"
                   v-model="zipCode"
-                  type="tel"
+                  type="number"
                   rounded
                   outlined
                   placeholder="4102"
@@ -383,7 +382,7 @@
                   name="guardianContactNumber"
                   for="guardianContactNumber"
                   v-model="guardianContactNumber"
-                  type="tel"
+                  type="number"
                   rounded
                   outlined
                   placeholder="09XXXXXXXXX"
@@ -430,7 +429,7 @@
                   name="guardianZipCode"
                   for="guardianZipCode"
                   v-model="guardianZipCode"
-                  type="tel"
+                  type="number"
                   rounded
                   outlined
                   placeholder="4102"
@@ -628,13 +627,52 @@
               >
                 Requirements
               </q-card-section>
-
+              <!-- School Image -->
               <q-card-section class="q-px-xl q-ml-md q-py-none text-subtitle2">
                 <li>Photocopy of School ID</li>
               </q-card-section>
+              <div class="q-px-xl">
+                <q-card style="border: 1px dashed black">
+                  <q-card-section class="flex flex-center">
+                    <q-file
+                      name="schoolId"
+                      for="schoolId"
+                      v-model="schoolId"
+                      label="School ID"
+                      filled
+                      accept="image/*"
+                      clearable
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="upload" />
+                      </template>
+                    </q-file>
+                  </q-card-section>
+                </q-card>
+              </div>
+              <!-- Parent's Valid ID -->
               <q-card-section class="q-px-xl q-ml-md q-py-none text-subtitle2">
                 <li>Photocopy of Parent’s Valid ID</li>
               </q-card-section>
+              <div class="q-px-xl">
+                <q-card style="border: 1px dashed black">
+                  <q-card-section class="flex flex-center">
+                    <q-file
+                      name="parentId"
+                      for="parentId"
+                      v-model="parentId"
+                      label="Parents ID"
+                      filled
+                      accept="image/*"
+                      clearable
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="upload" />
+                      </template>
+                    </q-file>
+                  </q-card-section>
+                </q-card>
+              </div>
             </div>
             <div class="flex flex-center">
               <q-btn
@@ -706,40 +744,16 @@
 </style>
 
 <script setup>
-// import { data } from "autoprefixer";
 import { onMounted, ref } from "vue";
 import axios from "axios";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-// import { registerUser } from "src/backend/function.js";
 
-// const loading = ref(false);
 const optionGender = {
   option: ["Male", "Female", "LGBTQIA+"],
 };
-// const requiredFields = (val) =>
-//   (val && val.length > 0) || "Please type something";
-
-// const textChecker = (val) =>
-//   (val && isNaN(val)) || "Please type a valid non-numeric input";
-
-// const selectChecker = (val) =>
-//   (val && val.length > 0) || "Please select something";
-
-// const emailChecker = (val) =>
-//   (val && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(val)) ||
-//   "Please enter a valid email address";
-// const numberChecker = (val) =>
-//   (val && /^\d{11}$/.test(val)) || "Please type a valid number";
-
-// const zipcodeChecker = (val) =>
-//   (val && /^\d{4}$/.test(val)) || "Please type a valid Zip Code Number";
-// const myPass = (val) => (val && val.length > 0) || "Please type something";
-
-// const myConfirmPassword = (val) =>
-//   (val && val == form.value.myPassword) || "Passwords do not match";
 
 const $q = useQuasar();
 const username = ref("");
@@ -772,6 +786,8 @@ const guardianBarangay = ref("");
 const guardianStreet = ref("");
 const guardianBlockAndLot = ref("");
 const imageFile = ref(null);
+const schoolId = ref(null);
+const parentId = ref(null);
 
 const submitSignup = async () => {
   if (
@@ -804,7 +820,9 @@ const submitSignup = async () => {
     !guardianMunicipality.value ||
     !guardianBarangay.value ||
     !guardianStreet.value ||
-    !guardianBlockAndLot.value
+    !guardianBlockAndLot.value ||
+    !schoolId.value ||
+    !parentId.value
   ) {
     $q.notify({
       type: "warning",
@@ -844,7 +862,8 @@ const submitSignup = async () => {
   formData.append("guardianStreet", guardianStreet.value);
   formData.append("guardianBlockAndLot", guardianBlockAndLot.value);
   formData.append("userImage", imageFile.value);
-
+  formData.append("schoolId", schoolId.value);
+  formData.append("parentId", parentId.value);
   try {
     const response = await axios.post(
       `${process.env.api_host}/users/signup`,

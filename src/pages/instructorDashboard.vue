@@ -1,6 +1,14 @@
 <template>
   <q-page>
-    <instructorNavBar />
+    <div style="display: flex">
+      <div class="q-pb-xl">
+        <instructorNavBar />
+      </div>
+      <q-space />
+      <div class="q-pt-lg">
+        <notifProfile />
+      </div>
+    </div>
     <q-card-section
       class="text-h5 q-pl-lg"
       style="font-weight: 600; color: #4b4b4b"
@@ -17,7 +25,11 @@
               <q-icon name="library_books" style="color: #925fe2" />
             </q-item-section>
             <div class="q-pl-none">
-              <q-card-section class="q-pb-none q-pl-none"> 0 </q-card-section>
+              <q-card-section class="q-pb-none q-pl-none">
+                <span v-if="courses">
+                  {{ courses.length }}
+                </span>
+              </q-card-section>
               <q-card-section class="q-pt-none q-pl-none">
                 Active Courses
               </q-card-section>
@@ -43,16 +55,21 @@
             </q-card-section>
             <q-space />
             <RouterLink
-              to="#"
+              to="instructorCoursePage"
               class="q-pt-md viewAllactiveCourse-link text-subtitle1"
             >
               View All
             </RouterLink>
           </div>
-          <div class="diffCourseActive">
-            <div class="cssContainer q-mr-none q-pt-md activeCourseList">
+          <div v-if="courses" class="diffCourseActive">
+            <div
+              v-for="course in courses"
+              :key="course._id"
+              class="cssContainer q-mr-none q-pt-md activeCourseList"
+            >
               <!-- Loop through courses based on getCourses.count -->
               <div>
+                <span v-if="courses">{{ courses.name }}</span>
                 <div
                   class="q-mx-md"
                   :style="{
@@ -66,18 +83,12 @@
                     borderRadius: '14px',
                   }"
                 >
+                  <q-img
+                    :src="course.courseFile"
+                    style="width: 150px; border-radius: 14px"
+                  ></q-img>
+
                   <!-- icon container -->
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="54px"
-                    viewBox="0 -960 960 960"
-                    width="54px"
-                    fill="white"
-                  >
-                    <path
-                      d="M120-80v-280h120v-160h200v-80H320v-280h320v280H520v80h200v160h120v280H520v-280h120v-80H320v80h120v280H120Zm280-600h160v-120H400v120ZM200-160h160v-120H200v120Zm400 0h160v-120H600v120ZM480-680ZM360-280Zm240 0Z"
-                    />
-                  </svg>
                 </div>
 
                 <!-- Course name displayed dynamically -->
@@ -85,7 +96,7 @@
                   class="q-pb-none text-subtitle1"
                   style="font-size: 1em; text-transform: capitalize"
                 >
-                  try
+                  <span v-if="courses">{{ course.name }}</span>
                 </q-card-section>
 
                 <!-- Topic count (replace this with dynamic topic count if needed) -->
@@ -97,7 +108,12 @@
                 <div
                   style="height: 50px; display: flex; justify-content: flex-end"
                 >
-                  <q-btn icon="chevron_right" class="q-px-sm q-mr-md" flat />
+                  <q-btn
+                    icon="chevron_right"
+                    class="q-px-sm"
+                    flat
+                    :to="'/instructorAddActivity/' + course._id"
+                  />
                 </div>
               </div>
             </div>
@@ -237,8 +253,9 @@
 <script setup>
 import InstructorDashboardChart from "src/components/instructorDashboardChart.vue";
 import instructorNavBar from "src/components/instructorNavBar.vue";
+import notifProfile from "src/components/notifProfile.vue";
 import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 
 const mentors = ref("");
@@ -247,6 +264,18 @@ const optionMentors = {
 };
 const formattedDate = ref("");
 const router = useRouter();
+const courses = ref(null);
+
+async function getCourses() {
+  try {
+    await axios.get(`${process.env.api_host}/courses`).then((response) => {
+      courses.value = response.data;
+      console.log(response.data);
+    });
+  } catch {
+    console.log("failed to get courses");
+  }
+}
 
 async function isLogin() {
   const token = localStorage.getItem("authToken");
@@ -259,7 +288,6 @@ async function isLogin() {
         },
       }
     );
-    console.log("here", response);
     if (!response.data.isValid) {
       router.replace(`/loginPage`);
     } else {
@@ -271,9 +299,6 @@ async function isLogin() {
           },
         }
       );
-      if (myProfile.data[0].title !== "instructor") {
-        router.replace(`/loginPage`);
-      }
     }
   } catch (err) {
     console.error(err);
@@ -282,6 +307,7 @@ async function isLogin() {
 
 onMounted(() => {
   isLogin();
+  getCourses();
   const today = new Date();
   const options = { year: "numeric", month: "long", day: "numeric" };
   formattedDate.value = today.toLocaleDateString("en-US", options);

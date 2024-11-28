@@ -100,22 +100,7 @@
                   no-error-icon
                 />
               </div>
-              <!-- Assigning -->
-              <div class="assignedContainer">
-                <!-- mentors -->
-                <!-- <div style="width: 45%">
-                  <q-card-section class="q-pl-none q-pb-sm">
-                    Mentors
-                  </q-card-section>
-                  <q-select
-                    filled
-                    v-model="mentors"
-                    :options="optionMentors.AssignedMentor"
-                    label="Select Mentors"
-                  />
-                </div> -->
-                <!-- durations -->
-              </div>
+
               <div>
                 <q-card-section class="q-pl-none q-pb-sm"
                   >Description</q-card-section
@@ -224,16 +209,15 @@ const getTokenFromLocalStorage = () => {
   return localStorage.getItem("authToken"); // Adjust key if necessary
 };
 
+// const token = getTokenFromLocalStorage();
+// if (!token) {
+//   $q.notify({
+//     type: "negative",
+//     message: "Authentication token is missing.",
+//   });
+//   return;
+// }
 async function submitCourse() {
-  // const token = getTokenFromLocalStorage();
-  // if (!token) {
-  //   $q.notify({
-  //     type: "negative",
-  //     message: "Authentication token is missing.",
-  //   });
-  //   return;
-  // }
-
   try {
     await axios.post(` ${process.env.api_host}/courses`, {
       name: form.courseName,

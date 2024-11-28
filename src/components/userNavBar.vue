@@ -38,7 +38,7 @@
         <div class="sideNavBar">
           <q-item
             clickable
-            @click="router.replace(`/userDashboard`)"
+            @click="router.replace(`/dashboard`)"
             class="q-pl-xl q-mt-md"
           >
             <q-item-section avatar>
@@ -50,7 +50,7 @@
           </q-item>
           <q-item
             clickable
-            @click="router.replace(`/userCourse`)"
+            @click="router.replace(`/course`)"
             class="q-pl-xl q-mt-md"
           >
             <q-item-section avatar>

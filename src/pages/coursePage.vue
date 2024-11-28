@@ -22,18 +22,19 @@
       <!-- main dashboard -->
       <div class="main-dashboard q-ml-xl q-mt-md">
         <q-card class="main-content q-px-xl q-py-lg">
-          <div class=" ">
-            <q-btn
-              class="q-mb-md"
-              no-caps
-              @click="router.replace(`/userCourse`)"
+          <div class="q-mb-md flex">
+            <q-btn class=" " no-caps @click="router.replace(`/course`)"
               >Back
             </q-btn>
+            <q-space />
+            <q-btn no-caps @click="addActivity = true" v-if="!isMember"
+              >Add Activity</q-btn
+            >
           </div>
           <div class="imgCourse q-px-md">
             <q-img
               cover
-              :src="course.courseFile"
+              :src="course.file"
               class="responsive-img"
               v-if="course"
             >
@@ -42,14 +43,15 @@
           <!-- Course activity details -->
           <div class="q-px-md courseActDetails">
             <q-card-section
+              v-if="course"
               class="q-mt-md q-pb-none text-h6"
               style="text-transform: capitalize"
             >
-              <span v-if="course">{{ course.name }}</span></q-card-section
+              {{ course.name }}</q-card-section
             >
-            <q-card-section class="q-pt-sm text-body2"
-              >5 Activities</q-card-section
-            >
+            <q-card-section v-if="course" class="q-pt-sm text-body2">
+              {{ course.activities.length }} Activities
+            </q-card-section>
 
             <div class="courseActivityAndDescript">
               <div
@@ -109,57 +111,115 @@
               </q-card-section>
             </div>
           </div>
+          <!-- Add Activity -->
+          <q-dialog v-model="addActivity" persistent>
+            <q-card style="width: 700px; max-width: 80vw" class="q-pa-md">
+              <div>
+                <q-card-section
+                  class="text-h6 text-weight-medium q-py-sm"
+                  style="color: #4b4b4b"
+                >
+                  Create New Activity
+                </q-card-section>
+              </div>
+              <div>
+                <q-card-section class="q-pt-none">
+                  Fill in the details below to create a new activity.
+                </q-card-section>
+              </div>
+              <q-card class="q-px-md">
+                <div>
+                  <q-form @submit.prevent="submitActivity">
+                    <!-- details info -->
+                    <div>
+                      <q-card-section
+                        style="color: #4b4b4b"
+                        class="text-h6 q-pb-md q-pl-none"
+                      >
+                        Details Information
+                      </q-card-section>
+                    </div>
+                    <!-- thumbnail -->
+                    <div>
+                      <q-card-section class="q-pt-none q-pb-sm q-pl-none">
+                        Activity Tumbnail
+                      </q-card-section>
+                    </div>
+                    <!-- course image -->
+                    <div class=" ">
+                      <q-card style="border: 1px dashed black">
+                        <q-card-section class="flex flex-center">
+                          <q-file
+                            name="file"
+                            for="file"
+                            v-model="file"
+                            label="Choose File"
+                            filled
+                            clearable
+                          >
+                            <template v-slot:prepend>
+                              <q-icon name="upload" />
+                            </template>
+                          </q-file>
+                        </q-card-section>
+                      </q-card>
+                    </div>
+                    <!-- course Title -->
+                    <div>
+                      <q-card-section class="q-pl-none q-pb-sm"
+                        >Activity Title</q-card-section
+                      >
+                      <q-input
+                        name="activityName"
+                        v-model="activityName"
+                        type="text"
+                        rounded
+                        outlined
+                        placeholder="Activity Name"
+                        no-error-icon
+                      />
+                    </div>
+                    <!-- description -->
+                    <div>
+                      <q-card-section class="q-pl-none q-pb-sm"
+                        >Description</q-card-section
+                      >
+
+                      <q-input
+                        name="description"
+                        v-model="description"
+                        type="textarea"
+                        rounded
+                        outlined
+                        placeholder="Activity Description"
+                        no-error-icon
+                      />
+                    </div>
+
+                    <q-card-actions align="right" class="bg-white text-teal">
+                      <q-btn
+                        flat
+                        type="submit"
+                        label="Submit"
+                        @click="addActivity"
+                        :loading="loading"
+                      />
+                      <q-btn flat label="Cancel" v-close-popup />
+                    </q-card-actions>
+                  </q-form>
+                </div>
+              </q-card>
+            </q-card>
+          </q-dialog>
         </q-card>
         <q-card class="courseExpertise q-py-md q-px-md">
-          <q-card-section
-            class="text-subtitle1"
-            style="color: #4b4b4b; font-weight: 600"
-          >
-            Course Expertise
-          </q-card-section>
-
           <div
             style="
               display: flex;
 
               justify-content: center;
             "
-          >
-            <div
-              class="imgExpertise"
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-              "
-            >
-              <q-card-section>No data to show.</q-card-section>
-
-              <q-img
-                src="/src/assets/sampleBadge.png"
-                style="width: 150px; height: 150px"
-              />
-
-              <div
-                style="
-                  width: 70%;
-                  display: flex;
-                  align-items: center;
-                  margin-top: -5%;
-                "
-              >
-                <q-linear-progress
-                  v-for="size in ['md']"
-                  :key="size"
-                  :size="size"
-                  :value="0.9"
-                  @click="randomize"
-                />
-                <q-card-section> 5% </q-card-section>
-              </div>
-            </div>
-          </div>
+          ></div>
           <!-- submited act -->
           <q-card-section
             class="text-subtitle1"
@@ -240,15 +300,11 @@
   width: 33%
   border-radius: 24px
   height: auto
-.imgExpertise
-  border: 1px solid #EBE9FB
-  width: 80%
-  height: 250px
-  border-radius: 14px
+
 .submittedAct
   border: 1px solid #EBE9FB
   width: 80%
-  height: 100px
+  height: 500px
   border-radius: 14px
   overflow: hidden
 
@@ -292,11 +348,20 @@ import UserNavBar from "src/components/userNavBar.vue";
 import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 import axios from "axios";
+import { useQuasar } from "quasar";
 
+const loading = ref(false);
+const isMember = ref();
+const $q = useQuasar();
+const addActivity = ref(false);
 const route = useRoute();
 const router = useRouter();
 const courseId = route.params.courseId;
 const course = ref(null);
+const myProfile = ref(null);
+const activityName = ref("");
+const description = ref("");
+const file = ref("");
 
 async function getCourses() {
   try {
@@ -309,10 +374,6 @@ async function getCourses() {
     console.log("failed to get courses");
   }
 }
-
-onMounted(() => {
-  getCourses();
-});
 
 console.log("log");
 
@@ -329,4 +390,100 @@ const showActivity = () => {
   activityLink.value = true;
   descriptionLink.value = false; // Hide description when showing activity
 };
+async function isLogin() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/tokenValidation`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+
+    if (!response.data.isValid) {
+      router.replace(`/loginPage`);
+    } else {
+      const myProfile = await axios.get(
+        `${process.env.api_host}/users/myProfile`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+
+      roleValidation(myProfile.data[0].title);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// async function memberValidation() {
+//   console.log(myProfile.value);
+//   if (myProfile.value.title === "instructor") {
+//     router.replace(`/instructorAddActivity/${courseId}`);
+//   }
+// }
+
+async function roleValidation(title) {
+  try {
+    console.log(title);
+    if (title === "member") {
+      return (isMember.value = true);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function submitActivity() {
+  const token = localStorage.getItem("authToken");
+  try {
+    loading.value = true;
+    await axios.put(
+      ` ${process.env.api_host}/courses/activity/add/${courseId}`,
+      {
+        name: activityName.value,
+        description: description.value,
+        file: file.value,
+      },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: token,
+        },
+      }
+    );
+    addActivity.value = false;
+    getCourses();
+    $q.notify({
+      type: "positive",
+      message: "Course Created Successfully.",
+    });
+
+    // Reset the form after successful submission
+    activityName.value = "";
+    description.value = "";
+    file.value = "";
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message ||
+      "Failed to create course. Please try again.";
+    $q.notify({
+      type: "negative",
+      message: errorMessage,
+    });
+    console.error("Error:", error);
+  } finally {
+    loading.value = false;
+  }
+}
+
+onMounted(async () => {
+  await isLogin();
+  await getCourses();
+});
 </script>

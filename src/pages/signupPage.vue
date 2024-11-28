@@ -130,7 +130,7 @@ async function submitCode() {
   try {
     loading.value = true;
     const response = await axios.post(
-      `${process.env.api_host}/users/checkCode`,
+      `${process.env.api_host}/users/signup/checkCode`,
       {
         code: registrationCode.value,
       }

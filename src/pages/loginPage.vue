@@ -196,16 +196,7 @@ async function isLogin() {
           },
         }
       );
-
-      if (userData.data[0].title === "member") {
-        router.replace(`/userDashboard`);
-      }
-      if (userData.data[0].title === "instructor") {
-        router.replace(`/instructorDashboard`);
-      }
-      if (userData.data[0].title === "admin") {
-        router.replace(`/adminDashboard`);
-      }
+      router.replace(`/dashboard`);
     }
 
     return isLogin;

@@ -7,11 +7,11 @@ const routes = [
       { path: "loginPage", component: () => import("src/pages/loginPage.vue") },
       { path: "signupPage", component: () => import("pages/signupPage.vue") },
       {
-        path: "userDashboard",
-        component: () => import("src/pages/userDashboard.vue"),
+        path: "dashboard",
+        component: () => import("src/pages/dashboardPage.vue"),
       },
       {
-        path: "userCourse",
+        path: "course",
         component: () => import("src/pages/userCourse.vue"),
       },
       {
@@ -24,7 +24,7 @@ const routes = [
       },
       {
         path: "cssCourse/:courseId",
-        component: () => import("src/pages/cssCourse.vue"),
+        component: () => import("src/pages/coursePage.vue"),
       },
       {
         path: "activityPage/:courseId/:activityId",
@@ -76,7 +76,7 @@ const routes = [
         component: () => import("src/pages/instructorCourse.vue"),
       },
       {
-        path: "instructorAddActivity",
+        path: "instructorAddActivity/:courseId",
         component: () => import("src/pages/instructorAddActivity.vue"),
       },
       {
