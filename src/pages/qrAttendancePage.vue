@@ -8,6 +8,7 @@
         #a79eeb 22%,
         #5ce1e6 100%
       );
+      overflow: hidden;
     "
   >
     <div

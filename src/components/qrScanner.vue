@@ -15,18 +15,29 @@
         color="blue-grey-10"
         rounded
         icon="camera_alt"
-        label="attendance"
+        label="Login"
         class="full-width"
         size="lg"
         @click="turnCameraOn()"
         v-show="!showCamera"
       />
-
+      <q-btn
+        label="Logout"
+        color="blue-grey-10"
+        rounded
+        class="full-width q-mt-md"
+        size="lg"
+        @click="turnCameraOn()"
+        v-show="!showCamera"
+      />
       <p class="text-subtitle1" v-if="result">
         Last Attendance ID: <b>{{ result }}</b>
       </p>
       <div v-if="showCamera">
-        <qrcode-stream :camera="camera" @detect="onDecode"> </qrcode-stream>
+        <qrcode-stream :camera="camera" @detect="login"> </qrcode-stream>
+      </div>
+      <div v-else>
+        <qrcode-stream :camera="camera" @detect="logout"> </qrcode-stream>
       </div>
     </div>
     <q-btn
@@ -38,13 +49,6 @@
       size="lg"
       @click="turnCameraOff()"
       v-show="showCamera"
-    />
-    <q-btn
-      label="Logout"
-      color="blue-grey-10"
-      rounded
-      class="full-width q-mt-md"
-      size="lg"
     />
   </div>
 </template>
@@ -74,13 +78,30 @@ const show = async (content) => {
   }
 };
 
-const onDecode = async (content) => {
+const login = async (content) => {
   result.value = content[0].rawValue; // only gets the QR code value itself.
   console.log(result.value);
   turnCameraOff();
   try {
     const response = await axios.post(
-      ` ${process.env.api_host}/users/attendance`,
+      ` ${process.env.api_host}/users/attendance/Login`,
+      {
+        user_id: result.value, // Sending the scanned QR code as _id
+      }
+    );
+    console.log("attendance recorded:", response.data);
+  } catch (error) {
+    console.error("error posting: ", error);
+  }
+};
+
+const logout = async (content) => {
+  result.value = content[0].rawValue; // only gets the QR code value itself.
+  console.log(result.value);
+  turnCameraOff();
+  try {
+    const response = await axios.put(
+      ` ${process.env.api_host}users/attendance/Logout`,
       {
         user_id: result.value, // Sending the scanned QR code as _id
       }
