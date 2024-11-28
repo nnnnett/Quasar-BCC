@@ -1,50 +1,60 @@
 <template>
   <div v-if="!showCamera" class="col-12 text-center q-pt-md">
-    <img
-      alt="Quasar logo"
-      src="/src/assets/qrPlaceholder.png"
-      style="width: 340px"
-    /><!-- replace quasar logo with BCC logo -->
+    <img alt="BCC logo" src="../assets/logo_bcc.png" style="width: 340px" />
   </div>
+
   <div class="row justify-center q-pt-lg">
     <div class="col-12 text-center">
       <span class="text-subtitle2 text-grey-9">
         {{ textInfo }}
       </span>
+
+      <!-- Button to open camera for Attendance -->
       <q-btn
         color="blue-grey-10"
         rounded
         icon="camera_alt"
-        label="Login"
+        label="Attendance"
         class="full-width"
         size="lg"
-        @click="turnCameraOn()"
+        @click="turnCameraOn('attendance')"
         v-show="!showCamera"
       />
+
+      <!-- Button to open camera for Logout -->
       <q-btn
-        label="Logout"
-        color="blue-grey-10"
+        color="red"
         rounded
-        class="full-width q-mt-md"
+        icon="exit_to_app"
+        label="Logout"
+        class="full-width"
         size="lg"
-        @click="turnCameraOn()"
+        @click="turnCameraOn('logout')"
         v-show="!showCamera"
       />
+
+      <!-- Last Attendance ID -->
       <p class="text-subtitle1" v-if="result">
-        Last Attendance ID: <b>{{ result }}</b>
+        Last Action ID: <b>{{ result }}</b>
       </p>
-      <div v-if="showCamera">
-        <qrcode-stream :camera="camera" @detect="login"> </qrcode-stream>
+
+      <!-- Camera Stream for Attendance -->
+      <div v-if="showCamera && cameraType === 'attendance'">
+        <qrcode-stream :camera="camera" @detect="onDecodeLogin" />
       </div>
-      <div v-else>
-        <qrcode-stream :camera="camera" @detect="logout"> </qrcode-stream>
+
+      <!-- Camera Stream for Logout -->
+      <div v-if="showCamera && cameraType === 'logout'">
+        <qrcode-stream :camera="camera" @detect="onDecodeLogout" />
       </div>
     </div>
+
+    <!-- Button to turn off camera -->
     <q-btn
       color="red"
       rounded
       icon="camera_alt"
-      label="turn off scanner"
+      label="Turn off scanner"
       class="full-width"
       size="lg"
       @click="turnCameraOff()"
@@ -58,68 +68,63 @@ import { ref, computed } from "vue";
 import { QrcodeStream } from "vue-qrcode-reader";
 import axios from "axios";
 
-const isValid = ref(undefined);
 const camera = ref("auto");
 const result = ref(null);
 const showCamera = ref(false);
+const cameraType = ref(null); // To track which camera is currently active (attendance or logout)
 
 const textInfo = computed(() => {
   return showCamera.value
-    ? "Scan your qrcode for Attendance"
-    : "Press the button and scan a qrcode.";
+    ? cameraType.value === "attendance"
+      ? "Scan your QR code for Attendance"
+      : "Scan your QR code to Logout"
+    : "Press the button to scan a QR code.";
 });
 
-const show = async (content) => {
-  try {
-    const response = await axios.get(`${process.env.api_host}/users/`);
-    result.value = response;
-  } catch (error) {
-    console.error("error: ", error);
-  }
+// Function for turning on the camera
+const turnCameraOn = (type) => {
+  cameraType.value = type; // Set camera type (attendance or logout)
+  showCamera.value = true;
+  camera.value = "auto";
 };
 
-const login = async (content) => {
+// Function for turning off the camera
+const turnCameraOff = () => {
+  cameraType.value = null; // Clear the camera type
+  showCamera.value = false;
+  camera.value = "off";
+};
+
+// Function for handling login (attendance)
+const onDecodeLogin = async (content) => {
   result.value = content[0].rawValue; // only gets the QR code value itself.
-  console.log(result.value);
-  turnCameraOff();
+  console.log("Login QR code:", result.value);
+  turnCameraOff(); // Turn off the camera after scanning
   try {
     const response = await axios.post(
-      ` ${process.env.api_host}/users/attendance/Login`,
-      {
-        user_id: result.value, // Sending the scanned QR code as _id
-      }
+      `${process.env.api_host}/users/attendance/login`,
+      { user_id: result.value } // Sending the scanned QR code as _id
     );
-    console.log("attendance recorded:", response.data);
+    console.log("Attendance recorded:", response.data);
   } catch (error) {
-    console.error("error posting: ", error);
+    console.error("Error posting attendance:", error);
   }
 };
 
-const logout = async (content) => {
+// Function for handling logout
+const onDecodeLogout = async (content) => {
   result.value = content[0].rawValue; // only gets the QR code value itself.
-  console.log(result.value);
-  turnCameraOff();
+  console.log("Logout QR code:", result.value);
+  turnCameraOff(); // Turn off the camera after scanning
   try {
     const response = await axios.put(
-      ` ${process.env.api_host}users/attendance/Logout`,
-      {
-        user_id: result.value, // Sending the scanned QR code as _id
-      }
+      `${process.env.api_host}/users/attendance/logout`,
+      { user_id: result.value } // Sending the scanned QR code as _id
     );
-    console.log("attendance recorded:", response.data);
+    console.log("Logout recorded:", response.data);
   } catch (error) {
-    console.error("error posting: ", error);
+    console.error("Error posting logout:", error);
   }
-};
-
-const turnCameraOn = () => {
-  camera.value = "auto";
-  showCamera.value = true;
-};
-
-const turnCameraOff = () => {
-  camera.value = "off";
-  showCamera.value = false;
 };
 </script>
 
