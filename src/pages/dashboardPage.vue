@@ -101,7 +101,11 @@
                   <!-- icon container -->
                   <q-img
                     cover
-                    style="border-radius: 14px"
+                    style="
+                      border-radius: 14px;
+                      max-width: 200px;
+                      max-height: 130px;
+                    "
                     :src="courses.file"
                     class="responsive-img"
                     v-if="courses"
@@ -230,6 +234,8 @@
                 </q-card-section>
               </div>
             </div>
+            <div></div>
+
             <div class="logAndNotif-container q-px-md">
               <q-card
                 class="logAndNotif-content text-h6"

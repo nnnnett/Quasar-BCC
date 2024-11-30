@@ -41,10 +41,10 @@ module.exports = configure(function (/* ctx */) {
     build: {
       env: {
         IMGBB_KEY: "c3638a233ed64fc771557fe2ed8c0df7",
-        //api_host: "https://g188k323-3500.asse.devtunnels.ms",
-        api_host: "http://localhost:3500",
-        // api_host:
-        //   "https://learning-mangement-system-for-bacoor-computer-center-be.vercel.app",
+        // api_host: "https://g188k323-3500.asse.devtunnels.ms",
+        // api_host: "http://localhost:3500",
+        api_host:
+          "https://learning-mangement-system-for-bacoor-com-magister1101s-projects.vercel.app",
       },
       target: {
         browser: ["es2019", "edge88", "firefox78", "chrome87", "safari13.1"],
@@ -86,7 +86,11 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
       // https: true
-      open: true, // opens browser window automatically
+      open: true,
+      hot: true, // Ensure HMR is active
+      watchOptions: {
+        poll: false, // Disable polling for better performance
+      }, // opens browser window automatically
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework

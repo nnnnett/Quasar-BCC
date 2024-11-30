@@ -1,74 +1,33 @@
 <template>
-  <div class="notifProfile">
-    <div v-if="member">
-      <q-card-section>
-        <q-btn round icon="notifications">
-          <q-badge floating color="red" rounded />
-        </q-btn>
-      </q-card-section>
-      <div class="">
-        <router-link to="#">
-          <span v-if="myProfile">
-            <q-img
-              :src="getProfileImg(myProfile.userImage)"
-              style="width: 50px; height: 50px; border-radius: 50px"
-            />
-          </span>
-        </router-link>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: flex-start"
-      >
-        <q-card-section class="q-pb-none text-caption">
-          {{ formattedDate }}
-        </q-card-section>
-        <div class="fullName">
-          <q-card-section class="q-pt-none" style="width: 300px"
-            ><span v-if="myProfile"
-              >{{ myProfile.firstName }} {{ myProfile.middleName }}
-              {{ myProfile.lastName }}</span
-            ></q-card-section
-          >
-        </div>
-      </div>
+  <div class="profile">
+    <div class="">
+      <router-link to="#">
+        <span v-if="myProfile">
+          <q-img
+            :src="getProfileImg(myProfile.userImage)"
+            style="width: 50px; height: 50px; border-radius: 50px"
+          />
+        </span>
+      </router-link>
     </div>
-    <div v-if="instructor">
-      <q-card-section>
-        <q-btn round icon="notifications">
-          <q-badge floating color="red" rounded />
-        </q-btn>
+    <div style="display: flex; flex-direction: column; align-items: flex-start">
+      <q-card-section class="q-pb-none text-caption">
+        {{ formattedDate }}
       </q-card-section>
-      <div class="">
-        <router-link to="#">
-          <span v-if="myProfile">
-            <q-img
-              :src="getProfileImg(myProfile.userImage)"
-              style="width: 50px; height: 50px; border-radius: 50px"
-            />
-          </span>
-        </router-link>
-      </div>
-      <div
-        style="display: flex; flex-direction: column; align-items: flex-start"
-      >
-        <q-card-section class="q-pb-none text-caption">
-          {{ formattedDate }}
-        </q-card-section>
-        <div class="fullName">
-          <q-card-section class="q-pt-none" style="width: 300px"
-            ><span v-if="myProfile"
-              >{{ myProfile.firstName }} {{ myProfile.middleName }}
-              {{ myProfile.lastName }}</span
-            ></q-card-section
-          >
-        </div>
+      <div class="fullName">
+        <q-card-section class="q-pt-none" style="width: 300px"
+          ><span v-if="myProfile"
+            >{{ myProfile.firstName }} {{ myProfile.middleName }}
+            {{ myProfile.lastName }}</span
+          ></q-card-section
+        >
       </div>
     </div>
   </div>
 </template>
 
 <style lang="sass" scoped>
-.notifProfile
+.profile
   display: flex
   flex-direction: row
   align-items: center
@@ -90,9 +49,9 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 
 const formattedDate = ref("");
-const member = ref(false);
+const member = ref(true);
 const instructor = ref(false);
-const myProfile = ref();
+const myProfile = ref(null);
 const token = localStorage.getItem("authToken");
 if (token) {
   axios
@@ -111,11 +70,9 @@ if (token) {
 } else {
   console.log("No token found in localStorage");
 }
-const getProfileImg = (filePath) => {
-  const fileName = filePath.split("\\").pop();
-  return `${process.env.api_host}/uploads/${fileName}`;
+const getProfileImg = () => {
+  return myProfile.value.userImage;
 };
-
 // async function getUser() {
 //   if (myProfile.value.title === "instructor") {
 //     return (member.value = true);

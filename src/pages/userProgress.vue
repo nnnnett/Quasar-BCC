@@ -583,9 +583,6 @@ async function isLogin() {
           },
         }
       );
-      if (myProfile.data[0].title !== "member") {
-        router.replace(`/loginPage`);
-      }
     }
   } catch (err) {
     console.error(err);

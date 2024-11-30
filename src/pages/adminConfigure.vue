@@ -1,6 +1,6 @@
 <template>
   <q-page style="overflow: hidden">
-    <adminNavBar />
+    <userNavBar />
     <div class="main-contaier q-mt-xl q-py-md q-px-md">
       <div class="q-mt-xl">
         <q-card-section
@@ -337,7 +337,7 @@
 </style>
 
 <script setup>
-import adminNavBar from "src/components/adminNavBar.vue";
+import userNavBar from "src/components/userNavBar.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 

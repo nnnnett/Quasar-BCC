@@ -24,7 +24,7 @@
           class=" "
           label="view"
           no-caps
-          type="submit"
+          @click="router.replace(`/cssCourse/67484547fc01d4dd1c89b97b`)"
           color="accent"
           style="background-color: #925fe2; width: 100px"
           rounded
@@ -211,6 +211,7 @@
                         type="submit"
                         label="Submit"
                         @click="addCourse"
+                        :loading="loading"
                       />
                       <q-btn flat label="Cancel" v-close-popup />
                     </q-card-actions>
@@ -364,6 +365,7 @@ import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
+const loading = ref(false);
 const isMember = ref();
 const $q = useQuasar();
 const file = ref("");
@@ -379,7 +381,6 @@ async function getCourses() {
   try {
     await axios.get(`${process.env.api_host}/courses`).then((response) => {
       courses.value = response.data;
-      console.log(courses.value);
     });
   } catch {
     console.log("failed to get courses");
@@ -418,6 +419,7 @@ async function isLogin() {
 
 async function submitCourse() {
   try {
+    loading.value = true;
     await axios.post(
       ` ${process.env.api_host}/courses`,
       {
@@ -449,12 +451,13 @@ async function submitCourse() {
       message: errorMessage,
     });
     console.error("Error:", error);
+  } finally {
+    loading.value = false;
   }
 }
 
 async function roleValidation(title) {
   try {
-    console.log(title);
     if (title === "member") {
       return (isMember.value = true);
     }

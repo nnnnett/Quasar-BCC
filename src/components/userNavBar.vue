@@ -62,6 +62,7 @@
           </q-item>
           <q-item
             clickable
+            v-if="!isAdmin"
             @click="router.replace(`/userProgress`)"
             class="q-pl-xl q-mt-md"
           >
@@ -74,8 +75,35 @@
           </q-item>
           <q-item
             clickable
+            @click="router.replace(`/attendanceManagement`)"
+            v-if="isAdmin"
+            class="q-pl-xl q-mt-md"
+          >
+            <q-item-section avatar>
+              <q-icon name="manage_accounts" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>User Management</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item
+            v-if="isAdmin"
+            clickable
+            @click="router.replace(`/adminConfigure`)"
+            class="q-pl-xl q-mt-md"
+          >
+            <q-item-section avatar>
+              <q-icon name="widgets" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Configuration</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item
+            clickable
             @click="router.replace(`/userSettings`)"
             class="q-pl-xl q-mt-md"
+            v-if="!isAdmin"
           >
             <q-item-section avatar>
               <q-icon name="settings" />
@@ -84,6 +112,7 @@
               <q-item-label>Settings</q-item-label>
             </q-item-section>
           </q-item>
+
           <q-item clickable @click="handleLogout" class="q-pl-xl q-mt-md">
             <q-item-section avatar>
               <q-icon name="logout" />
@@ -126,10 +155,12 @@
 </style>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router"; // Importing the router to navigate after logout
 import { useQuasar } from "quasar"; // Importing Quasar's $q for notifications
+import axios from "axios";
 
+const isAdmin = ref();
 const leftDrawerOpen = ref(false);
 const isMobile = computed(() => {
   return window.innerWidth < 1024; // Adjust breakpoint as necessary
@@ -165,4 +196,48 @@ const handleLogout = async () => {
     console.error(error);
   }
 };
+async function isLogin() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/tokenValidation`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+
+    if (!response.data.isValid) {
+      router.replace(`/loginPage`);
+    } else {
+      const myProfile = await axios.get(
+        `${process.env.api_host}/users/myProfile`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+
+      roleValidation(myProfile.data[0].title);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function roleValidation(title) {
+  try {
+    if (title === "admin") {
+      return (isAdmin.value = true);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+onMounted(() => {
+  isLogin();
+});
 </script>

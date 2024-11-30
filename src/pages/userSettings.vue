@@ -19,27 +19,27 @@
         Settings
       </q-card-section>
       <q-card class="settingsContainer">
-        <q-form>
-          <!-- nav basic info, personal details, pass -->
-          <div class="headerNav q-px-md">
-            <div @click="showAccountDetails" class="showAccountDetails">
-              <q-card-section
-                class="text-subtitle2 clickDescAct"
-                :class="{ active: accountDetailsLink }"
-              >
-                Account Settings
-              </q-card-section>
-            </div>
-            <div @click="showPersonalDetails" class="showPersonalDetails">
-              <q-card-section
-                class="text-subtitle2 clickDescAct"
-                :class="{ active: personalDetailsLink }"
-              >
-                Personal Detals
-              </q-card-section>
-            </div>
+        <!-- nav basic info, personal details, pass -->
+        <div class="headerNav q-px-md">
+          <div @click="showAccountDetails" class="showAccountDetails">
+            <q-card-section
+              class="text-subtitle2 clickDescAct"
+              :class="{ active: accountDetailsLink }"
+            >
+              Account Settings
+            </q-card-section>
           </div>
-          <!-- Account settings -->
+          <div @click="showPersonalDetails" class="showPersonalDetails">
+            <q-card-section
+              class="text-subtitle2 clickDescAct"
+              :class="{ active: personalDetailsLink }"
+            >
+              Personal Details
+            </q-card-section>
+          </div>
+        </div>
+        <!-- Account settings -->
+        <q-form @submit.prevent="updateAccountDetails">
           <div class="accountSettings q-py-md" v-if="accountDetailsLink">
             <!-- Basic Info -->
             <div class="profileContainer">
@@ -54,33 +54,43 @@
                 >
                   (PNG, JPG, GIF files, 200x200px recommended)
                 </q-card-section>
-                <div class="profileImg" style="position: relative">
-                  <!-- Clickable edit image -->
-                  <q-img
-                    class="editImg"
-                    src="/src/assets/editImg.png"
-                    style="cursor: pointer"
-                    @click="triggerFileInput"
-                  />
-                  <!-- Hidden file input for image selection -->
-                  <input
-                    type="file"
-                    ref="fileInput"
-                    style="display: none"
-                    accept="image/*"
-                    @change="handleImageChange"
-                  />
-                  <!-- Profile image -->
-                  <q-img
-                    class="newProfileImg"
-                    :src="profileImage"
-                    style="
-                      border-radius: 50%;
-                      width: 90%;
-                      height: 90%;
-                      object-fit: cover;
-                    "
-                  />
+                <div
+                  v-if="myProfile"
+                  style="
+                    display: flex;
+                    flex-direction: column;
+
+                    align-items: center;
+                  "
+                >
+                  <div class="profileImg" style="position: relative">
+                    <!-- Clickable edit image -->
+
+                    <!-- Profile image -->
+                    <q-img
+                      :src="myProfile.userImage"
+                      style="
+                        border-radius: 50%;
+                        width: 90%;
+                        height: 90%;
+                        object-fit: cover;
+                      "
+                    />
+                  </div>
+
+                  <div style="width: 70%" class="q-mt-sm">
+                    <q-file
+                      filled
+                      outlined
+                      v-model="updateImage"
+                      label="Select Image"
+                      accept="image/*"
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="cloud_upload" />
+                      </template>
+                    </q-file>
+                  </div>
                 </div>
               </div>
             </div>
@@ -100,7 +110,8 @@
                     rounded
                     outlined
                     placeholder="Juan"
-                  />
+                  >
+                  </q-input>
                 </q-card-section>
                 <q-card-section class="accountInfoInput q-pt-none">
                   Email
@@ -131,9 +142,9 @@
                 <q-card-section class="accountInfoInput q-pt-none">
                   Confirm Password
                   <q-input
-                    name="confirmNewPassword"
-                    for="confirmNewPassword"
-                    v-model="confirmNewPassword"
+                    name="newConfirmPassword"
+                    for="newConfirmPassword"
+                    v-model="newConfirmPassword"
                     type="password"
                     rounded
                     outlined
@@ -149,19 +160,21 @@
                     style="background-color: #925fe2; width: 45%"
                     rounded
                   />
-                  <q-btn
-                    class="q-py-md"
-                    label="discard Changes"
-                    no-caps
-                    type="submit"
-                    style="width: 45%"
-                    rounded
-                  />
+                  <!-- <q-btn
+                      class="q-py-md"
+                      label="discard Changes"
+                      no-caps
+                      type="submit"
+                      style="width: 45%"
+                      rounded
+                    /> -->
                 </div>
               </div>
             </div>
           </div>
-          <!-- Personal details -->
+        </q-form>
+        <!-- Personal details -->
+        <q-form @submit.prevent="updatePersonalDetails">
           <div class="personalDetails-container" v-if="personalDetailsLink">
             <div class="personalDetails q-pb-md">
               <q-card-section class="text-h6 q-pb-none">
@@ -228,7 +241,7 @@
                   <q-input
                     name="newBirthDate"
                     for="newBirthDate"
-                    v-model="newBirthDate"
+                    v-model="formattedBirthDate"
                     type="date"
                     rounded
                     outlined
@@ -242,6 +255,21 @@
                     name="newContact"
                     for="newContact"
                     v-model="newContact"
+                    type="tel"
+                    rounded
+                    outlined
+                    placeholder="Juan"
+                    no-error-icon
+                  />
+                </q-card-section>
+              </div>
+              <div>
+                <q-card-section class="accountInfoInput q-pt-none">
+                  School
+                  <q-input
+                    name="newContact"
+                    for="newContact"
+                    v-model="newSchool"
                     type="tel"
                     rounded
                     outlined
@@ -374,6 +402,8 @@
                     placeholder="Skibidi"
                   />
                 </q-card-section>
+              </div>
+              <div class="newGenderBirthContact">
                 <q-card-section class="accountInfoInput q-pt-none">
                   Last name
                   <q-input
@@ -387,9 +417,7 @@
                     no-error-icon
                   />
                 </q-card-section>
-              </div>
-              <div class="newGenderBirthContact">
-                <q-card-section class="accountInfoInput q-pt-none">
+                <!-- <q-card-section class="accountInfoInput q-pt-none">
                   Gender
                   <q-select
                     rounded
@@ -402,8 +430,8 @@
                     for="newGuardianGender"
                     no-error-icon
                   />
-                </q-card-section>
-                <q-card-section class="accountInfoInput q-pt-none">
+                </q-card-section> -->
+                <!-- <q-card-section class="accountInfoInput q-pt-none">
                   Birthday
                   <q-input
                     name="newGuardianbirthDate"
@@ -415,7 +443,7 @@
                     no-error-icon
                   >
                   </q-input>
-                </q-card-section>
+                </q-card-section> -->
                 <q-card-section class="accountInfoInput q-pt-none">
                   Contact
                   <q-input
@@ -533,21 +561,13 @@
                   style="background-color: #925fe2; width: 45%"
                   rounded
                 />
-                <q-btn
-                  class="q-py-md"
-                  label="discard Changes"
-                  no-caps
-                  type="submit"
-                  style="width: 45%"
-                  rounded
-                />
               </div>
             </div>
             <!-- Photocopy of id's -->
-            <div class="PhotoIDs q-py-lg">
-              <q-img src="/src/assets/lee.png" class="PhotoID-img" />
+            <div class="PhotoIDs q-py-lg" v-if="myProfile">
+              <q-img :src="myProfile.schoolId" class="PhotoID-img" />
               <q-card-section> Photocopy of School ID </q-card-section>
-              <q-img src="/src/assets/waw.jpg" class="PhotoID-img" />
+              <q-img :src="myProfile.parentId" class="PhotoID-img" />
               <q-card-section> Photocopy of Parent’s Valid ID </q-card-section>
             </div>
           </div>
@@ -697,36 +717,52 @@
 <script setup>
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { onMounted, ref, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import axios from "axios";
+import { useQuasar } from "quasar";
 
-// Reactive data
-const profileImage = ref("/src/assets/waw.jpg"); // Default profile image
+const route = useRoute();
+const $q = useQuasar();
+const profileImage = ref("/src/assets/waw.jpg");
 const router = useRouter();
-// File input reference
 const fileInput = ref(null);
+const newUsername = ref("");
+const newEmail = ref("");
+const newPassword = ref("");
+const newConfirmPassword = ref("");
+const myProfile = ref(null);
+const updateImage = ref("");
+const accountDetailsLink = ref(true);
+const personalDetailsLink = ref(false);
 
-// Method to trigger file input click
-const triggerFileInput = () => {
-  fileInput.value.click();
-};
-
-// Method to handle image change
-const handleImageChange = (event) => {
-  const file = event.target.files[0];
-  if (file && file.type.startsWith("image/")) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      profileImage.value = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  } else {
-    alert("Please select a valid image file.");
-  }
-};
-
-const accountDetailsLink = ref(false);
-const personalDetailsLink = ref(true);
+const newFirstname = ref("");
+const newMiddlename = ref("");
+const newLastname = ref("");
+const newGender = ref("");
+const newBirthDate = ref("");
+const newSchool = ref("");
+const newContact = ref("");
+const newCountry = ref("");
+const newZipCode = ref("");
+const newProvince = ref("");
+const newMunicipality = ref("");
+const newBarangay = ref("");
+const newStreet = ref("");
+const newBlockAndLot = ref("");
+const newGuardianFirstname = ref("");
+const newGuardianMiddlename = ref("");
+const newGuardianLastname = ref("");
+// const newGuardianGender = ref("");
+const newGuardianbirthDate = ref("");
+const newGuardianContact = ref("");
+const newGuardianCountry = ref("");
+const newGuardianZipCode = ref("");
+const newGuardianProvince = ref("");
+const newGuardianMunicipality = ref("");
+const newGuardianBarangay = ref("");
+const newGuardianStreet = ref("");
+const newGuardianBlockAndLot = ref("");
 
 const showAccountDetails = () => {
   accountDetailsLink.value = true;
@@ -742,6 +778,20 @@ const optionGender = {
   option: ["Male", "Female", "Non-Binary"],
 };
 
+const formattedBirthDate = computed({
+  get() {
+    if (!newBirthDate.value) return ""; // Handle empty value gracefully
+    const date = new Date(newBirthDate.value);
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-based
+    const dd = String(date.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`; // Format as yyyy-MM-dd
+  },
+  set(value) {
+    newBirthDate.value = value; // Update the original date when user changes the input
+  },
+});
+
 async function isLogin() {
   const token = localStorage.getItem("authToken");
   try {
@@ -753,7 +803,7 @@ async function isLogin() {
         },
       }
     );
-    console.log("here", response);
+
     if (!response.data.isValid) {
       router.replace(`/loginPage`);
     } else {
@@ -765,6 +815,7 @@ async function isLogin() {
           },
         }
       );
+
       if (myProfile.data[0].title !== "member") {
         router.replace(`/loginPage`);
       }
@@ -773,7 +824,157 @@ async function isLogin() {
     console.error(err);
   }
 }
+
+async function getUser() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/myProfile`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+
+    // Update the reactive `myProfile` ref with the data
+    myProfile.value = response.data[0];
+    console.log("ere", myProfile.value.birthDate);
+
+    newUsername.value = myProfile.value.username;
+    newEmail.value = myProfile.value.email;
+    newFirstname.value = myProfile.value.firstName;
+    newMiddlename.value = myProfile.value.middleName;
+    newLastname.value = myProfile.value.lastName;
+    newGender.value = myProfile.value.gender;
+    newContact.value = myProfile.value.contactNumber;
+    newBirthDate.value = myProfile.value.birthDate;
+    newSchool.value = myProfile.value.school;
+    newCountry.value = myProfile.value.country;
+    newZipCode.value = myProfile.value.zipCode;
+    newProvince.value = myProfile.value.province;
+    newMunicipality.value = myProfile.value.municipality;
+    newBarangay.value = myProfile.value.barangay;
+    newStreet.value = myProfile.value.street;
+    newBlockAndLot.value = myProfile.value.blockAndLot;
+    newGuardianFirstname.value = myProfile.value.guardianFirstName;
+    newGuardianMiddlename.value = myProfile.value.guardianMiddleName;
+    newGuardianLastname.value = myProfile.value.guardianLastName;
+    // newGuardianGender.value = myProfile.value.newGuardianGender;
+    newGuardianContact.value = myProfile.value.guardianContactNumber;
+    newGuardianCountry.value = myProfile.value.guardianCountry;
+    newGuardianZipCode.value = myProfile.value.guardianZipCode;
+    newGuardianProvince.value = myProfile.value.guardianProvince;
+    newGuardianMunicipality.value = myProfile.value.guardianMunicipality;
+    newGuardianBarangay.value = myProfile.value.guardianBarangay;
+    newGuardianStreet.value = myProfile.value.guardianStreet;
+    newGuardianBlockAndLot.value = myProfile.value.guardianBlockAndLot;
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+  }
+}
+
+const formData = new FormData();
+formData.append("userImage", updateImage.value);
+
+async function updateAccountDetails() {
+  const token = localStorage.getItem("authToken");
+  const userId = myProfile.value._id;
+  if (newPassword.value !== newConfirmPassword.value) {
+    $q.notify({
+      type: "negative",
+      message: "Passwords do not match. Please check again.",
+    });
+    return; // Exit function early if passwords don't match
+  }
+
+  // Ensure that the new password is not empty
+  if (!newPassword.value) {
+    $q.notify({
+      type: "negative",
+      message: "Please enter a new password.",
+    });
+    return;
+  }
+  try {
+    const response = await axios.put(
+      `${process.env.api_host}/users/update/${userId}`,
+      formData,
+      {
+        username: newUsername.value,
+        email: newEmail.value,
+        password: newPassword.value,
+        userImage: updateImage.value,
+      },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `${token}`,
+        },
+      }
+    );
+    $q.notify({
+      type: "positive",
+      message: "Account Updated Succesfully",
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function updatePersonalDetails() {
+  const token = localStorage.getItem("authToken");
+  const userId = myProfile.value._id;
+
+  console.log("personal");
+  try {
+    const response = await axios.put(
+      `${process.env.api_host}/users/update/${userId}`,
+      {
+        firstName: newFirstname.value,
+        lastName: newLastname.value,
+        middleName: newMiddlename.value,
+        gender: newGender.value,
+        contactNumber: newContact.value,
+        birthDate: newBirthDate.value,
+        school: newSchool.value,
+        country: newCountry.value,
+        zipCode: newZipCode.value,
+        province: newProvince.value,
+        municipality: newMunicipality.value,
+        barangay: newBarangay.value,
+        street: newStreet.value,
+        blockAndLot: newBlockAndLot,
+        guardianFirstName: newGuardianFirstname.value,
+        guardianMiddleName: newGuardianMiddlename.value,
+        guardianLastName: newGuardianLastname.value,
+
+        guardianContactNumber: newGuardianContact.value,
+        guardianCountry: newGuardianCountry.value,
+        guardianZipCode: newGuardianZipCode.value,
+        guardianProvince: newGuardianProvince.value,
+        guardianMunicipality: newGuardianMunicipality.value,
+        guardianBarangay: newGuardianBarangay.value,
+        guardianStreet: newGuardianStreet.value,
+        guardianBlockAndLot: newGuardianBlockAndLot.value,
+      },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `${token}`,
+        },
+      }
+    );
+    $q.notify({
+      type: "positive",
+      message: "Personal Details Updated Succesfully",
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
 onMounted(() => {
   isLogin();
+  getUser();
 });
 </script>
