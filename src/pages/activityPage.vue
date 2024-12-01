@@ -176,7 +176,7 @@
                 </q-card-section>
 
                 <!-- Button Section -->
-                <div style="flex-shrink: 0">
+                <div style="flex-shrink: 0" v-if="isInstructor">
                   <q-btn-dropdown
                     flat
                     dropdown-icon="more_vert"
@@ -333,6 +333,7 @@ const getSubmission = ref("");
 const activity = ref(null);
 const myProfile = ref();
 const isMember = ref(false);
+const isInstructor = ref();
 const course = ref(null);
 const isImageFile = ref(false);
 const isRenderFile = ref(false);
@@ -466,9 +467,12 @@ async function getUserInfo() {
 }
 
 async function memberValidation() {
+  console.log("here", myProfile.value);
   if (myProfile.value.title === "member") {
     return (isMember.value = true);
   }
+  if (myProfile.value.title === "instructor")
+    return (isInstructor.value = true);
 }
 
 async function pass(submissionId) {
