@@ -191,13 +191,14 @@
         </q-card> -->
       </div>
       <!-- statistics -->
-      <div class="statisticsCont qp">
-        <!-- <q-card-section
-          v-if="isMember"
+      <div class="statisticsCont q-pt-md">
+        <q-card-section
+          v-if="!isMember"
           class="text-h5"
           style="align-self: flex-start"
-          >Statistics</q-card-section> -->
-        <div class="statsProfileContainer" v-if="isMember">
+          >Statistics</q-card-section
+        >
+        <div class="statsProfileContainer">
           <q-card
             class="statsProfile q-py-md"
             style="
@@ -209,7 +210,7 @@
               background-position: center; /* Center the image */
             "
           >
-            <div class="statisticsDetails" style="height: auto">
+            <div class="statisticsDetails" style="height: auto" v-if="isMember">
               <div class="q-mt-md badge-container">
                 <span v-if="myProfile">
                   <q-avatar class="sampleBadge">
@@ -234,7 +235,13 @@
                 </q-card-section>
               </div>
             </div>
-            <div></div>
+            <q-card-section v-if="!isMember">
+              <div
+                style="height: 300px; display: flex; justify-content: center"
+              >
+                <pieChart />
+              </div>
+            </q-card-section>
 
             <div class="logAndNotif-container q-px-md">
               <q-card
@@ -396,7 +403,7 @@
 
 .statisticsCont
   display: flex
-
+  flex-direction: column
   align-items: center /* Center horizontally */
   width: 40%
   border-radius: 14px
@@ -404,7 +411,7 @@
   height: auto
   min-height: 700px
 
-  // border: 1px solid red
+
 .statsProfileContainer
   display: flex
   justify-content: center /* Center the card inside the container */
@@ -597,12 +604,13 @@ import { ref, computed, onMounted } from "vue";
 import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
 import { useRouter } from "vue-router";
+import pieChart from "src/components/pieChart.vue";
 
 const progress = ref(0.65);
 const courses = ref(null);
 const myProfile = ref(null);
 const router = useRouter();
-const isMember = ref(true);
+const isMember = ref();
 const formattedDate = ref("");
 const logs = ref(null);
 
@@ -631,6 +639,8 @@ if (token) {
     })
     .then((response) => {
       myProfile.value = response.data[0];
+
+      roleValidation(myProfile.value.title);
     })
     .catch((error) => {
       console.error("API call failed:", error);
@@ -670,6 +680,7 @@ async function isLogin() {
         },
       }
     );
+
     if (!response.data.isValid) {
       router.replace(`/loginPage`);
     } else {
@@ -681,6 +692,16 @@ async function isLogin() {
           },
         }
       );
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function roleValidation(title) {
+  try {
+    if (title === "member") {
+      return (isMember.value = true);
     }
   } catch (err) {
     console.error(err);

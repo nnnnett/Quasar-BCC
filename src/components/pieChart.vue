@@ -20,18 +20,20 @@ onMounted(() => {
   new Chart(ctx, {
     type: "pie", // Pie chart type
     data: {
-      labels: ["Purple", "Light Purple"], // Example labels
+      labels: ["Pass", "xd", "yawa"], // Example labels
       datasets: [
         {
           label: "Pie Chart Example", // Label for the chart
-          data: [60, 40], // Data values for each segment
+          data: [60, 40, 50], // Data values for each segment
           backgroundColor: [
             "rgb(146, 95, 226)", // RGB for #925FE2 (Purple)
             "rgb(213, 179, 251)", // RGB for #D5B3FB (Light Purple)
+            "white",
           ],
           borderColor: [
             "rgb(146, 95, 226)", // Border color for first segment
             "rgb(213, 179, 251)", // Border color for second segment
+            "white",
           ],
           borderWidth: 1,
         },
@@ -41,7 +43,7 @@ onMounted(() => {
       responsive: true,
       plugins: {
         legend: {
-          position: "top",
+          position: "bottom",
         },
         tooltip: {
           enabled: true,
