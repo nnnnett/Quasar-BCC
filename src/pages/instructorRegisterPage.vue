@@ -1,8 +1,8 @@
 <template>
-  <q-page class="flex flex-center">
-    <adminNavBar />
+  <q-page>
+    <userNavBar />
     <q-card style="width: 80vw" class=" ">
-      <div class="registerInstructor-container">
+      <div class="registerInstructor-container q-mt-md">
         <q-form @submit.prevent="submitSignup">
           <q-card-section> Add Instructor </q-card-section>
           <div style="width: 100%">
@@ -150,7 +150,7 @@
 </style>
 
 <script setup>
-import adminNavBar from "src/components/adminNavBar.vue";
+import userNavBar from "src/components/userNavBar.vue";
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useQuasar } from "quasar";
@@ -247,7 +247,7 @@ async function isLogin() {
           },
         }
       );
-      if (myProfile.data[0].title !== "instructor") {
+      if (myProfile.data[0].title !== "admin") {
         router.replace(`/loginPage`);
       }
     }

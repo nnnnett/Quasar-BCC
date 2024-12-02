@@ -44,7 +44,7 @@ const routes = [
       },
       {
         path: "adminUserManagement",
-        component: () => import("src/pages/adminUserManagement.vue"),
+        component: () => import("src/pages/adminPage/adminUserManagement.vue"),
       },
       {
         path: "attendanceManagement",

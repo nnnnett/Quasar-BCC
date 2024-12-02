@@ -53,12 +53,12 @@
           <!-- complete -->
           <div class="completedCourse q-mt-md q-ml-md">
             <q-item-section avatar class="q-pl-lg">
-              <q-icon name="library_books" style="color: #5ce1e6" />
+              <q-icon name="schedule" style="color: #5ce1e6" />
             </q-item-section>
             <div class="q-pl-none">
               <q-card-section class="q-pb-none q-pl-none"> 10 </q-card-section>
               <q-card-section class="q-pt-none q-pl-none">
-                Completed Courses
+                Attendance Counter
               </q-card-section>
             </div>
           </div>
@@ -257,8 +257,8 @@
 
                 <q-scroll-area style="height: 400px; width: 550px">
                   <div
-                    v-for="n in 100"
-                    :key="n"
+                    v-for="(log, idx) in logs"
+                    :key="idx"
                     class="q-px-md"
                     style="
                       display: flex;
@@ -266,26 +266,15 @@
                       align-items: flex-start;
                     "
                   >
-                    <q-img
-                      src="/src/assets/yanami.png"
-                      style="
-                        width: 40px;
-                        height: 40px;
-                        border-radius: 50px;
-                        flex-shrink: 0;
-                      "
-                    />
                     <div class="q-px-md">
                       <q-card-section
                         class="text-subtitle2 q-pa-none"
                         style="max-width: 550px; text-align: justify"
-                        >Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit. Minima Lorem ipsum dolor sit amet consectetur
-                        adipisicing elit. Minima Lorem ipsum dolor sit amet
-                        consectetur adipisicing elit. Minima
+                      >
+                        {{ log.name }} {{ log.action }} {{ log.reference }}
                       </q-card-section>
                       <q-card-section class="text-overline q-pa-none">
-                        {{ formattedDate }}
+                        {{ formatDate(log.timestamp) }}
                       </q-card-section>
                     </div>
                   </div>
@@ -611,7 +600,6 @@ const courses = ref(null);
 const myProfile = ref(null);
 const router = useRouter();
 const isMember = ref();
-const formattedDate = ref("");
 const logs = ref(null);
 
 const randomize = () => {
@@ -711,20 +699,21 @@ async function roleValidation(title) {
 async function getLogs() {
   try {
     const response = await axios.get(`${process.env.api_host}/users/logs`);
-    logs.value = response.data;
+    logs.value = response.data.logs;
     console.log(logs.value);
   } catch (err) {
     console.error(err);
   }
 }
 
+function formatDate(date) {
+  const formattedDate = new Date(date).toLocaleString();
+  return formattedDate;
+}
+
 onMounted(() => {
   isLogin();
   getCourses();
   getLogs();
-  const today = new Date();
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  formattedDate.value = today.toLocaleDateString("en-US", options);
-  console.log(process.env.api_host);
 });
 </script>

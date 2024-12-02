@@ -724,7 +724,7 @@ import { useQuasar } from "quasar";
 
 const route = useRoute();
 const $q = useQuasar();
-const profileImage = ref("/src/assets/waw.jpg");
+
 const router = useRouter();
 const fileInput = ref(null);
 const newUsername = ref("");
@@ -874,9 +874,6 @@ async function getUser() {
   }
 }
 
-const formData = new FormData();
-formData.append("userImage", updateImage.value);
-
 async function updateAccountDetails() {
   const token = localStorage.getItem("authToken");
   const userId = myProfile.value._id;
@@ -899,17 +896,15 @@ async function updateAccountDetails() {
   try {
     const response = await axios.put(
       `${process.env.api_host}/users/update/${userId}`,
-      formData,
       {
         username: newUsername.value,
         email: newEmail.value,
         password: newPassword.value,
-        userImage: updateImage.value,
+        // userImage: updateImage.value,
       },
       {
         headers: {
-          "Content-Type": "multipart/form-data",
-          authorization: `${token}`,
+          authorization: token,
         },
       }
     );
@@ -918,6 +913,10 @@ async function updateAccountDetails() {
       message: "Account Updated Succesfully",
     });
   } catch (err) {
+    $q.notify({
+      type: "negative",
+      message: "Something Went Wrong",
+    });
     console.error(err);
   }
 }
@@ -926,7 +925,6 @@ async function updatePersonalDetails() {
   const token = localStorage.getItem("authToken");
   const userId = myProfile.value._id;
 
-  console.log("personal");
   try {
     const response = await axios.put(
       `${process.env.api_host}/users/update/${userId}`,
@@ -965,6 +963,7 @@ async function updatePersonalDetails() {
         },
       }
     );
+    console.log(response);
     $q.notify({
       type: "positive",
       message: "Personal Details Updated Succesfully",

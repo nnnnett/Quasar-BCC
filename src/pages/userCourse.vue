@@ -51,12 +51,12 @@
         <!-- complete -->
         <div class="completedCourse q-mt-md q-ml-md">
           <q-item-section avatar class="q-pl-lg">
-            <q-icon name="library_books" style="color: #5ce1e6" />
+            <q-icon name="schedule" style="color: #5ce1e6" />
           </q-item-section>
           <div class="q-pl-none">
             <q-card-section class="q-pb-none q-pl-none"> 10 </q-card-section>
             <q-card-section class="q-pt-none q-pl-none">
-              Completed Courses
+              Attendance Counter
             </q-card-section>
           </div>
         </div>

@@ -15,7 +15,7 @@
         rounded
         icon="camera_alt"
         label="Attendance"
-        class="full-width"
+        class="full-width q-mb-md"
         size="lg"
         @click="turnCameraOn('attendance')"
         v-show="!showCamera"

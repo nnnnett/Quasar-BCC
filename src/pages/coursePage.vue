@@ -227,23 +227,26 @@
           >
             Submitted Activity
           </q-card-section>
-          <div
-            style="
-              display: flex;
-
-              justify-content: center;
-            "
-          >
+          <div>
             <div
-              class="submittedAct"
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-              "
+              v-for="(activity, idx) in submittedActivities"
+              :key="idx"
+              class="flex flex-center"
             >
-              <q-card-section>No data to show.</q-card-section>
+              <div
+                @click="downloadFile(activity.file)"
+                style="
+                  flex: 1;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+                class="cursor-pointer submittedAct"
+              >
+                <span style="color: var(--q-primary)"
+                  >{{ activity.file.split("/").pop() }}
+                </span>
+              </div>
             </div>
           </div>
         </q-card>
@@ -304,10 +307,12 @@
 .submittedAct
   border: 1px solid #EBE9FB
   width: 80%
-  height: 500px
+  height: 100px
   border-radius: 14px
   overflow: hidden
-
+  display: flex
+  align-items: center
+  justify-content: start
 @media (max-width:1530px)
   .main-container
     width: 70vw
@@ -356,12 +361,13 @@ const $q = useQuasar();
 const addActivity = ref(false);
 const route = useRoute();
 const router = useRouter();
-const courseId = route.params.courseId;
 const course = ref(null);
 const myProfile = ref(null);
 const activityName = ref("");
 const description = ref("");
 const file = ref("");
+const courseId = route.params.courseId;
+const activityId = route.params.activityId;
 
 async function getCourses() {
   try {
@@ -374,8 +380,6 @@ async function getCourses() {
     console.log("failed to get courses");
   }
 }
-
-console.log("log");
 
 const descriptionLink = ref(true);
 const activityLink = ref(false);
@@ -430,13 +434,62 @@ async function isLogin() {
 
 async function roleValidation(title) {
   try {
-    console.log(title);
     if (title === "member") {
       return (isMember.value = true);
     }
   } catch (err) {
     console.error(err);
   }
+}
+
+const submittedActivities = ref([]);
+
+async function submittedActivity() {
+  const token = localStorage.getItem("authToken");
+
+  try {
+    const myProfile = await axios.get(
+      `${process.env.api_host}/users/myProfile`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    const userId = myProfile.data[0]._id;
+    console.log("id", userId);
+    const response = await axios.get(
+      `${process.env.api_host}/courses?query=${courseId}`,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: token,
+        },
+      }
+    );
+
+    const activities = response.data[0].activities;
+    activities.forEach((activity) => {
+      const submissions = activity.submissions;
+      if (submissions.length > 0) {
+        submissions.forEach((submission) => {
+          if (userId === submission.studentId) {
+            submittedActivities.value.push(submission);
+          }
+        });
+      }
+    });
+    console.log(submittedActivities.value);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function downloadFile(fileUrl) {
+  const link = document.createElement("a");
+  link.href = fileUrl;
+  link.target = "_blank";
+  link.click();
 }
 
 async function submitActivity() {
@@ -485,5 +538,6 @@ async function submitActivity() {
 onMounted(async () => {
   await isLogin();
   await getCourses();
+  submittedActivity();
 });
 </script>
