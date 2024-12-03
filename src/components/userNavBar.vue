@@ -86,7 +86,7 @@
               <q-item-label>User Management</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item
+          <!-- <q-item
             v-if="isAdmin"
             clickable
             @click="router.replace(`/adminConfigure`)"
@@ -98,7 +98,7 @@
             <q-item-section>
               <q-item-label>Configuration</q-item-label>
             </q-item-section>
-          </q-item>
+          </q-item> -->
           <q-item
             clickable
             @click="router.replace(`/userSettings`)"

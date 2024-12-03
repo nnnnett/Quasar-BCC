@@ -43,29 +43,28 @@
 
         <div class="q-pa-md row">
           <!-- Search Bar -->
-          <div style="width: 350px">
+          <!-- <div style="width: 350px">
             <q-input
               v-model="searchQuery"
               label="Search"
               outlined
               rounded
               clearable
-              @input="onSearchInput"
             >
               <template v-slot:append>
-                <q-icon name="search" />
+                <q-icon name="search" clickable @click="getUser()" />
               </template>
             </q-input>
-          </div>
+          </div> -->
           <q-space />
-          <div style="width: 200px" v-if="activeTab === 'instructor'">
+          <!-- <div style="width: 200px" v-if="activeTab === 'instructor'">
             <q-select outlined v-model="model" :options="options" label="All">
               <template #prepend>
-                <!-- The custom content (e.g., "Sort:") goes inside the append slot -->
+
                 <div class="q-pl-sm text-caption">Sort:</div>
               </template>
             </q-select>
-          </div>
+          </div> -->
 
           <div class="q-ml-lg" v-if="activeTab === 'instructor'">
             <q-btn
@@ -725,9 +724,6 @@
       </q-card>
     </div>
   </q-page>
-  <q-dialog v-model="showLoading">
-    <q-spinner size="10vh" color="primary" />
-  </q-dialog>
 </template>
 <style lang="sass" scoped>
 
@@ -784,7 +780,6 @@ import { onMounted } from "vue";
 import axios from "axios";
 import { copyToClipboard, Notify } from "quasar";
 
-const showLoading = ref(true);
 const $q = useQuasar();
 const router = useRouter();
 const studentLink = ref(true);
@@ -842,19 +837,23 @@ const loading = ref(false);
 const fromDate = ref("");
 const toDate = ref("");
 
+async function searchBar() {
+  console.log(searchQuery.value, "Input from search bar");
+}
 async function getDate() {
   fromDate.value;
   toDate.value;
   const token = localStorage.getItem("authToken");
   try {
     const response = await axios.get(
-      `${process.env.api_host}/users/attendace/getByRange?startDate=${fromDate.value}?endDate=${toDate.value}`,
+      `${process.env.api_host}/users/attendance/getByRange?startDate=${fromDate.value}&endDate=${toDate.value}`,
       {
         headers: {
           authorization: token,
         },
       }
     );
+    console.log("respones", response);
   } catch (err) {
     console.error(err);
   }
@@ -1017,23 +1016,27 @@ async function getUser(role) {
   try {
     loading.value = true;
     if (role === "member") {
-      const response = await axios.get(`${process.env.api_host}/users`, {
-        headers: {
-          authorization: token,
-        },
-      });
+      const response = await axios.get(
+        `${process.env.api_host}/users?filter=member`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
 
       showUser.value = response.data;
-      console.log("rew", showUser);
     } else if (role === "instructor") {
-      const response = await axios.get(`${process.env.api_host}/users`, {
-        headers: {
-          authorization: token,
-        },
-      });
+      const response = await axios.get(
+        `${process.env.api_host}/users?filter=instructor`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
 
       showUser.value = response.data;
-      console.log("rew", showUser);
     }
   } catch (err) {
     console.error(err);
@@ -1151,6 +1154,5 @@ const rows = ref(STUDENT);
 onMounted(() => {
   isLogin();
   getUser("member");
-  showLoading.value = false;
 });
 </script>

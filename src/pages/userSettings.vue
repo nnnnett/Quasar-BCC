@@ -52,7 +52,7 @@
                   style="color: #8f9bb3; text-align: center"
                   class="q-pt-none"
                 >
-                  (PNG, JPG, GIF files, 200x200px recommended)
+                  <!-- (PNG, JPG, GIF files, 200x200px recommended) -->
                 </q-card-section>
                 <div
                   v-if="myProfile"
@@ -79,7 +79,7 @@
                   </div>
 
                   <div style="width: 70%" class="q-mt-sm">
-                    <q-file
+                    <!-- <q-file
                       filled
                       outlined
                       v-model="updateImage"
@@ -89,11 +89,22 @@
                       <template v-slot:prepend>
                         <q-icon name="cloud_upload" />
                       </template>
-                    </q-file>
+                    </q-file> -->
                   </div>
                 </div>
-                <div class="row justify-center items-center">
-                  <qrcode :value="qrValue" />
+                <div
+                  class="q-mt-md"
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <qrcode @click="downloadQrCode" :value="qrValue" />
+                  <div class="q-mt-sm">
+                    QR Attendance/Click Image to Download
+                  </div>
                 </div>
               </div>
             </div>
@@ -776,8 +787,18 @@ const optionGender = {
   option: ["Male", "Female", "Non-Binary"],
 };
 
-const qrValue = ref("qrcode");
+const qrValue = ref("");
 
+const downloadQrCode = () => {
+  // Find the canvas element rendered by qrcode.vue
+  const canvas = document.querySelector("canvas");
+  if (canvas) {
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png"); // Convert canvas to PNG data URL
+    link.download = "qrcode.png"; // Specify the file name
+    link.click(); // Trigger the download
+  }
+};
 const formattedBirthDate = computed({
   get() {
     if (!newBirthDate.value) return ""; // Handle empty value gracefully

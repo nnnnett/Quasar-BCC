@@ -51,12 +51,14 @@
             </div>
           </div>
           <!-- complete -->
-          <div class="completedCourse q-mt-md q-ml-md">
+          <div class="completedCourse q-mt-md q-ml-md" v-if="isMember">
             <q-item-section avatar class="q-pl-lg">
               <q-icon name="schedule" style="color: #5ce1e6" />
             </q-item-section>
             <div class="q-pl-none">
-              <q-card-section class="q-pb-none q-pl-none"> 10 </q-card-section>
+              <q-card-section class="q-pb-none q-pl-none" v-if="attendCounter">
+                {{ attendCounter }}
+              </q-card-section>
               <q-card-section class="q-pt-none q-pl-none">
                 Attendance Counter
               </q-card-section>
@@ -601,7 +603,7 @@ const myProfile = ref(null);
 const router = useRouter();
 const isMember = ref();
 const logs = ref(null);
-
+const attendCounter = ref("");
 const randomize = () => {
   progress.value = Math.random();
 };
@@ -628,6 +630,7 @@ if (token) {
     .then((response) => {
       myProfile.value = response.data[0];
 
+      attendCounter.value = myProfile.value.attendanceCounter;
       roleValidation(myProfile.value.title);
     })
     .catch((error) => {
@@ -709,10 +712,7 @@ function formatDate(date) {
   const formattedDate = new Date(date).toLocaleString();
   return formattedDate;
 }
-
-onMounted(() => {
-  isLogin();
-  getCourses();
-  getLogs();
-});
+isLogin();
+getCourses();
+getLogs();
 </script>
