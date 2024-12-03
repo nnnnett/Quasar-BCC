@@ -191,7 +191,7 @@
         </q-card> -->
       </div>
       <!-- statistics -->
-      <div class="statisticsCont q-pt-md">
+      <div class="statisticsCont q-py-md">
         <q-card-section
           v-if="!isMember"
           class="text-h5"
@@ -244,18 +244,10 @@
             </q-card-section>
 
             <div class="logAndNotif-container q-px-md">
-              <q-card
-                class="logAndNotif-content text-h6"
-                style="
-                  color: #4b4b4b;
-                  background-color: transparent;
-                  border: 1px solid #f2f7ff;
-                  border-radius: 14px;
-                "
-              >
+              <q-card class="logAndNotif-content text-h6" style="">
                 <q-card-section>Logs and Notifications</q-card-section>
 
-                <q-scroll-area style="height: 400px; width: 550px">
+                <q-scroll-area style="height: 400px; width: 500px">
                   <div
                     v-for="(log, idx) in logs"
                     :key="idx"
@@ -292,7 +284,7 @@
 .main-container
   display: flex
   justify-content: space-around
-
+  width: 80vw
 
 .navbar-Profile
   display: flex
@@ -407,7 +399,7 @@
   width: 100% /* Ensure the container takes the full width */
 
 .statsProfile
-  width: auto
+  width: 90%
   height: auto
 
 .statisticsDetails
@@ -440,13 +432,20 @@
 
 .logAndNotif-container
   height: auto
-  width: 90%
+  width: 100%
   display: flex
+
+.logAndNotif-content
+
+  color: #4b4b4b
+  background-color: transparent
+  width: 100%
+  border-radius: 14px
 // screen responsive
 
 @media (max-width: 1720px)
-  .main-dashboard
-    min-width: 1000px
+  .main-container
+    min-width: 70vw
   .courseTitle
     width: 30% // Make title responsive
     height: auto // Allow height to adjust
@@ -466,15 +465,15 @@
 
 @media (max-width:1644px)
   .statisticsCont
-    margin-left:-6%
-
+    margin-left:-10%
+    width: 40%
 
 @media (max-width:1543px)
   .main-container
     display: flex
     flex-direction: column-reverse
     align-items: center
-    margin-top: 25%
+
   .main-dashboard
     min-width: 1000px
 
@@ -488,7 +487,7 @@
     width: 100%
 @media (max-width:1387px)
   .main-container
-    margin-top:30%
+    // margin-top:30%
   .main-dashboard
     min-width: 850px
 
@@ -497,7 +496,7 @@
 
 @media (max-width:1166px)
   .main-container
-    margin-top:35%
+    // margin-top:35%
   .main-dashboard
     min-width: 750px
 
@@ -594,6 +593,7 @@ import notifProfile from "src/components/notifProfile.vue";
 import UserNavBar from "src/components/userNavBar.vue";
 import { useRouter } from "vue-router";
 import pieChart from "src/components/pieChart.vue";
+import { Loading } from "quasar";
 
 const progress = ref(0.65);
 const courses = ref(null);
@@ -700,7 +700,6 @@ async function getLogs() {
   try {
     const response = await axios.get(`${process.env.api_host}/users/logs`);
     logs.value = response.data.logs;
-    console.log(logs.value);
   } catch (err) {
     console.error(err);
   }

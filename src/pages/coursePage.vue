@@ -312,7 +312,7 @@
   overflow: hidden
   display: flex
   align-items: center
-  justify-content: start
+  justify-content: center
 @media (max-width:1530px)
   .main-container
     width: 70vw

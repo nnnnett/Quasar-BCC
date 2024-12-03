@@ -53,8 +53,10 @@
           <q-item-section avatar class="q-pl-lg">
             <q-icon name="schedule" style="color: #5ce1e6" />
           </q-item-section>
-          <div class="q-pl-none">
-            <q-card-section class="q-pb-none q-pl-none"> 10 </q-card-section>
+          <div class="q-pl-none" v-if="attendCounter">
+            <q-card-section class="q-pb-none q-pl-none">
+              {{ attendCounter }}
+            </q-card-section>
             <q-card-section class="q-pt-none q-pl-none">
               Attendance Counter
             </q-card-section>
@@ -376,7 +378,7 @@ const courseName = ref("");
 const description = ref("");
 const photoUrl = ref(null);
 const deletePhotoUrl = ref(null);
-
+const attendCounter = ref("");
 async function getCourses() {
   try {
     await axios.get(`${process.env.api_host}/courses`).then((response) => {
@@ -412,6 +414,25 @@ async function isLogin() {
 
       roleValidation(myProfile.data[0].title);
     }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function getUser() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/myProfile`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+
+    attendCounter.value = response.data[0].attendanceCounter;
+    console.log("erer", attendCounter);
   } catch (err) {
     console.error(err);
   }
@@ -468,7 +489,7 @@ async function roleValidation(title) {
 
 onMounted(() => {
   isLogin();
-
+  getUser();
   getCourses();
 });
 </script>

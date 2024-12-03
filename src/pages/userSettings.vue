@@ -92,8 +92,12 @@
                     </q-file>
                   </div>
                 </div>
+                <div class="row justify-center items-center">
+                  <qrcode :value="qrValue" />
+                </div>
               </div>
             </div>
+
             <!-- account details input -->
             <div class="accountDetailsInput q-pa-md">
               <div class="newUsernameEmailPass">
@@ -151,23 +155,17 @@
                   />
                 </q-card-section>
                 <div class="infoButtons q-mt-md q-px-md">
-                  <q-btn
-                    class="q-py-md"
-                    label="Save Changes"
-                    no-caps
-                    type="submit"
-                    color="accent"
-                    style="background-color: #925fe2; width: 45%"
-                    rounded
-                  />
-                  <!-- <q-btn
+                  <div style="width: 45%">
+                    <q-btn
                       class="q-py-md"
-                      label="discard Changes"
+                      label="Save Changes"
                       no-caps
                       type="submit"
-                      style="width: 45%"
+                      color="accent"
+                      style="background-color: #925fe2; width: 100%"
                       rounded
-                    /> -->
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -721,10 +719,10 @@ import { onMounted, ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { useQuasar } from "quasar";
+import Qrcode from "qrcode.vue";
 
 const route = useRoute();
 const $q = useQuasar();
-
 const router = useRouter();
 const fileInput = ref(null);
 const newUsername = ref("");
@@ -777,6 +775,8 @@ const showPersonalDetails = () => {
 const optionGender = {
   option: ["Male", "Female", "Non-Binary"],
 };
+
+const qrValue = ref("qrcode");
 
 const formattedBirthDate = computed({
   get() {
@@ -839,8 +839,8 @@ async function getUser() {
 
     // Update the reactive `myProfile` ref with the data
     myProfile.value = response.data[0];
-    console.log("ere", myProfile.value.birthDate);
 
+    qrValue.value = myProfile.value._id;
     newUsername.value = myProfile.value.username;
     newEmail.value = myProfile.value.email;
     newFirstname.value = myProfile.value.firstName;
@@ -874,6 +874,12 @@ async function getUser() {
   }
 }
 
+const formData = new FormData();
+formData.append("username", newUsername.value);
+formData.append("email", newEmail.value);
+formData.append("password", newPassword.value);
+formData.append("userImage", updateImage.value);
+
 async function updateAccountDetails() {
   const token = localStorage.getItem("authToken");
   const userId = myProfile.value._id;
@@ -896,6 +902,7 @@ async function updateAccountDetails() {
   try {
     const response = await axios.put(
       `${process.env.api_host}/users/update/${userId}`,
+
       {
         username: newUsername.value,
         email: newEmail.value,
@@ -926,41 +933,41 @@ async function updatePersonalDetails() {
   const userId = myProfile.value._id;
 
   try {
+    const payload = ref({
+      firstName: newFirstname.value,
+      lastName: newLastname.value,
+      middleName: newMiddlename.value,
+      gender: newGender.value,
+      contactNumber: newContact.value,
+      birthDate: newBirthDate.value,
+      school: newSchool.value,
+      country: newCountry.value,
+      zipCode: newZipCode.value,
+      province: newProvince.value,
+      municipality: newMunicipality.value,
+      barangay: newBarangay.value,
+      street: newStreet.value,
+      blockAndLot: newBlockAndLot,
+      guardianFirstName: newGuardianFirstname.value,
+      guardianMiddleName: newGuardianMiddlename.value,
+      guardianLastName: newGuardianLastname.value,
+      guardianContactNumber: newGuardianContact.value,
+      guardianCountry: newGuardianCountry.value,
+      guardianZipCode: newGuardianZipCode.value,
+      guardianProvince: newGuardianProvince.value,
+      guardianMunicipality: newGuardianMunicipality.value,
+      guardianBarangay: newGuardianBarangay.value,
+      guardianStreet: newGuardianStreet.value,
+      guardianBlockAndLot: newGuardianBlockAndLot.value,
+    });
+
+    console.log(payload.value);
+
     const response = await axios.put(
       `${process.env.api_host}/users/update/${userId}`,
+      payload.value,
       {
-        firstName: newFirstname.value,
-        lastName: newLastname.value,
-        middleName: newMiddlename.value,
-        gender: newGender.value,
-        contactNumber: newContact.value,
-        birthDate: newBirthDate.value,
-        school: newSchool.value,
-        country: newCountry.value,
-        zipCode: newZipCode.value,
-        province: newProvince.value,
-        municipality: newMunicipality.value,
-        barangay: newBarangay.value,
-        street: newStreet.value,
-        blockAndLot: newBlockAndLot,
-        guardianFirstName: newGuardianFirstname.value,
-        guardianMiddleName: newGuardianMiddlename.value,
-        guardianLastName: newGuardianLastname.value,
-
-        guardianContactNumber: newGuardianContact.value,
-        guardianCountry: newGuardianCountry.value,
-        guardianZipCode: newGuardianZipCode.value,
-        guardianProvince: newGuardianProvince.value,
-        guardianMunicipality: newGuardianMunicipality.value,
-        guardianBarangay: newGuardianBarangay.value,
-        guardianStreet: newGuardianStreet.value,
-        guardianBlockAndLot: newGuardianBlockAndLot.value,
-      },
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          authorization: `${token}`,
-        },
+        headers: { authorization: token },
       }
     );
     console.log(response);
@@ -969,6 +976,10 @@ async function updatePersonalDetails() {
       message: "Personal Details Updated Succesfully",
     });
   } catch (err) {
+    $q.notify({
+      type: "negative",
+      message: "Something Went Wrong",
+    });
     console.error(err);
   }
 }

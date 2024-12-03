@@ -62,7 +62,7 @@
           </q-item>
           <q-item
             clickable
-            v-if="!isAdmin"
+            v-if="isMember"
             @click="router.replace(`/userProgress`)"
             class="q-pl-xl q-mt-md"
           >
@@ -76,7 +76,7 @@
           <q-item
             clickable
             @click="router.replace(`/attendanceManagement`)"
-            v-if="isAdmin"
+            v-if="!isMember"
             class="q-pl-xl q-mt-md"
           >
             <q-item-section avatar>
@@ -103,7 +103,7 @@
             clickable
             @click="router.replace(`/userSettings`)"
             class="q-pl-xl q-mt-md"
-            v-if="!isAdmin"
+            v-if="isMember"
           >
             <q-item-section avatar>
               <q-icon name="settings" />
@@ -161,6 +161,8 @@ import { useQuasar } from "quasar"; // Importing Quasar's $q for notifications
 import axios from "axios";
 
 const isAdmin = ref();
+const isInstructor = ref();
+const isMember = ref();
 const leftDrawerOpen = ref(false);
 const isMobile = computed(() => {
   return window.innerWidth < 1024; // Adjust breakpoint as necessary
@@ -231,6 +233,12 @@ async function roleValidation(title) {
   try {
     if (title === "admin") {
       return (isAdmin.value = true);
+    }
+    if (title === "instructor") {
+      return (isInstructor.value = true);
+    }
+    if (title === "member") {
+      return (isMember.value = true);
     }
   } catch (err) {
     console.error(err);

@@ -20,18 +20,20 @@
         <div class="text-subtitle2 showStudent" @click="showStudent">
           <q-card-section
             class="q-py-none clickDescAct"
-            :class="{ active: activeTab === 'student' }"
-            @click="changeTab('student')"
+            :class="{ active: activeTab === 'member' }"
+            @click="changeTab('member')"
             >Student</q-card-section
           >
         </div>
-        <div class="text-subtitle2 showInstructor" @click="showInstructor">
-          <q-card-section
-            class="q-py-none clickDescAct"
-            :class="{ active: activeTab === 'instructor' }"
-            @click="changeTab('instructor')"
-            >Instructor</q-card-section
-          >
+        <div v-if="isAdmin">
+          <div class="text-subtitle2 showInstructor" @click="showInstructor">
+            <q-card-section
+              class="q-py-none clickDescAct"
+              :class="{ active: activeTab === 'instructor' }"
+              @click="changeTab('instructor')"
+              >Instructor</q-card-section
+            >
+          </div>
         </div>
       </q-card-section>
       <q-separator />
@@ -76,7 +78,16 @@
             />
           </div>
 
-          <div v-if="activeTab === 'student'">
+          <div v-if="activeTab === 'member'" class="q-pt-sm">
+            <q-btn
+              class="q-pl-lg q-mt-md"
+              label="Generate Code"
+              @click="genCode()"
+              flat
+              icon="vpn_key"
+            />
+          </div>
+          <div v-if="activeTab === 'member'">
             <q-item
               clickable
               @click="router.replace(`/qrAttendancePage`)"
@@ -91,86 +102,76 @@
             </q-item>
           </div>
         </div>
-        <div class="row" v-if="activeTab === 'student'">
-          <!-- from date -->
-          <q-card-section class="col-3">
-            <div>From date</div>
-            <div>
-              <q-input filled v-model="fromDate">
-                <template v-slot:append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy
-                      cover
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date v-model="fromDate">
-                        <div class="row items-center justify-end">
-                          <q-btn
-                            v-close-popup
-                            label="Close"
-                            color="primary"
-                            flat
-                          />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-          </q-card-section>
-          <!-- To date -->
-          <q-card-section class="col-3">
-            <div>From date</div>
-            <div>
-              <q-input filled v-model="toDate">
-                <template v-slot:append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy
-                      cover
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date v-model="toDate">
-                        <div class="row items-center justify-end">
-                          <q-btn
-                            v-close-popup
-                            label="Close"
-                            color="primary"
-                            flat
-                          />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-          </q-card-section>
-          <q-card-section class="col-3">
-            <div>Sort By</div>
-            <div style="width: 350px">
-              <q-select
-                outlined
-                v-model="sortLetters"
-                :options="options"
-                label="Alphabetical"
+        <!-- date -->
+        <q-form @submit.prevent="getDate">
+          <div class="row" v-if="activeTab === 'member'">
+            <!-- from date -->
+            <q-card-section class="col-2">
+              <div>From date</div>
+              <div>
+                <q-input filled v-model="fromDate">
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy
+                        cover
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date v-model="fromDate" mask="YYYY-MM-DD">
+                          <div class="row items-center justify-end">
+                            <q-btn
+                              v-close-popup
+                              label="Close"
+                              color="primary"
+                              flat
+                            />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+            </q-card-section>
+            <!-- To date -->
+            <q-card-section class="col-2">
+              <div>To date</div>
+              <div>
+                <q-input filled v-model="toDate">
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy
+                        cover
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date v-model="toDate" mask="YYYY-MM-DD">
+                          <div class="row items-center justify-end">
+                            <q-btn
+                              v-close-popup
+                              label="Close"
+                              color="primary"
+                              flat
+                            />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+            </q-card-section>
+            <q-space />
+            <q-card-section class="q-pt-xl">
+              <q-btn
+                flat
+                label="Submit"
+                type="submit"
+                class="bg-primary text-white"
               />
-            </div>
-          </q-card-section>
-          <q-card-section class="col-3">
-            <div>Show</div>
-            <div style="width: 350px">
-              <q-select
-                outlined
-                v-model="model"
-                :options="options"
-                label="All Students"
-              />
-            </div>
-          </q-card-section>
-        </div>
+            </q-card-section>
+          </div>
+        </q-form>
         <!-- Instructor Management Content -->
         <div class="q-px-md">
           <!-- Header -->
@@ -178,20 +179,20 @@
             <div class="col-3">Name</div>
             <div class="col-2">Number of Attendance</div>
             <div class="col-2">Rank</div>
-            <div class="col-2">Status</div>
+            <!-- <div class="col-2">Status</div> -->
             <div class="col-3">Action</div>
           </q-card-section>
           <!-- content -->
-          <div>
+          <div v-if="!loading">
             <q-card-section
               class="userManagement-content row"
-              v-for="(row, idx) in rows"
+              v-for="(user, idx) in showUser"
               :key="idx"
             >
-              <div class="col-3">{{ row.firstName }} {{ row.lastName }}</div>
-              <div class="col-2">{{ row.attendanceCount }}</div>
-              <div class="col-2">{{ row.rank }}</div>
-              <div class="col-2">{{ row.status ? "ACTIVE" : "INACTIVE" }}</div>
+              <div class="col-3">{{ user.firstName }} {{ user.lastName }}</div>
+              <div class="col-2">{{ user.attendanceCounter }}</div>
+              <div class="col-2">{{ user.rank }}</div>
+              <!-- <div class="col-2">{{ user.status ? "ACTIVE" : "INACTIVE" }}</div> -->
               <div class="col-3">
                 <q-btn-dropdown
                   flat
@@ -225,8 +226,23 @@
                 <div style="width: 350px"></div> -->
             </q-card-section>
           </div>
+          <div v-else class="row justify-center" style="padding-top: 8vh">
+            <q-spinner size="7rem" color="primary" />
+          </div>
         </div>
+        <!-- Generate Code -->
+        <q-dialog v-model="generateCode" persistent>
+          <q-card style="width: 50vw">
+            <q-card-section class="flex flex-center">
+              <div v-if="copyGenerated">{{ copyGenerated }}</div>
+            </q-card-section>
+            <div align="right">
+              <q-btn v-close-popup @click="copyText(copyGenerated)">Copy</q-btn>
 
+              <q-btn v-close-popup>Back</q-btn>
+            </div>
+          </q-card>
+        </q-dialog>
         <!-- dialog View Details -->
         <div>
           <q-dialog
@@ -309,6 +325,7 @@
                     />
                   </div>
                 </q-card-section>
+
                 <!-- address -->
                 <q-card-section>
                   <div class="text-h6">Address</div>
@@ -519,22 +536,13 @@
           >
             <q-card class="bg-teal text-white" style="width: 300px">
               <q-card-section>
-                <div class="text-h6">Persistent</div>
+                <div class="text-h6">Do you want to save?</div>
               </q-card-section>
               <q-card-section class="q-pt-none">
-                Click/Tap on the backdrop.
+                Double check the details if correct.
               </q-card-section>
               <q-card-actions align="right" class="bg-white text-teal">
-                <q-item
-                  clickable
-                  v-close-popup
-                  @click="closepopup"
-                  class="q-pl-xl q-mt-md"
-                >
-                  <q-item-section>
-                    <q-item-label>Save</q-item-label>
-                  </q-item-section>
-                </q-item>
+                <q-btn flat v-close-popup @click="closepopup" label="Save" />
                 <q-btn flat label="CANCEL" v-close-popup />
               </q-card-actions>
             </q-card>
@@ -610,6 +618,18 @@
                           clearable
                           v-model="instructorContact"
                           type="number"
+                        />
+                      </div>
+                      <div style="width: 30%" class="q-px-md">
+                        <q-card-section class="q-pb-none">
+                          Birthdate
+                        </q-card-section>
+                        <q-input
+                          outlined
+                          rounded
+                          clearable
+                          v-model="instructorBirthdate"
+                          type="date"
                         />
                       </div>
                     </div>
@@ -705,6 +725,9 @@
       </q-card>
     </div>
   </q-page>
+  <q-dialog v-model="showLoading">
+    <q-spinner size="10vh" color="primary" />
+  </q-dialog>
 </template>
 <style lang="sass" scoped>
 
@@ -745,6 +768,11 @@
 .showInstructor .clickDescAct.active
   color: #925FE2 /* Change text color when active (blue for example) */
   font-weight: bold /* Optionally make it bold */
+
+
+@media (max-width:1700px)
+  .main-contaier
+    width: 70vw
 </style>
 
 <script setup>
@@ -754,7 +782,9 @@ import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 import { onMounted } from "vue";
 import axios from "axios";
+import { copyToClipboard, Notify } from "quasar";
 
+const showLoading = ref(true);
 const $q = useQuasar();
 const router = useRouter();
 const studentLink = ref(true);
@@ -786,7 +816,7 @@ const userName = ref("");
 const email = ref("");
 const password = ref("");
 const isPwd = ref(true);
-
+const copyGenerated = ref();
 // instructor
 const addInstructor = ref(false);
 const instructorFirstName = ref("");
@@ -796,53 +826,70 @@ const instructorGenderOption = ref("");
 const instructorUsername = ref("");
 const instructorPassword = ref("");
 const instructorEmail = ref("");
-const instructorImage = ref("");
+const instructorImage = ref(null);
 const instructorContact = ref("");
+const instructorBirthdate = ref("");
 const instructorGender = ref({
   option: ["Male", "Female", "LGBTQIA+"],
 });
+const generateCode = ref(false);
+const activeTab = ref("member");
+const isAdmin = ref("");
 
-const activeTab = ref("student");
+const showUser = ref("");
+const loading = ref(false);
+// filter date
+const fromDate = ref("");
+const toDate = ref("");
+
+async function getDate() {
+  fromDate.value;
+  toDate.value;
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/attendace/getByRange?startDate=${fromDate.value}?endDate=${toDate.value}`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+  } catch (err) {
+    console.error(err);
+  }
+  console.log("heh", fromDate.value, toDate.value);
+}
+
+function copyText(text) {
+  copyToClipboard(text);
+  Notify.create({
+    message: "Copy Succesfully",
+    color: "positive",
+  });
+}
+
+function genCode() {
+  generateCode.value = true;
+  getCode();
+}
 
 function changeTab(tab) {
   activeTab.value = tab;
 
-  if (tab === "student") rows.value = STUDENT;
-  else if (tab === "instructor") rows.value = INSTRUCTOR;
+  if (tab === "member") {
+    rows.value = STUDENT;
+    getUser("member");
+  } else if (tab === "instructor") {
+    rows.value = INSTRUCTOR;
+    getUser("instructor");
+  }
 }
 
 function closepopup() {
   viewDetails.value = false; // Close the dialog
   router.replace("/attendanceManagement"); // Navigate back
 }
-
-// Define reactive variables
-
-// const dataList = ref([
-//   "Apple",
-//   "Banana",
-//   "Cherry",
-//   "Date",
-//   "Grape",
-//   "Lemon",
-//   "Orange",
-//   "Peach",
-//   "Pineapple",
-//   "Strawberry",
-// ]);
-// const filteredResults = ref(dataList.value);
-
-// // Watch the search query and update the filtered results
-// watch(searchQuery, (newQuery) => {
-//   filteredResults.value = dataList.value.filter((item) =>
-//     item.toLowerCase().includes(newQuery.toLowerCase())
-//   );
-// });
-
-// // Method for handling search input (you can add logic here if needed)
-// function onSearchInput() {
-//   // Additional logic can go here if needed
-// }
 
 async function isLogin() {
   const token = localStorage.getItem("authToken");
@@ -855,7 +902,7 @@ async function isLogin() {
         },
       }
     );
-    console.log("here", response);
+
     if (!response.data.isValid) {
       router.replace(`/loginPage`);
     } else {
@@ -867,7 +914,8 @@ async function isLogin() {
           },
         }
       );
-      if (myProfile.data[0].title !== "admin") {
+      roleValidation(myProfile.data[0].title);
+      if (myProfile.data[0].title === "member") {
         router.replace(`/loginPage`);
       }
     }
@@ -886,7 +934,8 @@ const submitSignup = async () => {
     !instructorLastName.value ||
     !instructorGender.value ||
     !instructorImage.value ||
-    !instructorContact.value
+    !instructorContact.value ||
+    !instructorBirthdate.value
   ) {
     $q.notify({
       type: "warning",
@@ -904,12 +953,16 @@ const submitSignup = async () => {
   formData.append("lastName", instructorLastName.value);
   formData.append("gender", instructorGenderOption.value);
   formData.append("userImage", instructorImage.value);
+  formData.append("parentId", instructorImage.value);
+  formData.append("schoolId", instructorImage.value);
   formData.append("contactNumber", instructorContact.value);
+  formData.append("birthDate", instructorBirthdate.value);
+  formData.append("title", "instructor");
 
   try {
     const token = localStorage.getItem("authToken");
     const response = await axios.post(
-      ` ${process.env.api_host}/instructors/signup`,
+      ` ${process.env.api_host}/users/signup`,
       formData,
       {
         headers: {
@@ -918,15 +971,76 @@ const submitSignup = async () => {
         },
       }
     );
-    // Show a positive notification
     $q.notify({ type: "positive", message: "Signup successful!" });
-    // Redirect user to another page (e.g., the home page or dashboard)
   } catch (err) {
-    // Show an error notification
     $q.notify({ type: "negative", message: "Error during signup." });
     console.error(err);
   }
 };
+
+async function roleValidation(title) {
+  try {
+    if (title === "admin") {
+      return (isAdmin.value = true);
+    }
+    if (title === "instructor") {
+      return (isInstructor.value = true);
+    }
+    if (title === "member") {
+      return (isMember.value = true);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function getCode() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users/signup/generateCode`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    copyGenerated.value = response.data.code.code;
+    console.log("here", response.data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function getUser(role) {
+  const token = localStorage.getItem("authToken");
+  try {
+    loading.value = true;
+    if (role === "member") {
+      const response = await axios.get(`${process.env.api_host}/users`, {
+        headers: {
+          authorization: token,
+        },
+      });
+
+      showUser.value = response.data;
+      console.log("rew", showUser);
+    } else if (role === "instructor") {
+      const response = await axios.get(`${process.env.api_host}/users`, {
+        headers: {
+          authorization: token,
+        },
+      });
+
+      showUser.value = response.data;
+      console.log("rew", showUser);
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
+}
 
 const STUDENT = [
   {
@@ -1036,5 +1150,7 @@ const rows = ref(STUDENT);
 
 onMounted(() => {
   isLogin();
+  getUser("member");
+  showLoading.value = false;
 });
 </script>

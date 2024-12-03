@@ -20,11 +20,11 @@ onMounted(() => {
   new Chart(ctx, {
     type: "pie", // Pie chart type
     data: {
-      labels: ["Pass", "xd", "yawa"], // Example labels
+      labels: ["Pass", "xd", "eaweaw"], // Example labels
       datasets: [
         {
           label: "Pie Chart Example", // Label for the chart
-          data: [60, 40, 50], // Data values for each segment
+          data: [60, 40, 100], // Data values for each segment
           backgroundColor: [
             "rgb(146, 95, 226)", // RGB for #925FE2 (Purple)
             "rgb(213, 179, 251)", // RGB for #D5B3FB (Light Purple)

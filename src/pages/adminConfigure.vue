@@ -334,6 +334,10 @@
 <style lang="sass" scoped>
 .main-contaier
   width: 80vw
+
+@media (max-width:1485px)
+.main-contaier
+  width: 75vw
 </style>
 
 <script setup>
