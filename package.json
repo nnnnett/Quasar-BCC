@@ -19,6 +19,7 @@
     "chart.js": "^4.4.6",
     "qrcode.vue": "^3.6.0",
     "quasar": "^2.16.0",
+    "sass": "^1.81.1",
     "three": "^0.169.0",
     "vue": "^3.4.18",
     "vue-qrcode-reader": "^5.5.11",
