@@ -102,9 +102,9 @@
           </div>
         </div>
         <!-- date -->
-        <q-form @submit.prevent="getDate">
+        <!-- <q-form @submit.prevent="getDate">
           <div class="row" v-if="activeTab === 'member'">
-            <!-- from date -->
+
             <q-card-section class="col-2">
               <div>From date</div>
               <div>
@@ -132,7 +132,7 @@
                 </q-input>
               </div>
             </q-card-section>
-            <!-- To date -->
+
             <q-card-section class="col-2">
               <div>To date</div>
               <div>
@@ -170,7 +170,7 @@
               />
             </q-card-section>
           </div>
-        </q-form>
+        </q-form> -->
         <!-- Instructor Management Content -->
         <div class="q-px-md">
           <!-- Header -->
@@ -199,30 +199,14 @@
                   class="q-px-none"
                 >
                   <q-list>
-                    <q-item clickable @click="viewDetails = true">
+                    <q-item clickable @click="viewBtn(user._id)">
                       <q-item-section>
                         <q-item-label>View Details</q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-item clickable to="#" v-close-popup @click="onItemClick">
-                      <q-item-section>
-                        <q-item-label>Active</q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-item clickable to="#" v-close-popup @click="onItemClick">
-                      <q-item-section>
-                        <q-item-label>Inactive</q-item-label>
                       </q-item-section>
                     </q-item>
                   </q-list>
                 </q-btn-dropdown>
               </div>
-
-              <!-- <div style="width: 20%">nnet</div>
-                <div style="width: 20%">1</div>
-                <div style="width: 20%">novice</div>
-                <div style="width: 20%; color: #46af4b">Present</div>
-                <div style="width: 350px"></div> -->
             </q-card-section>
           </div>
           <div v-else class="row justify-center" style="padding-top: 8vh">
@@ -252,9 +236,7 @@
             <q-card style="display: flex" class="q-pa-xl">
               <div style="width: 60%; color: #4b4b4b">
                 <q-card-section>
-                  <div class="text-h6 text-weight-medium q">
-                    Personal Details
-                  </div>
+                  <div class="text-h6 text-weight-medium q">User Details</div>
                 </q-card-section>
                 <!-- first middle last name -->
                 <q-card-section
@@ -266,9 +248,9 @@
                     <q-input
                       outlined
                       rounded
-                      v-model="firstName"
+                      v-model="profileViewer.firstName"
                       clearable
-                      type="text"
+                      disable
                     />
                   </div>
                   <div style="width: 30%">
@@ -277,8 +259,9 @@
                       outlined
                       rounded
                       clearable
-                      v-model="middleName"
+                      v-model="profileViewer.middleName"
                       type="text"
+                      disable
                     />
                   </div>
                   <div style="width: 30%">
@@ -287,8 +270,8 @@
                       outlined
                       rounded
                       clearable
-                      v-model="lastName"
-                      type="text"
+                      v-model="profileViewer.lastName"
+                      disable
                     />
                   </div>
                 </q-card-section>
@@ -303,15 +286,21 @@
                       outlined
                       rounded
                       clearable
-                      v-model="gender"
+                      v-model="profileViewer.gender"
                       :options="genderOptions.option"
-                      type="text"
+                      disable
                     />
                   </div>
 
                   <div style="width: 30%">
                     <div>Birthdate</div>
-                    <q-input type="date" rounded v-model="date" outlined />
+                    <q-input
+                      type="date"
+                      rounded
+                      v-model="profileViewer.date"
+                      outlined
+                      disable
+                    />
                   </div>
                   <div style="width: 30%">
                     <div>Contact</div>
@@ -319,8 +308,9 @@
                       outlined
                       clearable
                       rounded
-                      v-model="contact"
+                      v-model="profileViewer.contactNumber"
                       type="number"
+                      disable
                     />
                   </div>
                 </q-card-section>
@@ -339,8 +329,9 @@
                       outlined
                       rounded
                       clearable
-                      v-model="country"
+                      v-model="profileViewer.country"
                       type="text"
+                      disable
                     />
                   </div>
                   <div style="width: 20%">
@@ -349,8 +340,9 @@
                       outlined
                       rounded
                       clearable
-                      v-model="zipCode"
+                      v-model="profileViewer.zipCode"
                       type="number"
+                      disable
                     />
                   </div>
                   <div style="width: 25%">
@@ -359,8 +351,9 @@
                       outlined
                       rounded
                       clearable
-                      v-model="province"
+                      v-model="profileViewer.province"
                       type="text"
+                      disable
                     />
                   </div>
                   <div style="width: 25%">
@@ -369,8 +362,9 @@
                       outlined
                       rounded
                       clearable
-                      v-model="municipality"
+                      v-model="profileViewer.municipality"
                       type="text"
+                      disable
                     />
                   </div>
                 </q-card-section>
@@ -384,8 +378,9 @@
                       clearable
                       outlined
                       rounded
-                      v-model="barangay"
+                      v-model="profileViewer.barangay"
                       type="text"
+                      disable
                     />
                   </div>
                   <div style="width: 30%">
@@ -394,8 +389,9 @@
                       outlined
                       clearable
                       rounded
-                      v-model="streetName"
+                      v-model="profileViewer.street"
                       type="text"
+                      disable
                     />
                   </div>
                   <div style="width: 30%">
@@ -404,8 +400,9 @@
                       outlined
                       rounded
                       clearable
-                      v-model="blockAndLot"
+                      v-model="profileViewer.blockAndLot"
                       type="text"
+                      disable
                     />
                   </div>
                 </q-card-section>
@@ -423,8 +420,9 @@
                       outlined
                       rounded
                       clearable
-                      v-model="guardianFirstName"
+                      v-model="profileViewer.guardianFirstName"
                       type="text"
+                      disable
                     />
                   </div>
                   <div style="width: 30%">
@@ -433,8 +431,9 @@
                       outlined
                       rounded
                       clearable
-                      v-model="guardianMiddleName"
+                      v-model="profileViewer.guardianMiddleName"
                       type="text"
+                      disable
                     />
                   </div>
                   <div style="width: 30%">
@@ -443,8 +442,9 @@
                       outlined
                       rounded
                       clearable
-                      v-model="guardianLastName"
+                      v-model="profileViewer.guardianLastName"
                       type="text"
+                      disable
                     />
                   </div>
                 </q-card-section>
@@ -452,27 +452,44 @@
 
               <div style="width: 40%">
                 <!-- user Profile -->
-                <q-card-section
-                  class="flex flex-center"
-                  style="display: flex; flex-direction: column"
-                >
-                  <q-img src="/src/assets/lee.png" style="max-width: 450px" />
-                  <div style="width: auto" class="q-mt-md">
-                    <q-file
-                      v-model="file"
-                      label="Upload Photo"
-                      label-style="text-align:center"
-                      accept="image/*"
-                      filled
-                      outlined
-                      clearable
-                    >
-                      <template v-slot:prepend>
-                        <q-icon name="attach_file" />
-                      </template>
-                    </q-file>
-                  </div>
-                </q-card-section>
+                <div style="display: flex; width: 100%">
+                  <q-card-section
+                    class="flex flex-center"
+                    style="display: flex; flex-direction: column"
+                  >
+                    Profile
+                    <q-img
+                      :src="profileViewer.userImage"
+                      style="max-width: 200px; width: 200px"
+                    />
+                    <div style="width: auto" class="q-mt-md"></div>
+                  </q-card-section>
+
+                  <q-card-section
+                    v-if="isViewMember"
+                    class="flex flex-center"
+                    style="display: flex; flex-direction: column"
+                  >
+                    Parent Id
+                    <q-img
+                      :src="profileViewer.parentId"
+                      style="max-width: 200px; width: 200px"
+                    />
+                    <div style="width: auto" class="q-mt-md"></div>
+                  </q-card-section>
+                  <q-card-section
+                    v-if="isViewMember"
+                    class="flex flex-center"
+                    style="display: flex; flex-direction: column"
+                  >
+                    School Id
+                    <q-img
+                      :src="profileViewer.schoolId"
+                      style="max-width: 200px; width: 200px"
+                    />
+                    <div style="width: auto" class="q-mt-md"></div>
+                  </q-card-section>
+                </div>
                 <!-- Account Details -->
                 <q-card-section
                   style="
@@ -488,8 +505,9 @@
                       outlined
                       clearable
                       rounded
-                      v-model="userName"
+                      v-model="profileViewer.username"
                       type="text"
+                      disable
                     />
                   </div>
                   <div style="width: 45%; margin-bottom: 1rem">
@@ -498,15 +516,17 @@
                       outlined
                       clearable
                       rounded
-                      v-model="email"
+                      v-model="profileViewer.email"
                       type="email"
+                      disable
                     />
                   </div>
                   <div style="width: 45%; margin-bottom: 1rem">
                     <div>Password</div>
                     <q-input
-                      v-model="password"
+                      v-model="profileViewer.password"
                       filled
+                      disable
                       :type="isPwd ? 'password' : 'text'"
                       hint="Password with toggle"
                     >
@@ -521,7 +541,7 @@
                   </div>
                 </q-card-section>
                 <q-card-actions align="right" class="text-primary">
-                  <q-btn flat label="Save" @click="secondDialog = true" />
+                  <!-- <q-btn flat label="Save" @click="secondDialog = true" /> -->
                   <q-btn flat label="Close" v-close-popup />
                 </q-card-actions>
               </div>
@@ -541,7 +561,7 @@
                 Double check the details if correct.
               </q-card-section>
               <q-card-actions align="right" class="bg-white text-teal">
-                <q-btn flat v-close-popup @click="closepopup" label="Save" />
+                <!-- <q-btn flat v-close-popup @click="closepopup" label="Save" /> -->
                 <q-btn flat label="CANCEL" v-close-popup />
               </q-card-actions>
             </q-card>
@@ -831,11 +851,14 @@ const generateCode = ref(false);
 const activeTab = ref("member");
 const isAdmin = ref("");
 
+const isViewMember = ref(false);
 const showUser = ref("");
 const loading = ref(false);
 // filter date
 const fromDate = ref("");
 const toDate = ref("");
+
+const profileViewer = ref("");
 
 async function searchBar() {
   console.log(searchQuery.value, "Input from search bar");
@@ -1045,109 +1068,54 @@ async function getUser(role) {
   }
 }
 
-const STUDENT = [
-  {
-    firstName: "Juan",
-    lastName: "Dela Cruz",
-    attendanceCount: 5,
-    rank: "Novice",
-    status: false,
-  },
-  {
-    firstName: "Ana",
-    lastName: "Santos",
-    attendanceCount: 8,
-    rank: "Intermediate",
-    status: true,
-  },
-  {
-    firstName: "Lara",
-    lastName: "Garcia",
-    attendanceCount: 10,
-    rank: "Advanced",
-    status: true,
-  },
-  {
-    firstName: "Marco",
-    lastName: "Torres",
-    attendanceCount: 3,
-    rank: "Novice",
-    status: false,
-  },
-  {
-    firstName: "Sofia",
-    lastName: "Lopez",
-    attendanceCount: 12,
-    rank: "Expert",
-    status: true,
-  },
-];
+async function viewBtn(userId) {
+  const token = localStorage.getItem("authToken");
+  try {
+    viewDetails.value = true;
 
-const INSTRUCTOR = [
-  {
-    firstName: "Mario",
-    lastName: "Dela Cruz",
-    attendanceCount: 15,
-    rank: "Novice",
-    status: true,
-  },
-  {
-    firstName: "Carla",
-    lastName: "Reyes",
-    attendanceCount: 20,
-    rank: "Intermediate",
-    status: true,
-  },
-  {
-    firstName: "Luis",
-    lastName: "Martinez",
-    attendanceCount: 25,
-    rank: "Advanced",
-    status: true,
-  },
-  {
-    firstName: "Karen",
-    lastName: "Rivera",
-    attendanceCount: 30,
-    rank: "Expert",
-    status: true,
-  },
-  {
-    firstName: "Victor",
-    lastName: "Fernandez",
-    attendanceCount: 5,
-    rank: "Novice",
-    status: false,
-  },
-  {
-    firstName: "Isabel",
-    lastName: "Cruz",
-    attendanceCount: 18,
-    rank: "Intermediate",
-    status: true,
-  },
-  {
-    firstName: "Ricardo",
-    lastName: "Gomez",
-    attendanceCount: 22,
-    rank: "Advanced",
-    status: true,
-  },
-  {
-    firstName: "Monica",
-    lastName: "Morales",
-    attendanceCount: 28,
-    rank: "Expert",
-    status: true,
-  },
-  {
-    firstName: "Eduardo",
-    lastName: "Castro",
-    attendanceCount: 3,
-    rank: "Novice",
-    status: false,
-  },
-];
+    const response = await axios.get(
+      `${process.env.api_host}/users?query=${userId}`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log(response.data[0].title);
+    isViewMember.value = response.data[0].title;
+    if (isViewMember.value === "member") {
+      isViewMember.value = true;
+      console.log(isViewMember.value);
+    } else {
+      isViewMember.value = false;
+    }
+
+    profileViewer.value = response.data[0];
+    console.log(profileViewer.value);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function viewUser() {
+  const token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.get(
+      `${process.env.api_host}/users?filter=member`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log("here", response.data[0]);
+  } catch (err) {
+    console.error(err);
+  }
+}
+const STUDENT = [];
+
+const INSTRUCTOR = [];
 
 const rows = ref(STUDENT);
 

@@ -60,7 +60,7 @@
               <q-item-label>Courses</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item
+          <!-- <q-item
             clickable
             v-if="isMember"
             @click="router.replace(`/userProgress`)"
@@ -72,7 +72,7 @@
             <q-item-section>
               <q-item-label>Progress</q-item-label>
             </q-item-section>
-          </q-item>
+          </q-item> -->
           <q-item
             clickable
             @click="router.replace(`/attendanceManagement`)"

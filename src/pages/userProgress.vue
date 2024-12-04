@@ -85,14 +85,14 @@
                 Badges
               </q-card-section>
             </div>
-            <div @click="showCertificate" class="showCertificate">
+            <!-- <div @click="showCertificate" class="showCertificate">
               <q-card-section
                 class="text-subtitle2 clickDescAct"
                 :class="{ active: certificateLink }"
               >
                 Certificates
               </q-card-section>
-            </div>
+            </div> -->
           </div>
           <!-- Course Expertise -->
 
@@ -206,7 +206,7 @@
             </span>
           </div>
           <!-- certificates -->
-          <div class="certificateContainer" v-if="certificateLink">
+          <!-- <div class="certificateContainer" v-if="certificateLink">
             <div class="certificate1 certificateImg">
               <q-img
                 src="/src/assets/certificateExample.png"
@@ -231,7 +231,7 @@
                 style="width: 100%; height: 100%; object-fit: cover"
               />
             </div>
-          </div>
+          </div> -->
         </div>
       </q-card>
     </div>

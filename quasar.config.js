@@ -89,7 +89,8 @@ module.exports = configure(function (/* ctx */) {
       open: true,
       hot: true, // Ensure HMR is active
       watchOptions: {
-        poll: false, // Disable polling for better performance
+        poll: 1000, // Adjust as needed
+        ignored: /node_modules/, // Ignore unnecessary directories
       }, // opens browser window automatically
     },
 

@@ -49,7 +49,7 @@
           </div>
         </div>
         <!-- complete -->
-        <div class="completedCourse q-mt-md q-ml-md">
+        <div class="completedCourse q-mt-md q-ml-md" v-if="isMember">
           <q-item-section avatar class="q-pl-lg">
             <q-icon name="schedule" style="color: #5ce1e6" />
           </q-item-section>
